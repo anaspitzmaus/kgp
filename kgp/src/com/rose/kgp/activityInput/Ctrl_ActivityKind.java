@@ -10,12 +10,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import com.rose.kgp.examination.ExaminationKind;
+import com.rose.kgp.examination.Examination;
 
 public class Ctrl_ActivityKind {
 	protected Pnl_ActivityKind pnlActivityKind;
 	private ArrayList<ActivityKind> activityKinds;
-	private ArrayList<ExaminationKind> examKinds;
+	private ArrayList<Examination> examKinds;
 	/**
 	 * get the panel that is controlled by this class
 	 * @return a JPanel
@@ -35,7 +35,7 @@ public class Ctrl_ActivityKind {
 		
 		setExaminationKinds(); //fill the kinds of examination to an arrayList
 		//create and set the model of this comboBox (therefore convert the arrayList with the items to a plain array)
-		ExaminationKindComboModel examKindModel = new ExaminationKindComboModel(examKinds.toArray(new ExaminationKind[examKinds.size()]));		
+		ExaminationKindComboModel examKindModel = new ExaminationKindComboModel(examKinds.toArray(new Examination[examKinds.size()]));		
 		pnlActivityKind.comboExamKind.setModel(examKindModel);	
 		//set the renderer of the comboBox
 		pnlActivityKind.comboExamKind.setRenderer(new ExaminationKindListCellRenderer());
@@ -55,10 +55,10 @@ public class Ctrl_ActivityKind {
 	}
 	
 	private void setExaminationKinds(){
-		examKinds = new ArrayList<ExaminationKind>();
-		examKinds.add(new ExaminationKind("Koro"));
-		examKinds.add(new ExaminationKind("Koro mit PCI"));
-		examKinds.add(new ExaminationKind("DR-SM-Implantation"));
+		examKinds = new ArrayList<Examination>();
+//		examKinds.add(new Examination("Koro"));
+//		examKinds.add(new Examination("Koro mit PCI"));
+//		examKinds.add(new Examination("DR-SM-Implantation"));
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Ctrl_ActivityKind {
 	 * @author Ekki
 	 *
 	 */
-	class ExaminationKindListCellRenderer extends JLabel implements ListCellRenderer<ExaminationKind>{
+	class ExaminationKindListCellRenderer extends JLabel implements ListCellRenderer<Examination>{
 		
 		/**
 		 * 
@@ -113,7 +113,7 @@ public class Ctrl_ActivityKind {
 		
 		@Override
 		public Component getListCellRendererComponent(
-				JList<? extends ExaminationKind> list, ExaminationKind examKind, int index,
+				JList<? extends Examination> list, Examination examKind, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			
 			setText(examKind.getNotation());
@@ -157,7 +157,7 @@ public class Ctrl_ActivityKind {
 	 * @author Ekki
 	 *
 	 */
-	class ExaminationKindComboModel extends DefaultComboBoxModel<ExaminationKind>{
+	class ExaminationKindComboModel extends DefaultComboBoxModel<Examination>{
 
 		
 		/**
@@ -165,12 +165,12 @@ public class Ctrl_ActivityKind {
 		 */
 		private static final long serialVersionUID = 889135147109929594L;
 
-		public ExaminationKindComboModel(ExaminationKind[] items){
+		public ExaminationKindComboModel(Examination[] items){
 			super (items);
 		}
 		
-		public ExaminationKind getSelectedItem(){
-			ExaminationKind examKindSel = (ExaminationKind) super.getSelectedItem();
+		public Examination getSelectedItem(){
+			Examination examKindSel = (Examination) super.getSelectedItem();
 			return examKindSel;
 		}
 	}

@@ -11,7 +11,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import com.rose.kgp.examination.ExaminationKind;
+import com.rose.kgp.examination.Examination;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -23,7 +23,7 @@ public class Pnl_ActivityKind extends JPanel{
 	private static final long serialVersionUID = 8563700723024131689L;
 
 	protected JComboBox<ActivityKind> comboActivityKind;
-	protected JComboBox<ExaminationKind> comboExamKind;
+	protected JComboBox<Examination> comboExamKind;
 	private JTextField textField;
 	
 	public Pnl_ActivityKind() {
@@ -52,7 +52,7 @@ public class Pnl_ActivityKind extends JPanel{
 		lblExamKind.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		toolBar.add(lblExamKind);
 		
-		comboExamKind = new JComboBox<ExaminationKind>();
+		comboExamKind = new JComboBox<Examination>();
 		comboExamKind.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		toolBar.add(comboExamKind);
 		

@@ -1,6 +1,6 @@
 package com.rose.kgp.examination;
 
-public class ExaminationKind {
+public abstract class Examination {
 	protected String notation;
 	
 	
@@ -13,7 +13,7 @@ public class ExaminationKind {
 	}
 
 
-	public ExaminationKind(String notation){
+	public Examination(String notation){
 		this.notation = notation;
 	}
 }
