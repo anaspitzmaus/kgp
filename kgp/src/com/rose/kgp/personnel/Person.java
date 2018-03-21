@@ -1,4 +1,4 @@
-package personnel;
+package com.rose.kgp.personnel;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package personnel;
+package com.rose.kgp.personnel;
 
 public class Physician extends Person {
 
