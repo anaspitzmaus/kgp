@@ -1,10 +1,18 @@
 package com.rose.kgp.examination;
 
-public class PM_Implant extends PM_Intervention{
+import java.util.ArrayList;
 
+
+
+public class PM_Implant extends PM_Intervention {
+	
+	ArrayList<ElectrodeImplant> electrodesImplant;
+	
 	public PM_Implant(String notation) {
 		super(notation);
-		// TODO Auto-generated constructor stub
+		electrodesImplant = new ArrayList<ElectrodeImplant>();
 	}
+	
+	
 
 }
