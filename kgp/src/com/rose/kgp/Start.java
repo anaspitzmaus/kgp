@@ -4,9 +4,11 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+
 import com.rose.kgp.db.DB;
-import db.SQL_INSERT;
+import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.Dlg_DBSettings;
+import com.rose.kgp.ui.Dlg_LogIn;
 
 /**
  * entry point of the application 
