@@ -116,7 +116,7 @@ public class Ctrl_ActivityKind {
 				JList<? extends Examination> list, Examination examKind, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			
-			setText(examKind.getNotation());
+			//setText(examKind.getNotation());
 			this.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			if (isSelected) {
 				// set the font color of the selected element     

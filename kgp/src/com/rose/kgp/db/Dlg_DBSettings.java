@@ -73,7 +73,7 @@ public class Dlg_DBSettings extends JDialog {
 			txtPort.setFont(new Font("Tahoma", Font.PLAIN, 16));			
 			contentPanel.add(txtPort, "cell 1 0,growx");
 			txtPort.setColumns(10);			
-			txtPort.setText(pref.get("DB_Port", "3306"));	
+			txtPort.setText(pref.get("DB_kgp_Port", "3306"));	
 		
 		
 			JLabel lblHost = new JLabel("Host:");
@@ -85,7 +85,7 @@ public class Dlg_DBSettings extends JDialog {
 			txtHost.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			contentPanel.add(txtHost, "cell 1 1,grow");
 			txtHost.setColumns(10);
-			txtHost.setText(pref.get("DB_Host", "localhost"));
+			txtHost.setText(pref.get("DB_kgp_Host", "localhost"));
 			
 		
 			JLabel lblUser = new JLabel("User:");
@@ -97,7 +97,7 @@ public class Dlg_DBSettings extends JDialog {
 			txtUser.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			contentPanel.add(txtUser, "cell 1 2,growx");
 			txtUser.setColumns(10);
-			txtUser.setText(pref.get("DB_User", "root"));
+			txtUser.setText(pref.get("DB_kgp_User", "root"));
 		
 		
 			JLabel lblPW = new JLabel("Password:");
@@ -117,7 +117,7 @@ public class Dlg_DBSettings extends JDialog {
 			txtSchema.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			contentPanel.add(txtSchema, "cell 1 4,growx");
 			txtSchema.setColumns(10);			
-			txtSchema.setText(pref.get("DB_Schema", "cor"));
+			txtSchema.setText(pref.get("DB_kgp__Schema", "kgp"));
 		
 			lblTestResult = new JLabel("");
 			lblTestResult.setFont(new Font("Tahoma", Font.PLAIN, 16));

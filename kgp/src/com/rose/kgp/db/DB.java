@@ -28,7 +28,7 @@ public class DB {
 	
 	public static Connection createConnection(){
 		
-		String database = "cor";	
+		String database = "kgp";	
 		
 		if(getDriverInstance()){
 			if(getDriverConnection()!=null){

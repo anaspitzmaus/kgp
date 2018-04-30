@@ -8,8 +8,8 @@ public abstract class PM_Intervention extends Examination{
 	protected PM pm;
 	
 	
-	public PM_Intervention(String notation) {
-		super(notation);
+	public PM_Intervention(ExamType type) {
+		super(type);
 		// TODO Auto-generated constructor stub
 	}
 
