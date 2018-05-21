@@ -46,8 +46,9 @@ public class SQL_INSERT {
 					return true;
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(new JFrame(),
-						    e.getMessage(), "SQL Exception warning",
+							"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_INSERT.class.getSimpleName(), "SQL Exception warning",
 						    JOptionPane.WARNING_MESSAGE);
+					
 					return false;
 				}
 			}else{
@@ -56,7 +57,7 @@ public class SQL_INSERT {
 			
 		}catch(SQLException e){
 			JOptionPane.showMessageDialog(new JFrame(),
-				    e.getMessage(), "SQL Exception warning",
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_INSERT.class.getSimpleName(), "SQL Exception warning",
 				    JOptionPane.WARNING_MESSAGE);
 			return false;
 		}		
@@ -134,23 +135,43 @@ public class SQL_INSERT {
  * @param onset
  * @return
  */
-	public static Boolean Physician (Physician physician, LocalDate onset){
+	public static Integer Physician (Physician physician, LocalDate onset){
 		stmt = DB.getStatement();
-		String hashUN = MD5.getMD5(physician.getUsername());		
-		String hashPW = MD5.getMD5(physician.getPassword());	
+		
+//		String hashUN = MD5.getMD5(physician.getUsername());		
+//		String hashPW = MD5.getMD5(physician.getPassword());
+		
 		try {
+			DB.getConnection().setAutoCommit(false);
+			stmt.executeUpdate("INSERT INTO staff (firstname, birth, sex, onset) "
+								+ "VALUES ('" + physician.getFirstname() + "', '" + Date.valueOf(physician.getBirthday()) +	"', " 
+								+ physician.getSexCode() + ", '" + Date.valueOf(onset) + "')");
 			
-			stmt.executeUpdate("INSERT INTO staff (firstname, birth, username, password, admin, sex, onset, expiry) "
-								+ "VALUES ('" + physician.getFirstname() + "', '" + Date.valueOf(physician.getBirthday()) +	"', '" 
-								+ hashUN + "' , '" + hashPW + "', " + physician.getSex() + ", '" + Date.valueOf(onset) + "')");								
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			rs.next();
+			Integer id = rs.getInt("ID");
+			
+			stmt.executeUpdate("INSERT INTO physician(idstaff, surname, title, status, alias) "
+								+ "VALUES (LAST_INSERT_ID(), '" + physician.getSurname() + "', '" + physician.getTitle() + "', '"
+								+ physician.getStatus() + "', '" + physician.getAlias() + "')");
+			
+			
 								
-			return true;
+			return id;
 								
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(new JFrame(),
 				    "Error_Code: " + e.getErrorCode() + "/n"+ e.getMessage() + "/n Class: SQL_INSERT Physician", "SQL Exception warning",
 				    JOptionPane.WARNING_MESSAGE);
-			return false;
-		} 
+			return null;
+		} finally {
+			try {
+				DB.getConnection().setAutoCommit(true);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Message: failure while setting autoCommit to true /n Class: SQL_INSERT physician", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+			}
+		}
 	}
 }

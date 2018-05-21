@@ -7,9 +7,23 @@ public abstract class Person {
 	protected String surname; 
 	protected String firstname;
 	protected LocalDate birthday;
-	protected Integer sex; // can be 0 for indifferent, 1 for female and 2 for male 
+	protected Integer sex; // can be 0 for not known, 1 for female and 2 for male or 9 for indifferent
+	protected String address;
 	
 	
+	
+	public String getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+
 	public String getSurname() {
 		return surname;
 	}
@@ -47,16 +61,19 @@ public abstract class Person {
 
 	
 
-	public String getSex() {
+	public Sex getSex() {
 		switch (sex) {
 		case 0:
-			return "indifferent";
+			return Sex.NOT_KNOWN;
 			
 		case 1:
-			return "female";
+			return Sex.FEMALE;
 			
 		case 2:
-			return "male";
+			return Sex.MALE;
+			
+		case 9:
+			return Sex.INDIFFERENT;
 		default:
 			return null;
 			
@@ -65,24 +82,35 @@ public abstract class Person {
 	
 	
 /**
- * can be 0 for indifferent, 1 for female and 2 for male
+ * can be indifferent, female or male
  * 
  */
-	public void setSex(String sex) {
+	public void setSex(Sex sex) {
 		switch (sex){
-		case "indifferent":
+		case NOT_KNOWN:
 			this.sex = 0;
 			break;
-		case "female":
+		case FEMALE:
 			this.sex = 1;
 			break;
-		case "male":
+		case MALE:
 			this.sex = 2;
+			break;
+		case INDIFFERENT:
+			this.sex = 9;
 			break;
 		default:
 			this.sex = null;
 		}
 		
+	}
+	
+	public Integer getSexCode(){
+		return this.sex;
+	}
+	
+	public void setSexCode(int sex) {
+		this.sex = sex;		
 	}
 
 

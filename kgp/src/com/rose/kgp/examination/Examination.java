@@ -177,8 +177,11 @@ public abstract class Examination {
 			//no number format
 		}
 		
-		this.getPatient().setSex(patientData_hm.get("SEX").get(0));
-		
+		try{
+			this.getPatient().setSexCode(Integer.parseInt(patientData_hm.get("SEX").get(0)));
+		}catch(NumberFormatException nfe){
+			//no number format
+		}
 		
 	}
 	

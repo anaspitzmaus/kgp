@@ -1,22 +1,13 @@
 package com.rose.kgp.personnel;
 
+
+
 public class Physician extends Staff {
 
 	protected String title;
-	protected String alias;
+	
 	protected String status;
-	protected Integer id;
 	
-	
-	
-	public Integer getId() {
-		return id;
-	}
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 
 	public String getTitle() {
@@ -28,15 +19,7 @@ public class Physician extends Staff {
 		this.title = title;
 	}
 	
-	public String getAlias(){
-		return this.alias;
-	}
-	
-	public void setAlias(String alias){
-		this.alias = alias;
-	}
-	
-	
+		
 	public String getStatus() {
 		return status;
 	}
@@ -55,5 +38,11 @@ public class Physician extends Staff {
 	public Physician(String surname, String firstname) {
 		super(surname, firstname);		
 	}
+
+
+	
+
+
+	
 
 }

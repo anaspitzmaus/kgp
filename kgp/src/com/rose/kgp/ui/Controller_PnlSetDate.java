@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.rose.kgp.useful.DateMethods;
@@ -13,14 +14,14 @@ import com.rose.kgp.useful.DateMethods;
 public class Controller_PnlSetDate {
 	protected Pnl_SetDate pnlSetDate;
 	DateChangeListener dateChangeListener;
-	LocalDate minDate;
+	LocalDate minDate, dateSet;
 	
 	public Controller_PnlSetDate(String dateFormat, LocalDate ld, LocalDate minDate){
 		pnlSetDate = new Pnl_SetDate(dateFormat, ld, minDate);
 		pnlSetDate.addCalendarListener(new CalendarListener(minDate));
 		dateChangeListener = new DateChangeListener();
 		pnlSetDate.addDateChangeListener(dateChangeListener);//listener for changing the date
-		pnlSetDate.date = ld;
+		dateSet = ld;
 	}
 	
 //	public Controller_PnlSetDate(DefaultFormatterFactory factory){
@@ -39,8 +40,18 @@ public class Controller_PnlSetDate {
 	}
 	
 	public LocalDate getDate(){
-		return pnlSetDate.date;
+		return dateSet;
 	}	
+	
+	public void setDate(LocalDate date){
+		Date seldate = DateMethods.ConvertLocalDateToDate(date);		
+		pnlSetDate.getFtxtCalendar().setValue(seldate); //set the selected date to the formattedTextField
+	}
+	
+	public void setPnlEnabled(Boolean en){
+		pnlSetDate.getFtxtCalendar().setEnabled(en);
+		pnlSetDate.getLblCalendar().setEnabled(en);
+	}
 	
 	
 	class CalendarListener implements MouseListener{
@@ -95,7 +106,7 @@ public class Controller_PnlSetDate {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent arg0) {
-			pnlSetDate.date =  DateMethods.ConvertDateToLocalDate((Date)pnlSetDate.getFtxtCalendar().getValue());			
+			dateSet = DateMethods.ConvertDateToLocalDate((Date)pnlSetDate.getFtxtCalendar().getValue());
 		}
 		
 	}

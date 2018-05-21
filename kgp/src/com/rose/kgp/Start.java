@@ -15,6 +15,7 @@ import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Patient;
+import com.rose.kgp.ui.Controller_FrmMain;
 import com.rose.kgp.ui.Dlg_LogIn;
 
 /**
@@ -94,9 +95,12 @@ public class Start {
 		}
 		
 		//exam.storeExamToDB();
-		Patient patient = new Patient("Schubert", "Willy");
-		patient.setId(10);
-		SQL_INSERT.Patient_Changes(patient);
+//		Patient patient = new Patient("Schubert", "Willy");
+//		patient.setId(10);
+//		SQL_INSERT.Patient_Changes(patient);
+		
+		Controller_FrmMain conFrmMain = new Controller_FrmMain();
+		conFrmMain.build();
 		
 	}
 

@@ -7,7 +7,7 @@ import com.rose.kgp.db.SQL_SELECT;
 public class Useful {
 
 	public static Physician getPhyscianByAlias(String alias){
-		Physician physician = SQL_SELECT.getPhysicianByAlias(alias);
+		Physician physician = SQL_SELECT.physicianByAlias(alias);
 		return physician;
 	}
 	
