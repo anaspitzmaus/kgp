@@ -14,14 +14,12 @@ import java.util.Observer;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
+
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.ui.Controller_PnlSetDate;
-import com.rose.kgp.useful.DateMethods;
+
 
 
 public class Controller_DlgPhysician extends Controller_DlgStaff implements Observer{
@@ -55,12 +53,7 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 		setListener();
 	}
 	
-	@Override	
-	public void showDialog(){
-		dlgStaff.setModal(true);
-		dlgStaff.setVisible(true);
-		dlgStaff.repaint();
-	}
+	
 	
 	@Override void setListener(){
 		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
@@ -145,11 +138,15 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 		tblPersonnelModel.fireTableDataChanged();
 	}
 
+
+
 	@Override
 	void removeListener() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 	
 	
 	

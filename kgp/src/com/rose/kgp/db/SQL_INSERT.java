@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.rose.kgp.MD5;
 import com.rose.kgp.examination.Examination;
+import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
 
@@ -174,4 +175,50 @@ public class SQL_INSERT {
 			}
 		}
 	}
+	
+	/**
+	 * insert a new nurse	
+	 * @param nurse
+	 * @param onset
+	 * @return
+	 */
+		public static Integer Nurse (Nurse nurse, LocalDate onset){
+			stmt = DB.getStatement();
+			
+//			String hashUN = MD5.getMD5(physician.getUsername());		
+//			String hashPW = MD5.getMD5(physician.getPassword());
+			
+			try {
+				DB.getConnection().setAutoCommit(false);
+				stmt.executeUpdate("INSERT INTO staff (firstname, birth, sex, onset) "
+									+ "VALUES ('" + nurse.getFirstname() + "', '" + Date.valueOf(nurse.getBirthday()) +	"', " 
+									+ nurse.getSexCode() + ", '" + Date.valueOf(onset) + "')");
+				
+				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+				rs.next();
+				Integer id = rs.getInt("ID");
+				
+				stmt.executeUpdate("INSERT INTO nurse(id_staff, surname, status, alias) "
+									+ "VALUES (LAST_INSERT_ID(), '" + nurse.getSurname() + "', '" 
+									+ nurse.getStatus() + "', '" + nurse.getAlias() + "')");
+				
+				
+									
+				return id;
+									
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Error_Code: " + e.getErrorCode() + "/n"+ e.getMessage() + "/n Class: SQL_INSERT Nurse", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+				return null;
+			} finally {
+				try {
+					DB.getConnection().setAutoCommit(true);
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(new JFrame(),
+						    "Message: failure while setting autoCommit to true /n Class: SQL_INSERT Nurse", "SQL Exception warning",
+						    JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
 }

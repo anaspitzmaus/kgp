@@ -7,8 +7,6 @@ public class Tbl_NurseModel extends Tbl_PersonnelModel{
 private static final long serialVersionUID = 2666815155549333593L;
 	
 	
-	private ArrayList<Nurse> nurses;
-	
 	public Tbl_NurseModel(ArrayList<Nurse> nurses) {
 		super(nurses);
 		
@@ -20,17 +18,13 @@ private static final long serialVersionUID = 2666815155549333593L;
 	}	
 	
 
-	@Override
-	public int getRowCount() {
-		return this.nurses.size();
-	}
-
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if(columnIndex == 3){
-			return nurses.get(rowIndex).getOnset();
+			return staff.get(rowIndex).getOnset();
 		}else{
-			return nurses.get(rowIndex);
+			return staff.get(rowIndex);
 		}
 	}	
 	
@@ -40,7 +34,5 @@ private static final long serialVersionUID = 2666815155549333593L;
 		 
     }
 	 
-	protected ArrayList<Nurse> getNurses(){
-		return this.nurses;
-	}
+	
 }

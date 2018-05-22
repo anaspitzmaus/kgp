@@ -17,7 +17,7 @@ import javax.swing.text.Document;
 import com.rose.kgp.ui.Controller_PnlSetDate;
 
 /**
- * abstract class that controls the abstract panel 'Pnl_NewStaff'
+ * abstract class that controls an inherited panel of the abstract panel 'Pnl_NewStaff' 
  * @author Ekkehard Rose
  *
  */
@@ -26,7 +26,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	protected Controller_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
 	protected SexModel sexModel;
 	protected Pnl_NewStaff pnlNewStaff;
-	protected Staff staff;
+	protected Staff staff; 
 	protected SurnameListener surnameListener;
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
@@ -36,10 +36,14 @@ public abstract class Controller_PnlNewStaff extends Observable{
 		return this.pnlNewStaff;
 	}
 	
-	protected void setStaff(Staff staff){
-		this.staff = staff;
-	}
 	
+	
+	/**
+	 * standard constructor
+	 * @param conPnlSetBirthDate
+	 * @param conPnlSetOnsetDate
+	 * @param pnlNewStaff the JPanel that has to be controlled by this controller class
+	 */
 	public Controller_PnlNewStaff(Controller_PnlSetDate conPnlSetBirthDate, Controller_PnlSetDate conPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
 		staff = null;
 		this.pnlNewStaff = pnlNewStaff;
@@ -83,8 +87,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	protected void removeListener(){
 		pnlNewStaff.removeSurnameListener(surnameListener);
 		pnlNewStaff.removeFirstnameListener(firstnameListener);
-		pnlNewStaff.removeAliasListener(aliasListener);
-		
+		pnlNewStaff.removeAliasListener(aliasListener);		
 		pnlNewStaff.removeSexListener(sexListener);
 		
 	}
@@ -93,7 +96,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	 * prepares the panel before a new staff is to be created
 	 * therefore the data fields are enabled and the right dates are set
 	 */
-	protected void prepareForNewStaff(){
+	protected void prepareForNewStaff(Staff staff){
 		pnlNewStaff.getTxtFirstname().setEnabled(true);
 		pnlNewStaff.getTxtSurname().setEnabled(true);
 		pnlNewStaff.getComboSex().setEnabled(true);
@@ -108,7 +111,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 		pnlNewStaff.getTxtFirstname().setText("");
 		pnlNewStaff.getComboSex().setSelectedItem(null);
 		pnlNewStaff.getComboSex().repaint();
-		
+		this.staff = staff;
 		
 	}
 	
@@ -161,7 +164,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	}
 	
 	/**
-	 * Document Listener for changing the surname of the physician
+	 * Document Listener for changing the surname of the staff member
 	 * @author Administrator
 	 *
 	 */
@@ -196,6 +199,11 @@ public abstract class Controller_PnlNewStaff extends Observable{
 		
 	}
 	
+	/**
+	 * Document Listener for changing the firstname of the staff member
+	 * @author Administrator
+	 *
+	 */
 	class FirstnameListener implements DocumentListener{
 
 		@Override
@@ -228,8 +236,8 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	}
 	
 	/**
-	 * listener when creating the alias of the physician
-	 * the alias is a short form of the full physicians name
+	 * listener when creating the alias of the staff
+	 * the alias is a short form of the full staffs name
 	 * like 'Dr. Rose' instead of 'Dr. med. Ekkehard Rose'
 	 * @author Ekkehard Rose
 	 *
@@ -264,7 +272,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	}
 	
 	/**
-	 * listener for setting the sex of the physician depending on its address 
+	 * listener for setting the sex of the staff member depending on its address 
 	 * @author Ekkehard Rose
 	 *
 	 */

@@ -6,16 +6,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
-import java.util.Observable;
+
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
 import javax.swing.event.ListDataListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+
 
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.ui.Controller_PnlSetDate;
@@ -37,15 +35,15 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 		
 		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setEnabled(false);
 		
-		initializeListener();
-		setListener();
+		initializeExtraListener();
+		setExtraListener();
 	}
 	
 	/**
 	 * initializes all listeners of input fields of that panel that are not initialized by the super class
 	 */
 	
-	private void initializeListener(){		
+	private void initializeExtraListener(){		
 		titleListener = new TitleListener();		
 		setNewPhysicianListener = new SetNewPhysicianListener();
 	}
@@ -53,7 +51,7 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 	/**
 	 * add all listeners of input fields of that panel
 	 */
-	private void setListener(){				
+	private void setExtraListener(){				
 		((Pnl_NewPhysician) pnlNewStaff).addTitleListener(titleListener);		
 		pnlNewStaff.addSetNewStaffListener(setNewPhysicianListener);
 	}
@@ -77,15 +75,12 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 	 * therefore the data fields are enabled and the right dates are set
 	 */
 	protected void prepareForNewPhysician(){
-		super.prepareForNewStaff();
+		super.prepareForNewStaff(new Physician(""));
 		
-		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setEnabled(true);
-		
-		//when activating the dateSetPnl: set the Date of the DateSetPanel to a specific date
-		
+		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setEnabled(true);		
 		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setSelectedItem(null);
 		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().repaint();
-		staff = new Physician("");
+		
 	}
 	
 	
@@ -183,7 +178,7 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setSelectedIndex(-1);
 					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().repaint();
 					//add all listeners to the input fields
-					setListener();
+					setExtraListener();
 				
 			}
 		}		

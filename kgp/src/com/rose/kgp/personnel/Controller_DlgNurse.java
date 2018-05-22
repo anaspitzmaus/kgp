@@ -16,22 +16,21 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
-
 import com.rose.kgp.ui.Controller_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 
 public class Controller_DlgNurse extends Controller_DlgStaff implements Observer{
 
-	Dlg_Nurse dlgNurse;
-	ArrayList<Nurse> nurses;
-	Controller_PnlNewNurse conPnlNewNurse;
+	//Dlg_Nurse dlgNurse;
+	//ArrayList<Nurse> nurses;
+	//Controller_PnlNewNurse conPnlNewNurse;
 	Controller_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
-	Tbl_NurseModel tblNurseModel;
+	//Tbl_NurseModel tblNurseModel;
 	
 	@SuppressWarnings("unchecked")
 	public Controller_DlgNurse() {
-		dlgNurse = new Dlg_Nurse();
-		nurses = SQL_SELECT.activeNurses(LocalDate.now());
+		dlgStaff = new Dlg_Nurse();
+		staff = SQL_SELECT.activeNurses(LocalDate.now());
 		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staff);
 		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
 		dlgStaff.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -40,22 +39,22 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 //		dlgPhysician.getTblPersonnel().getColumnModel().getColumn(0).setCellRenderer(Physician.class, new PhysicianCellRenderer());
 //		this.getColumnModel().getColumn(1).setCellRenderer(dateRenderer);
 //		this.getColumnModel().getColumn(2).setCellRenderer(notationRenderer);	
-		dlgNurse.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
-		dlgNurse.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
+		dlgStaff.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
+		dlgStaff.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		
 		//add the panel for a new nurse to the dialog
 		conPnlSetBirthDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 		conPnlSetOnsetDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-		conPnlNewNurse = new Controller_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
-		dlgStaff.contentPanel.add(conPnlNewNurse.getPanel(), BorderLayout.SOUTH);
-		conPnlNewNurse.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
+		conPnlNewStaff = new Controller_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
+		dlgStaff.contentPanel.add(conPnlNewStaff.getPanel(), BorderLayout.SOUTH);
+		conPnlNewStaff.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
 		setListener();
 		
 	}
 	
 	void setListener(){
 		NewNurseListener newNurseListener = new NewNurseListener();
-		dlgNurse.addNewStaffListener(newNurseListener);
+		dlgStaff.addNewStaffListener(newNurseListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dlgStaff.addRowSelectionListener(tblRowSelectionListener);	
 	}
@@ -64,15 +63,13 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 		
 	}
 	
-	public void showDialog(){
-		dlgNurse.setModal(true);
-		dlgNurse.setVisible(true);
-		dlgNurse.repaint();
-	}
 	
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+	public void update(Observable o, Object nurse) {
+		((ArrayList<Nurse>)tblPersonnelModel.getStaff()).add((Nurse)nurse);
+		tblPersonnelModel.fireTableDataChanged();
 		
 	}
 	
@@ -80,11 +77,12 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			conPnlNewNurse.prepareForNewPhysician();			
+			((Controller_PnlNewNurse)conPnlNewStaff).prepareForNewNurse();			
 		}
 		
 	}
 	
+		
 	class NurseCellRenderer extends DefaultTableCellRenderer{
 		
 		/**

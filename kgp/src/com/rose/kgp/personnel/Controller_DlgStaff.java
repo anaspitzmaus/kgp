@@ -22,8 +22,10 @@ abstract class Controller_DlgStaff {
 	protected ArrayList<? extends Staff> staff;
 	protected Controller_PnlNewStaff conPnlNewStaff;
 	
-	protected void showDialog(){
-		
+	public void showDialog(){
+		dlgStaff.setModal(true);
+		dlgStaff.setVisible(true);
+		dlgStaff.repaint();
 	}
 	
 	abstract void setListener();
@@ -33,16 +35,14 @@ abstract class Controller_DlgStaff {
 	abstract void removeListener();
 	
 	protected void showSelectedStaff(Staff staff) {
-		conPnlNewStaff.setStaff(staff);
+		conPnlNewStaff.staff = staff;
 		conPnlNewStaff.getPanel().getTxtId().setText(staff.getId().toString());
-		conPnlNewStaff.getPanel().getComboSex().setEnabled(true);
-		
+		conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
 		conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
 		conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
 		conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
 		conPnlNewStaff.getPanel().getTxtSurname().setText(staff.getSurname());
-		conPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());
-		
+		conPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());		
 		conPnlNewStaff.conPnlSetOnsetDate.setDate(staff.getOnset());
 		
 	}
