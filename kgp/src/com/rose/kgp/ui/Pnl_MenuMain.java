@@ -14,6 +14,8 @@ public class Pnl_MenuMain extends JPanel {
 	
 	private static final long serialVersionUID = 6751573636779076145L;
 	JMenuItem itemDoctor, itemNurse;
+	JMenuItem itemAddAllocator;
+	JMenu mAllocator;
 	/**
 	 * Create the panel.
 	 */
@@ -30,11 +32,19 @@ public class Pnl_MenuMain extends JPanel {
 		JMenu mPersonal = new JMenu("Personal");
 		menuBar.add(mPersonal);
 		
+		
+		
 		itemDoctor = new JMenuItem("Ärzte");
 		mPersonal.add(itemDoctor);
 		
 		itemNurse = new JMenuItem("Schwestern");
 		mPersonal.add(itemNurse);
+		
+		mAllocator = new JMenu("Zuweiser");
+		menuBar.add(mAllocator);
+		
+		itemAddAllocator = new JMenuItem("Hinzufügen");
+		mAllocator.add(itemAddAllocator);
 	}
 	
 	protected void addDoctorListener(ActionListener l){
@@ -43,6 +53,10 @@ public class Pnl_MenuMain extends JPanel {
 	
 	protected void addNurseListener(ActionListener l){
 		itemNurse.addActionListener(l);
+	}
+	
+	protected void addAllocatorAddListener(ActionListener l){
+		itemAddAllocator.addActionListener(l);
 	}
 
 }

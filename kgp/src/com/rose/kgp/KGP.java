@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import com.rose.kgp.activityInput.Ctrl_ActivityKind;
+import com.rose.kgp.administration.Ctrl_ActivityKind;
 
 public class KGP {
 
@@ -43,7 +43,7 @@ public class KGP {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Ctrl_ActivityKind ctrlActivityKind = new Ctrl_ActivityKind();
-		frame.add(ctrlActivityKind.getPnlActivityKind(), BorderLayout.CENTER);
+		frame.add(ctrlActivityKind.getPanel(), BorderLayout.CENTER);
 	}
 
 }

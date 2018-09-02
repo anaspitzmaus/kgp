@@ -1,34 +1,34 @@
 package com.rose.kgp.examination;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
-import com.rose.kgp.activityInput.BillingType;
+import com.rose.kgp.administration.AccountingType;
+import com.rose.kgp.administration.TreatmentCase;
+import com.rose.kgp.data_exchange.DataConversion;
 import com.rose.kgp.db.SQL_INSERT;
-import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
 
 public abstract class Examination {
 	
 	protected Physician physician;
-	protected ArrayList<Physician> physicians_assist;
-	protected HashMap<Nurse, String> nurses;
+	protected ArrayList<Physician> physicians_assist;	
 	protected Patient patient;
-	protected ExamType examType;
-	protected BillingType billingType;
+	protected StudyType studyType;
+	protected AccountingType accountingType;
 	protected File dataFile;
 	protected LocalTime startTime, endTime;
 	protected LocalDate date;
 	protected Integer refNo;
+	private Physician examiner;
+	protected DataConversion dataConversion;
+	private TreatmentCase treatmentCase;
+	private HashMap<String, HashMap<String, ArrayList<String>>> rawData;
 	
 	
 	public LocalDateTime getStart() {
@@ -81,33 +81,20 @@ public abstract class Examination {
 		this.dataFile = dataFile;
 	}
 
-	public ExamType getType() {
-		return examType;
+	public StudyType getStudyType() {
+		return studyType;
 	}
 
-	public void setType(ExamType type) {
-		this.examType = type;
+	public void setStudyType(StudyType studyType) {
+		this.studyType = studyType;
 	}
 
-	
-	public Examination(ExamType type){
-		this.examType = type;
-	}
-	
-	public ExamType getExamType() {
-		return examType;
+	public AccountingType getAccountingType() {
+		return accountingType;
 	}
 
-	public void setExamType(ExamType examType) {
-		this.examType = examType;
-	}
-
-	public BillingType getBillingType() {
-		return billingType;
-	}
-
-	public void setBillingType(BillingType billingType) {
-		this.billingType = billingType;
+	public void setAccountingType(AccountingType billingType) {
+		this.accountingType = billingType;
 	}
 
 	public void setPatient(Patient patient){
@@ -124,121 +111,88 @@ public abstract class Examination {
 
 	public void setPhysician(Physician physician) {
 		this.physician = physician;
+	}	
+
+	public ArrayList<Physician> getPhysicians_assist() {
+		return physicians_assist;
 	}
 
-	public void setPatientProperties(HashMap<String, HashMap<String, ArrayList<String>>> values){
-			
-		HashMap<String, ArrayList<String>> patient_hm = values.get("PATIENT");
-		HashMap<String, ArrayList<String>> patientData_hm = values.get("PD");
+	public void setPhysicians_assist(ArrayList<Physician> physicians_assist) {
+		this.physicians_assist = physicians_assist;
+	}
+	
+	public void setExaminer(Physician physician) {
+		this.examiner = physician;		
+	}
+	
+	public Physician getExaminer(){
+		return this.examiner;
+	}
+	
 		
-		this.setPatient(new Patient(patient_hm.get("LASTNAME").get(0), patient_hm.get("FIRNAME").get(0)));
-		
-		this.getPatient().setMidname(patient_hm.get("MIDNAME").get(0));
-		
-		try{
-			this.getPatient().setNumber(Integer.parseInt(patient_hm.get("PATNO").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
-		
-		//as the birth of the patient is coded as "yyyy-MM-dd HH:mm:ss.SSS"		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	public TreatmentCase getTreatmentCase() {
+		return treatmentCase;
+	}
 
-		try {
-			Date localDateTime = formatter.parse(patient_hm.get("PATBIRTH").get(0));
-			LocalDate date = localDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			this.getPatient().setBirth(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try{
-			this.getPatient().setHeight(Integer.parseInt(patientData_hm.get("HEIGHT").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
-		
-		try{
-			this.getPatient().setWeight(Double.parseDouble(patientData_hm.get("WEIGHT").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
-		
-		try{
-			this.getPatient().setAge(Integer.parseInt(patientData_hm.get("AGE").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
-		
-		try{
-			this.getPatient().setBSA(Double.parseDouble(patientData_hm.get("BSA").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
-		
-		try{
-			this.getPatient().setSexCode(Integer.parseInt(patientData_hm.get("SEX").get(0)));
-		}catch(NumberFormatException nfe){
-			//no number format
-		}
+	public void setTreatmentCase(TreatmentCase treatmentCase) {
+		this.treatmentCase = treatmentCase;
+		this.treatmentCase.getExaminations().add(this); //add this examination to the treatmentCase
+	}
+	
+	/**
+	 * get the raw data of this study
+	 * @return an hashMap (HashMap<String, HashMap<String, ArrayList<String>>>) containing the raw data of this study
+	 */
+	public HashMap<String, HashMap<String, ArrayList<String>>> getRawData(){
+		return this.rawData;
+	}
+
+	/**
+	 * standard constructor
+	 */
+	public Examination(){
+		physicians_assist = new ArrayList<Physician>();
 		
 	}
 	
-	public void setPhysician(HashMap<String, HashMap<String, ArrayList<String>>> values){
-		HashMap<String, ArrayList<String>> staffStudy_hm = values.get("STUDY");		
-		Physician physician = new Physician(staffStudy_hm.get("PERPHYS1").get(0));
-		this.setPhysician(physician);
-		this.setRefNo(Integer.parseInt(staffStudy_hm.get("REFNO").get(0)));
-		
+	/**
+	 * constructor for an examination with data transferred by a dataProtocol
+	 * @param values
+	 */
+	public Examination(HashMap<String, HashMap<String, ArrayList<String>>> values){
+		this.rawData = values;
+		this.dataConversion = new DataConversion(this.rawData);
+		this.treatmentCase = new TreatmentCase(this.rawData);//new instance of a treatment case
+		setStudyData();
 	}
+	
+	/**
+	 * set the data of the study
+	 */
+	protected void setStudyData(){
+		//this.setPatient(treatmentCase.getPatient());
+		this.setExaminer(dataConversion.examiner());
+		this.setDate(dataConversion.examDate());
+		this.setStartTime(dataConversion.startTime());
+		this.setEndTime(dataConversion.endTime());
+		this.setStudyType(dataConversion.studyType());
+	}
+	
 	
 	/**
 	 * sets the staff out of the data protocol
 	 * @param values
 	 */
-	public abstract void setStaff(HashMap<String, HashMap<String, ArrayList<String>>> values);
+	public abstract void setStaff();
 	
-	public void setDateTimes(HashMap<String, HashMap<String, ArrayList<String>>> values){
-		HashMap<String, ArrayList<String>> examTime_hm = values.get("ID");
-		SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
-		Date localDateTime = null;
-		//set the date of the examination
-		try {
-			localDateTime = formatterDate.parse(examTime_hm.get("EXAMDATE").get(0));
-			LocalDate date = localDateTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			this.setDate(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//get the start-time of the examination
-		try {
-			Date start = formatterTime.parse(examTime_hm.get("STATIME").get(0));
-			LocalTime startTime = start.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-			this.setStartTime(startTime);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//get the end-time of the examination
-		try {
-			Date end = formatterTime.parse(examTime_hm.get("ENDTIME").get(0));
-			LocalTime endTime = end.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-			this.setEndTime(endTime);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	
 	public void storeExamToDB(){
 		System.out.println("Hallo");
 		SQL_INSERT.Examination(this);
 	}
+
+	
 	
 	
 	

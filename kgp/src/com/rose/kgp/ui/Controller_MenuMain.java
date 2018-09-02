@@ -3,6 +3,7 @@ package com.rose.kgp.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.rose.kgp.allocator.Ctrl_DlgClinicalInstitution;
 import com.rose.kgp.personnel.Controller_DlgNurse;
 import com.rose.kgp.personnel.Controller_DlgPhysician;
 
@@ -31,6 +32,16 @@ public class Controller_MenuMain {
 				Controller_DlgNurse conDlgNurse = new Controller_DlgNurse();
 				conDlgNurse.showDialog();
 				
+			}
+			
+		});
+		
+		pnlMenuMain.addAllocatorAddListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Ctrl_DlgClinicalInstitution ctrlDlgAllocator = new Ctrl_DlgClinicalInstitution();
+				ctrlDlgAllocator.showDialog();
 			}
 			
 		});

@@ -9,14 +9,13 @@ public class PM_Implant extends PM_Intervention {
 	
 	ArrayList<ElectrodeImplant> electrodesImplant;
 	
-	public PM_Implant(ExamType type) {
-		super(type);
+	public PM_Implant(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
+		super(studyValues);
 		electrodesImplant = new ArrayList<ElectrodeImplant>();
 	}
 
 	@Override
-	public void setStaff(
-			HashMap<String, HashMap<String, ArrayList<String>>> values) {
+	public void setStaff() {
 		// TODO Auto-generated method stub
 		
 	}

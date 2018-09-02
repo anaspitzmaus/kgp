@@ -9,15 +9,14 @@ public class PCI extends Catheter_Intervention{
 
 	protected ArrayList<Stent> stents;
 	
-	public PCI(ExamType type) {
-		super(type);
+	public PCI(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
+		super(studyValues);
 		stents = new ArrayList<Stent>();
 		
 	}
 
 	@Override
-	public void setStaff(
-			HashMap<String, HashMap<String, ArrayList<String>>> values) {
+	public void setStaff(){
 		// TODO Auto-generated method stub
 		
 	}

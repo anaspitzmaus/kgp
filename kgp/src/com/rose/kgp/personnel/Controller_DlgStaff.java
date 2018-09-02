@@ -5,10 +5,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import javax.swing.AbstractListModel;
-import javax.swing.ComboBoxModel;
+
 import javax.swing.JTable;
-import javax.swing.event.ListDataListener;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;

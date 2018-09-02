@@ -8,7 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-import com.rose.kgp.activityInput.BillingType;
+import com.rose.kgp.administration.AccountingType;
+import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.Dlg_DBSettings;
 import com.rose.kgp.db.SQL_INSERT;
@@ -70,29 +71,29 @@ public class Start {
 			dlgDBSettings.setVisible(true);	
 		}
 		
-		try {
-			sensis.readExamFile("99_2241_2401.his");
-		} catch (IOException e1) {
-			//handle the IOException
-		}
+//		try {
+//			sensis.readExamFile("99_2241_2401.his");
+//		} catch (IOException e1) {
+//			//handle the IOException
+//		}
 		
-		switch (sensis.getExamType()) {
-		case "Koronar^Diagnostisch":
-			exam = new LeftHeartCatheter();
-			exam.setPatientProperties(sensis.getExamination());
-			exam.setPhysician(sensis.getExamination());
-			exam.setStaff(sensis.getExamination());
-			exam.setDateTimes(sensis.getExamination());
-			exam.getPhysician().setId(1);
-			exam.getPatient().setId(1);
-			exam.setBillingType(BillingType.ambulant);
-			exam.setDataFile(new File("99_2241_2401.his"));
-			
-			break;
-
-		default:
-			break;
-		}
+//		switch (sensis.getExamType()) {
+//		case "Koronar^Diagnostisch":
+//			exam = new LeftHeartCatheter();
+//			exam.setPatientProperties(sensis.getExamination());
+//			exam.setPhysician(sensis.getExamination());
+//			exam.setStaff(sensis.getExamination());
+//			exam.setDateTimes(sensis.getExamination());
+//			exam.getPhysician().setId(1);
+//			exam.getPatient().setId(1);
+//			exam.setBillingType(BillingType.ambulant);
+//			exam.setDataFile(new File("99_2241_2401.his"));
+//			
+//			break;
+//
+//		default:
+//			break;
+//		}
 		
 		//exam.storeExamToDB();
 //		Patient patient = new Patient("Schubert", "Willy");

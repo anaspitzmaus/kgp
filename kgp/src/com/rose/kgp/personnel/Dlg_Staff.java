@@ -28,14 +28,13 @@ public abstract class Dlg_Staff extends JDialog {
 	 * Create the dialog.
 	 */
 	public Dlg_Staff() {
-		setBounds(100, 100, 579, 378);
+		setBounds(100, 100, 580, 590);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPanel.setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
-		
 		JScrollPane scrollPaneTblPersonnel = new JScrollPane();
+		
 		contentPanel.add(scrollPaneTblPersonnel, BorderLayout.CENTER);			
 		
 		tblPersonnel = new JTable();

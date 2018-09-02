@@ -1,5 +1,8 @@
 package com.rose.kgp.personnel;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import com.rose.kgp.useful.*;
 
 import com.rose.kgp.ui.Controller_PnlSetDate;
 
@@ -300,6 +304,62 @@ public abstract class Controller_PnlNewStaff extends Observable{
 				}				
 			}			
 		}		
+	}
+	
+	abstract class SetNewStaffListener implements ActionListener{
+		
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+		}
+		/**
+		 * check if data of new staff member are valid for being stored in database
+		 * a new staff member must not have an id and need to have a valid surname and a valid firstname
+		 * @return true if data are valid, false if not
+		 */
+		protected Boolean dataReadyToStore(){
+			if(staff.getId() == null && checkSurname() && checkFirstname()){//if a new staff member has to be added
+				staff.setBirthday(conPnlSetBirthDate.getDate());
+				staff.setOnset(conPnlSetOnsetDate.getDate());
+				
+				return true;
+					
+			}else{
+				return false;
+			}
+		}
+		/**
+		 * check if surname of the new staff member is valid (need to have at least 1 character)
+		 * @return true if surname is valid, else return false
+		 */
+		private Boolean checkSurname(){
+			if(staff.getSurname().length() > 0){
+				return true;
+			}
+			MyColor myColor = MyColor.RED;
+			pnlNewStaff.getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			return false;
+			
+		}
+		
+		/**
+		 * check if firstname of the new staff member is valid (need to have at least 1 character)
+		 * @return true if firstname is valid, else return false
+		 */
+		private Boolean checkFirstname(){
+			if(staff.getFirstname().length() > 0){
+				return true;
+			}
+			MyColor myColor = MyColor.RED;
+			pnlNewStaff.getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			return false;
+			
+		}
+		
+		
+		
 	}
 	
 	

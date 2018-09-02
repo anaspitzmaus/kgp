@@ -5,14 +5,12 @@ import java.util.HashMap;
 
 public class PM_Change extends PM_Intervention{
 
-	public PM_Change(ExamType type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public PM_Change(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
+		super(studyValues);
 	}
 
 	@Override
-	public void setStaff(
-			HashMap<String, HashMap<String, ArrayList<String>>> values) {
+	public void setStaff() {
 		// TODO Auto-generated method stub
 		
 	}

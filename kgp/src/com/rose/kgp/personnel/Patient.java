@@ -1,39 +1,40 @@
 package com.rose.kgp.personnel;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import com.rose.kgp.disease.Diagnosis;
 
 public class Patient extends Person{
 	
 	public Patient(String surname, String firstname) {
 		super(surname, firstname);
-		
+		diagnoses = new ArrayList<Diagnosis>();		
 	}
 
 	protected String midname;
-	protected Integer number;
-	protected LocalDate birth;
+	protected Integer number;	//number independent on in or out patients treatment
 	protected Integer height;
 	protected Double weight, bsa;
 	protected Integer age;
-	protected Integer id, ambulant_id;
-	protected String stationary_id;
+	protected Integer dbID, outID, inID;	
+	ArrayList<Diagnosis> diagnoses;
 	
 	
-	
-	public Integer getAmbulant_id() {
-		return ambulant_id;
+	public Integer getOutID() {
+		return outID;
 	}
 
-	public void setAmbulant_id(Integer ambulant_id) {
-		this.ambulant_id = ambulant_id;
+	public void setOutID(Integer out_ID) {
+		this.outID = out_ID;
 	}
 
-	public String getStationary_id() {
-		return stationary_id;
+	public Integer getInID() {
+		return inID;
 	}
 
-	public void setStationary_id(String stationary_id) {
-		this.stationary_id = stationary_id;
+	public void setInID(Integer in_ID) {
+		this.inID = in_ID;
 	}
 
 	public Double getBsa() {
@@ -44,12 +45,20 @@ public class Patient extends Person{
 		this.bsa = bsa;
 	}
 
+	/**
+	 * id as stored in database
+	 * @return
+	 */
 	public Integer getId() {
-		return id;
+		return dbID;
 	}
-
+	
+	/**
+	 * id as stored in database
+	 * @param id
+	 */
 	public void setId(Integer id) {
-		this.id = id;
+		this.dbID = id;
 	}
 
 	public String getMidname() {
@@ -60,20 +69,20 @@ public class Patient extends Person{
 		this.midname = midname;
 	}
 
+	/**
+	 * id of the patient - independent if the patient is treated as in or out patient
+	 * @return
+	 */
 	public Integer getNumber() {
 		return number;
 	}
 
+	/**
+	 * id of the patient - independent if the patient is treated as in or out patient
+	 * @return
+	 */
 	public void setNumber(Integer number) {
 		this.number = number;
-	}
-
-	public LocalDate getBirth() {
-		return birth;
-	}
-
-	public void setBirth(LocalDate birth) {
-		this.birth = birth;
 	}
 
 	public void setHeight(Integer height) {

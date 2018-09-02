@@ -1,49 +1,49 @@
 package com.rose.kgp.examination;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 import com.rose.kgp.personnel.Useful;
 
 public class LeftHeartCatheter extends Catheter_Intervention{
-	protected HashMap<Physician, InterventionalTaskPhysician> examiners;
-	protected HashMap<Nurse, InterventionalTaskNurse> nurses;
-	final static ExamType examType = ExamType.LeftHeartCatheter;
+	protected HashMap<InterventionalTaskPhysician, Physician> examiners;
+	protected HashMap<InterventionalTaskNurse, Nurse> nurses;
+	final static StudyType examType = StudyType.LeftHeartCatheter;
 
-	public LeftHeartCatheter() {
-		super(examType);
-		this.nurses = new HashMap<Nurse, InterventionalTaskNurse>();
-		this.examiners = new HashMap<Physician, InterventionalTaskPhysician>();
+	public LeftHeartCatheter(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
+		super(studyValues);
+		
+		this.nurses = new HashMap<InterventionalTaskNurse, Nurse>();
+		this.nurses.put(InterventionalTaskNurse.Assistenz_Steril, dataConversion.nurseSterile());
+		this.nurses.put(InterventionalTaskNurse.Assistenz_Unsteril, dataConversion.nurseUnsterile());
+		this.nurses.put(InterventionalTaskNurse.Registrierung, dataConversion.nurseRegistration());
+		this.examiners = new HashMap<InterventionalTaskPhysician, Physician>();
+		this.examiners.put(InterventionalTaskPhysician.SecondExaminer, dataConversion.examinerAssistant());
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void setStaff(HashMap<String, HashMap<String, ArrayList<String>>> values) {
-		HashMap<String, ArrayList<String>> staff_hm = values.get("PN");
-		for(int i = 0; i<staff_hm.get("STAFF").size(); i++){
-			try {
-				examiners.put(new Physician(staff_hm.get("PNNAME").get(i)), InterventionalTaskPhysician.valueOf(staff_hm.get("STAFF").get(i)));
-			} catch (IllegalArgumentException|NullPointerException ep) {
-				try {
-					String n = staff_hm.get("STAFF").get(i).replaceAll(" ", "_");
-					nurses.put(new Nurse(staff_hm.get("PNNAME").get(i)), InterventionalTaskNurse.valueOf(n));
-				} catch (IllegalArgumentException|NullPointerException en) {
-					System.out.println(en.getMessage());
-				}			
-			}
-			
-				
-			
-		}
-		
-//		Useful.getPhyscianByAlias(examiner.getAlias());
-//		
-//		nurses.put(new Nurse(staff_hm.get("PNNAME").get(staff_hm.get("STAFF").indexOf("Untersucher")));	
-		
-		
+	
+	public void setStaff() {
+//		HashMap<String, ArrayList<String>> staff_hm = values.get("PN");
+//		for(int i = 0; i<staff_hm.get("STAFF").size(); i++){
+//			try {
+//				examiners.put(InterventionalTaskPhysician.valueOf(staff_hm.get("STAFF").get(i)), new Physician(staff_hm.get("PNNAME").get(i)));
+//			} catch (IllegalArgumentException|NullPointerException ep) {
+//				try {
+//					String n = staff_hm.get("STAFF").get(i).replaceAll(" ", "_");
+//					nurses.put(InterventionalTaskNurse.valueOf(n), new Nurse(staff_hm.get("PNNAME").get(i)));
+//				} catch (IllegalArgumentException|NullPointerException en) {
+//					System.out.println(en.getMessage());
+//				}			
+//			}			
+//		}		
 	}
+	
+	
+	
 
 //	@Override
 //	public void storeExamToDB() {

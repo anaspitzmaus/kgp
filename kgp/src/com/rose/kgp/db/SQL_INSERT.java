@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.MD5;
+import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
@@ -70,10 +71,10 @@ public class SQL_INSERT {
 		try {
 			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_physician, id_patient, id_billing_type, filename, startDateTime, endDateTime) "
 								+ "VALUES ("
-									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getType().name() + "'), "
+									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
 									+ "'" + exam.getPhysician().getId() + "', "
 									+ "'" + exam.getPatient().getId() + "', "
-									+ "(SELECT idbilling_type FROM billing_type WHERE notation = '" + exam.getBillingType().name() + "'), "
+									+ "(SELECT idbilling_type FROM billing_type WHERE notation = '" + exam.getAccountingType().name() + "'), "
 									+ "'" + exam.getDataFile().getPath() + "', "
 									+ "'" + java.sql.Timestamp.valueOf(exam.getStart()) + "', " 
 									+ "'" + java.sql.Timestamp.valueOf(exam.getEnd()) + "')");
@@ -89,9 +90,9 @@ public class SQL_INSERT {
 		stmt = DB.getStatement();
 		try {
 			DB.getConnection().setAutoCommit(false);
-			stmt.executeUpdate("INSERT INTO patient (id_ambulance, id_stationary, firstname) "
-								+ "VALUES (" + patient.getAmbulant_id() + ", " //Integer must not be enclosed into parenthesis
-								+ patient.getStationary_id() + ", '"
+			stmt.executeUpdate("INSERT INTO patient (id_outpatient, id_inpatient, firstname) "
+								+ "VALUES (" + patient.getOutID() + ", " //Integer must not be enclosed into parenthesis
+								+ patient.getInID() + ", '"
 								+ patient.getFirstname() + "')");
 								
 			stmt.executeUpdate("INSERT INTO patient_extended (id_patient, surname) VALUES (LAST_INSERT_ID(), '" + patient.getSurname() + "')");						
@@ -221,4 +222,27 @@ public class SQL_INSERT {
 				}
 			}
 		}
+
+	public static Boolean ClinicalInstitution(Clinical_Institution institution) {
+		stmt = DB.getStatement();
+		try {
+			
+			stmt.executeUpdate("INSERT INTO clinical_institution (notation, onset, short_notation, street, postal_code, city, allocator) "
+								+ "VALUES ('" + institution.getNotation() + "', "
+										+ "'" + Date.valueOf(LocalDate.now()) +	"', "
+										+ "'" + institution.getShortNotation() + "', "
+										+ "'" + institution.getStreet() + "', "
+										+ "'" + institution.getPostalCode() + "', "
+										+ "'" + institution.getCity() + "', "
+										+ "'" + 1 + "')");								
+								
+			return true;
+								
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+				    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT Boolean ClinicalInstitution(Clinical_Institution institution)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+	}
 }

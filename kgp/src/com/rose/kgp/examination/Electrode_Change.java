@@ -5,14 +5,12 @@ import java.util.HashMap;
 
 public class Electrode_Change extends PM_Intervention{
 
-	public Electrode_Change(ExamType type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	public Electrode_Change(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
+		super(studyValues);
 	}
 
 	@Override
-	public void setStaff(
-			HashMap<String, HashMap<String, ArrayList<String>>> values) {
+	public void setStaff() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -146,20 +146,15 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 				((Physician) staff).setTitle((String) comboTitle.getModel().getSelectedItem());
 			}			
 		}		
-	}
+	}	
 	
 	
-	
-	
-	
-	class SetNewPhysicianListener implements ActionListener{
+	class SetNewPhysicianListener extends SetNewStaffListener{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {	
+		public void actionPerformed(ActionEvent e) {	
 			
-			if(staff.getId() == null){//if a new physician has to be added
-				staff.setBirthday(conPnlSetBirthDate.getDate());
-				staff.setOnset(conPnlSetOnsetDate.getDate());
+			if(dataReadyToStore()){
 				//insert into database
 				Integer id = SQL_INSERT.Physician((Physician)staff, LocalDate.now());
 					if(id != null){

@@ -13,7 +13,7 @@ import com.rose.kgp.examination.Examination;
 
 public class Pnl_Billing_Complete extends JPanel {
 
-	protected Pnl_Patient pnlPatient;
+	
 	protected Pnl_Billing pnlBilling;
 	/**
 	 * 
@@ -36,8 +36,7 @@ public class Pnl_Billing_Complete extends JPanel {
 		JComboBox<Examination> comboExam = new JComboBox<Examination>();
 		pnlExam.add(comboExam);
 		pnlCenter.add(pnlExam, "cell 0 0");
-		pnlPatient = new Pnl_Patient();
-		pnlCenter.add(pnlPatient, "cell 0 1");
+		
 		
 		pnlBilling = new Pnl_Billing();
 		pnlCenter.add(pnlBilling, "cell 0 2");

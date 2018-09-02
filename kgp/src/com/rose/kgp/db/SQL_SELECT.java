@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.rose.kgp.allocator.Allocator;
+import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -22,18 +24,29 @@ public class SQL_SELECT {
 	static ResultSet rs = null;
 	static Statement stmt;
 	
-	public static Physician physicianByAlias(String alias){//hand over the physicians exists
+	/**
+	 * find a physician by its alias
+	 * @param alias the alias name (String)
+	 * @return the physician, if alias matches a physician, null if not
+	 */
+	public static Physician physicianByAlias(String alias, LocalDate date){//hand over the physicians exists
 		stmt = DB.getStatement();
 		Physician physician = null;
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT firstname, surname, title, status, onset "
-					+ "FROM physician "
-					+ "INNER JOIN staff " //Right join??
-					+ "ON physician.idstaff = staff.idstaff "
-					+ "WHERE idphysician = (SELECT MAX(idphysician) AS idphysician "
-						+ "FROM physician "	
-						+ "WHERE alias = '" + alias + "')");
+					"SELECT physician.idstaff AS idstaff, idphysician, surname, firstname, onset, sex, status, title "
+							+ "FROM physician "
+							+ "INNER JOIN "
+							+ "(Select MAX(idphysician) as LatestID, idstaff "
+							       + "FROM physician "
+							       + "Group By idstaff) SubMax "
+							+ "ON physician.idphysician = SubMax.LatestID "
+							+ "AND physician.idstaff = SubMax.idstaff "
+							+ "INNER JOIN staff "
+							+ "ON physician.idstaff = staff.idstaff "
+							+ "WHERE physician.alias = '" + alias + "' " 
+							+ "AND onset <= '" + Date.valueOf(date) + "' "
+							+ "AND (expiry IS NULL OR expiry > '" + Date.valueOf(date) + "')");
 
 			while(rs.next()){
 				physician = new Physician(rs.getString("surname"), rs.getString("firstname"));
@@ -41,6 +54,8 @@ public class SQL_SELECT {
 				physician.setTitle(rs.getString("title"));
 				physician.setStatus(rs.getString("status"));
 				physician.setOnset(rs.getDate("onset").toLocalDate());
+				physician.setId(rs.getInt("idstaff"));
+				physician.setSexCode(rs.getInt("sex"));
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(new JFrame(),
@@ -49,6 +64,48 @@ public class SQL_SELECT {
 		}	
 		
 		return physician;
+	}
+	
+	/**
+	 * find a nurse by its alias
+	 * @param alias the alias name (String)
+	 * @return the nurse, if alias matches a nurse, null if not
+	 */
+	public static Nurse nurseByAlias(String alias, LocalDate date){//hand over the nurse exists
+		stmt = DB.getStatement();
+		Nurse nurse = null;
+		try {
+			rs = stmt.executeQuery(
+					"SELECT nurse.id_staff AS idstaff, nurse.idnurse AS idnurse, nurse.surname AS surname, staff.firstname AS firstname, "
+							+ "staff.onset AS onset, staff.sex AS sex, nurse.status AS status "
+							+ "FROM nurse "
+							+ "INNER JOIN "
+							+ "(Select MAX(idnurse) as LatestID, id_staff "
+							       + "FROM nurse "
+							       + "Group By id_staff) SubMax "
+							+ "ON nurse.idnurse = SubMax.LatestID "
+							+ "AND nurse.id_staff = SubMax.id_staff "
+							+ "INNER JOIN staff "
+							+ "ON nurse.id_staff = staff.idstaff "
+							+ "WHERE nurse.alias = '" + alias + "' " 
+							+ "AND staff.onset <= '" + Date.valueOf(date) + "' "
+							+ "AND (staff.expiry IS NULL OR staff.expiry > '" + Date.valueOf(date) + "')");
+
+			while(rs.next()){
+				nurse = new Nurse(rs.getString("surname"), rs.getString("firstname"));
+				nurse.setAlias(alias);
+				nurse.setStatus(rs.getString("status"));
+				nurse.setOnset(rs.getDate("onset").toLocalDate());
+				nurse.setId(rs.getInt("idstaff"));
+				nurse.setSexCode(rs.getInt("sex"));
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_SELECT.class.getSimpleName(), "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}	
+		
+		return nurse;
 	}
 	
 	/**
@@ -61,12 +118,18 @@ public class SQL_SELECT {
 		ArrayList<Physician> physicians = new ArrayList<Physician>();
 		try {
 			rs = stmt.executeQuery(
-					 			"SELECT staff.idstaff AS idstaff, firstname, surname, title, status, sex, onset "
-								+ "FROM physician "
-								+ "INNER JOIN staff " //Right join??
-								+ "ON physician.idstaff = staff.idstaff "
-								+ "WHERE onset <= '" + Date.valueOf(date) + "' "
-								+ "AND (expiry IS NULL OR expiry > '" + Date.valueOf(date) + "')");
+					"SELECT physician.idstaff AS idstaff, idphysician, surname, firstname, physician.alias AS alias, onset, sex, status, title "
+					+ "FROM physician "
+					+ "INNER JOIN "
+					+ "(Select MAX(idphysician) as LatestID, idstaff "
+					       + "FROM physician "
+					       + "Group By idstaff) SubMax "
+					+ "ON physician.idphysician = SubMax.LatestID "
+					+ "AND physician.idstaff = SubMax.idstaff "
+					+ "INNER JOIN staff "
+					+ "ON physician.idstaff = staff.idstaff "
+					+ "WHERE onset <= '" + Date.valueOf(date) + "' "
+					+ "AND (expiry IS NULL OR expiry > '" + Date.valueOf(date) + "')");
 			
 			while(rs.next()){
 				Physician physician = new Physician(rs.getString("surname"), rs.getString("firstname"));
@@ -75,6 +138,7 @@ public class SQL_SELECT {
 				physician.setId(rs.getInt("idstaff"));
 				physician.setSexCode(rs.getInt("sex"));
 				physician.setOnset(rs.getDate("onset").toLocalDate());
+				physician.setAlias(rs.getString("alias"));
 				physicians.add(physician);
 			} 
 			
@@ -98,18 +162,27 @@ public class SQL_SELECT {
 		ArrayList<Nurse> nurses = new ArrayList<Nurse>();
 		try {
 			rs = stmt.executeQuery(
-					 			"SELECT staff.idstaff AS idstaff, firstname, surname, status, sex, onset "
-								+ "FROM nurse "
-								+ "INNER JOIN staff " //Right join??
-								+ "ON nurse.id_staff = staff.idstaff "
-								+ "WHERE onset <= '" + Date.valueOf(date) + "' "
-								+ "AND (expiry IS NULL OR expiry > '" + Date.valueOf(date) + "')");
+					"SELECT nurse.id_staff AS idstaff, idnurse, surname, firstname, nurse.alias AS alias, onset, sex "
+							+ "FROM nurse "
+							+ "INNER JOIN "
+							+ "(Select MAX(idnurse) as LatestID, id_staff "
+							       + "FROM nurse "
+							       + "Group By id_staff) SubMax "
+							+ "ON nurse.idnurse = SubMax.LatestID "
+							+ "AND nurse.id_staff = SubMax.id_staff "
+							+ "INNER JOIN staff "
+							+ "ON nurse.id_staff = staff.idstaff "
+							+ "WHERE onset <= '" + Date.valueOf(date) + "' "
+							+ "AND (expiry IS NULL OR expiry > '" + Date.valueOf(date) + "')");
+					
+					
 			
 			while(rs.next()){
 				Nurse nurse = new Nurse(rs.getString("surname"), rs.getString("firstname"));
 				nurse.setId(rs.getInt("idstaff"));
 				nurse.setSexCode(rs.getInt("sex"));
 				nurse.setOnset(rs.getDate("onset").toLocalDate());
+				nurse.setAlias(rs.getString("alias"));
 				nurses.add(nurse);
 			} 
 			
@@ -196,5 +269,63 @@ public class SQL_SELECT {
 				    JOptionPane.WARNING_MESSAGE);
 		}	
 		return patient;
+	}
+	
+	/**
+	 * get an arrayList of all active allocators
+	 * @param onset date (LocalDate) to check if allocator is still active
+	 * @return an arrayList of the selected allocators
+	 */
+	public static ArrayList<Allocator> Allocators (LocalDate onset){
+		stmt = DB.getStatement();
+		ArrayList<Allocator> allocators = new ArrayList<Allocator>();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT notation AS notation, short_notation AS shortNotation, city AS city, postal_code AS postalCode, street AS street "
+					+ "FROM clinical_institution "
+					+ "WHERE allocator = 1 "
+					+ "AND onset <= '" + Date.valueOf(onset) + "'");
+
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					Clinical_Institution institution = new Clinical_Institution(rs.getString("notation"), rs.getString("shortNotation"), rs.getString("street"), rs.getString("postalCode"), rs.getString("city"));
+					Allocator allocator = new Allocator(institution); 
+					allocators.add(allocator);
+				}
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_SELECT.class.getSimpleName() + "\n\nAllocators(LocalDate onset)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}
+		return allocators;
+	}
+	
+	/**
+	 * get an arrayList of all active clinical institutions
+	 * @param onset date (LocalDate) to check if clinical institution is still active
+	 * @return an arrayList of the selected clinical institutions
+	 */
+	public static ArrayList<Clinical_Institution> ClinicalInstitutions (LocalDate onset){
+		stmt = DB.getStatement();
+		ArrayList<Clinical_Institution> clinicalInstitutions = new ArrayList<Clinical_Institution>();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT notation AS notation, short_notation AS shortNotation, city AS city, postal_code AS postalCode, street AS street "
+					+ "FROM clinical_institution "
+					+ "WHERE onset <= '" + Date.valueOf(onset) + "'");
+
+			if(rs.isBeforeFirst()){
+				while(rs.next()){
+					Clinical_Institution institution = new Clinical_Institution(rs.getString("notation"), rs.getString("shortNotation"), rs.getString("street"), rs.getString("postalCode"), rs.getString("city"));
+					clinicalInstitutions.add(institution);
+				}
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_SELECT.class.getSimpleName() + "\n\nClinicalInstitutions(LocalDate onset)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}
+		return clinicalInstitutions;
 	}
 }
