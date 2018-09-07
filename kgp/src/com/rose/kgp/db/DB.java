@@ -112,7 +112,7 @@ public class DB {
 		//String host = "127.0.0.1:3306";
 		//String host = "192.168.2.103:3306";
 		String user = pref.get("DB_Root", "root");
-		String passwd = pref.get("DB_PW", "");
+		String passwd = pref.get("DB_PW", ""); 
 		if(!host.equals("localhost")){
 			host = host + ":" + port;
 		}

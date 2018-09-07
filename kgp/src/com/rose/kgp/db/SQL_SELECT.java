@@ -311,13 +311,14 @@ public class SQL_SELECT {
 		ArrayList<Clinical_Institution> clinicalInstitutions = new ArrayList<Clinical_Institution>();
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT notation AS notation, short_notation AS shortNotation, city AS city, postal_code AS postalCode, street AS street "
+					 "SELECT id_clinical_institution AS id, notation AS notation, short_notation AS shortNotation, city AS city, postal_code AS postalCode, street AS street "
 					+ "FROM clinical_institution "
 					+ "WHERE onset <= '" + Date.valueOf(onset) + "'");
 
 			if(rs.isBeforeFirst()){
 				while(rs.next()){
 					Clinical_Institution institution = new Clinical_Institution(rs.getString("notation"), rs.getString("shortNotation"), rs.getString("street"), rs.getString("postalCode"), rs.getString("city"));
+					institution.setId(rs.getInt("id"));
 					clinicalInstitutions.add(institution);
 				}
 			}
