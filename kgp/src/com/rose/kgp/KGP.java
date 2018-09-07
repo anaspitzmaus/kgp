@@ -10,6 +10,7 @@ import com.rose.kgp.administration.Ctrl_ActivityKind;
 public class KGP {
 
 	private JFrame frame;
+	private String git;
 
 	/**
 	 * Launch the application.
