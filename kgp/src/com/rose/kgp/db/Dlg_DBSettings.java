@@ -179,7 +179,7 @@ public class Dlg_DBSettings extends JDialog {
 				});
 			
 				/*
-				 * OK button
+				 * OK button pressed
 				 */
 			
 				JButton okButton = new JButton("OK");

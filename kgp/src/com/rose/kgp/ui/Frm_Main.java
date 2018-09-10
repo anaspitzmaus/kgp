@@ -1,13 +1,15 @@
 package com.rose.kgp.ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTabbedPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
+
+import com.rose.kgp.settings.CtrlSettings;
+import com.rose.kgp.settings.PnlSettings;
 
 public class Frm_Main extends JFrame {
 
@@ -16,6 +18,7 @@ public class Frm_Main extends JFrame {
 	private JPanel contentPane;
 	private JPanel pnlNorth;
 	private JPanel pnlSouth;	
+	private CtrlSettings ctrlSettings;
 	
 	/**
 	 * Launch the application.
@@ -45,6 +48,9 @@ public class Frm_Main extends JFrame {
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Leistungserfassung", panel);
 		panel.setLayout(new BorderLayout(0, 0));
+		
+		ctrlSettings = new CtrlSettings(); // create the controller for the settings panels
+		tabbedPane.addTab("Einstellungen", ctrlSettings.getPnlSettings()); //add panel for the settings to the tab		
 		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(1.0);//set resizeWeight to 1.0 to commit enough space to the north panel

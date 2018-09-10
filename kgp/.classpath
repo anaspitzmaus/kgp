@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="C:/Users/Ekki/Documents/jCalendar/lib/jgoodies-common-1.2.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Ekki/Documents/jCalendar/lib/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Ekki/Documents/jCalendar/lib/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Downloads/FileExplorer.0.1.1.b2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

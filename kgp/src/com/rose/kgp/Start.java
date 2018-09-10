@@ -31,6 +31,7 @@ import com.rose.kgp.ui.Dlg_LogIn;
 public class Start {
 
 	public static void main(String[] args) {
+		
 		checkDBConnection();		
 	}
 	
