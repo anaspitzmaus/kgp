@@ -83,7 +83,7 @@ public class DB {
 	 */
 	private static boolean getDriverInstance(){
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			return true;
 		} catch (InstantiationException e1) {
 			JOptionPane.showMessageDialog(new JFrame(),  e1.getMessage(),  
