@@ -83,7 +83,7 @@ public class DB {
 	 */
 	private static boolean getDriverInstance(){
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			return true;
 		} catch (InstantiationException e1) {
 			JOptionPane.showMessageDialog(new JFrame(),  e1.getMessage(),  
@@ -94,9 +94,19 @@ public class DB {
 					"Error: access problem while loading!", JOptionPane.WARNING_MESSAGE);
 			return false;
 		} catch (ClassNotFoundException e1) {
-			JOptionPane.showMessageDialog(new JFrame(),  e1.getMessage(),  
-					"Error: unable to load driver class!", JOptionPane.WARNING_MESSAGE);	
-			return false;
+			try{
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				return true;
+			}catch(ClassNotFoundException e2){
+				JOptionPane.showMessageDialog(new JFrame(),  e1.getMessage(),  
+						"Error: unable to load driver class!", JOptionPane.WARNING_MESSAGE);	
+				return false;				
+			}catch (InstantiationException e2) {
+				return false;
+			}catch (IllegalAccessException e2) {
+				return false;
+			}
+			
 		}
 	}
 	
