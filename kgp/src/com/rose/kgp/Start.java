@@ -41,7 +41,7 @@ public class Start {
 	public static void checkDBConnection(){
 		Examination exam = null;
 		
-		Sensis sensis = new Sensis("C:\\Users\\Ekki\\Documents\\Praxis Kaltofen\\Sensis\\");
+		//Sensis sensis = new Sensis("I:\\MESO\\Sensis\\Importiert\\");
 		
 		
 		if(DB.createConnection() != null){			
@@ -101,9 +101,13 @@ public class Start {
 //		patient.setId(10);
 //		SQL_INSERT.Patient_Changes(patient);
 		
+		
 		Controller_FrmMain conFrmMain = new Controller_FrmMain();
 		conFrmMain.build();
+	
 		
 	}
+	
+	
 
 }

@@ -10,7 +10,7 @@ public class PnlSetSensisPath extends PnlSetPath {
 	 * Create the panel.
 	 */
 	public PnlSetSensisPath() {
-		
+		getTxtPath().setEditable(false);
 	}
 
 }

@@ -15,7 +15,7 @@ public class Script {
 	public InputStream getFilePath(){
 		InputStream is = null;
 		try{
-			is = this.getClass().getResourceAsStream("cor.sql");
+			is = this.getClass().getResourceAsStream("kgp.sql");
 		}catch(Exception e){
 			
 		}

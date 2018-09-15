@@ -10,7 +10,7 @@ import javax.swing.event.DocumentListener;
 
 public class CtrlSetSensisPath {
 	PnlSetSensisPath pnlSetSensisPath;
-	PathDocumentListener pathDocumentListener;
+	Preferences prefs;
 	OpenFileChooserListener openFileChooserListener;
 	String fileName;
 	
@@ -20,40 +20,19 @@ public class CtrlSetSensisPath {
 	}
 
 	public CtrlSetSensisPath() {
-		Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+		prefs = Preferences.userNodeForPackage(this.getClass());
 		prefs.put("Sensis_Path", "a string");
 		pnlSetSensisPath = new PnlSetSensisPath();
 		setListener();
 	}
 	
-	private void setListener(){
-		pathDocumentListener = new PathDocumentListener();
-		pnlSetSensisPath.addPathDocumentListener(pathDocumentListener);
+	private void setListener(){		
+		
 		openFileChooserListener = new OpenFileChooserListener();
 		pnlSetSensisPath.addFileChooserListener(openFileChooserListener);
 	}
 	
-	class PathDocumentListener implements DocumentListener{
-
-		@Override
-		public void changedUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
+	
 	
 	class OpenFileChooserListener implements ActionListener {
 
@@ -64,6 +43,7 @@ public class CtrlSetSensisPath {
 			if(returnValue == JFileChooser.APPROVE_OPTION){
 				fileName = chooser.getSelectedFile().getAbsolutePath();
 				pnlSetSensisPath.getTxtPath().setText(fileName);
+				prefs.put("Sensis_Path", fileName);
 			}
 			
 		}

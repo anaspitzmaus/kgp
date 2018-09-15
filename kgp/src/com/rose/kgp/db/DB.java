@@ -83,7 +83,7 @@ public class DB {
 	 */
 	private static boolean getDriverInstance(){
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			return true;
 		} catch (InstantiationException e1) {
 			JOptionPane.showMessageDialog(new JFrame(),  e1.getMessage(),  
@@ -111,12 +111,12 @@ public class DB {
 		String port = pref.get("DB_Port", "");
 		//String host = "127.0.0.1:3306";
 		//String host = "192.168.2.103:3306";
-		String user = pref.get("DB_Root", "root");
+		String user = pref.get("DB_User", "root");
 		String passwd = pref.get("DB_PW", ""); 
 		if(!host.equals("localhost")){
 			host = host + ":" + port;
 		}
-		String connectionCommand = "jdbc:mysql://"+host+"/?user="+user+"&password="+passwd;	
+		String connectionCommand = "jdbc:mysql://"+host+"/?user="+user+"&password="+passwd+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";	
 		try {
 			con = DriverManager.getConnection(connectionCommand);		
 		} catch (SQLException e1) {

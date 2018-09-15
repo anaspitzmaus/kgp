@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -20,11 +21,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.rose.kgp.administration.TreatmentCase;
-import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.PM_Implant;
+import com.rose.kgp.examination.StudyType;
+import com.rose.kgp.settings.CtrlSetSensisPath;
 import com.rose.kgp.useful.DateMethods;
 
 
@@ -34,7 +35,7 @@ public class Controller_PnlTblExamFiles {
 	private Pnl_TblExamFiles pnlTblExamFiles;
 	private Sensis sensis;
 	private TblRowSelectionListener tblRowSelectionListener;
-	
+	private Preferences prefs; 
 	
 	
 	public TblRowSelectionListener getTblRowSelectionListener() {
@@ -42,13 +43,18 @@ public class Controller_PnlTblExamFiles {
 	}
 
 	public Controller_PnlTblExamFiles() {
-		sensis = new Sensis("C:\\Users\\Ekki\\Documents\\Praxis Kaltofen\\Sensis\\");
-		tblModel = new TblExamFilesModel(sensis.getFilesForFolder(".HIS"));
-		pnlTblExamFiles = new Pnl_TblExamFiles();
-		//pnlTblExamFiles.getTblExamFiles().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());		
-		pnlTblExamFiles.getTblExamFiles().setModel(tblModel);
-		setRenderer();
-		setListener();
+		prefs = Preferences.userNodeForPackage(CtrlSetSensisPath.class);
+		//String sensisPath = prefs.get("Sensis_Path", prefs.get("Sensis_Path", ""));
+		String sensisPath = "I:\\MESO\\Sensis\\Importiert";
+		sensis = new Sensis(sensisPath);
+		if(sensis instanceof Sensis) {
+			tblModel = new TblExamFilesModel(sensis.getFilesForFolder(".HIS"));
+			pnlTblExamFiles = new Pnl_TblExamFiles();
+			//pnlTblExamFiles.getTblExamFiles().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());		
+			pnlTblExamFiles.getTblExamFiles().setModel(tblModel);
+			setRenderer();
+			setListener();
+		}
 		
 	}
 	

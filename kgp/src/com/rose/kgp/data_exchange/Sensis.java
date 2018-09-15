@@ -31,8 +31,7 @@ public class Sensis implements DataOutput{
 	 * constructor
 	 * @param path needs to be a directory, not a full file name;
 	 */
-	public Sensis(String path) {
-		
+	public Sensis(String path) {		
 		this.folderPath = Paths.get(path);	
 		listFilesForFolder(this.folderPath.toFile(), ".HIS");
 	}
