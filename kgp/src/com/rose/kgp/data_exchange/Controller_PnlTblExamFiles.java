@@ -44,8 +44,8 @@ public class Controller_PnlTblExamFiles {
 
 	public Controller_PnlTblExamFiles() {
 		prefs = Preferences.userNodeForPackage(CtrlSetSensisPath.class);
-		//String sensisPath = prefs.get("Sensis_Path", prefs.get("Sensis_Path", ""));
-		String sensisPath = "I:\\MESO\\Sensis\\Importiert";
+		String sensisPath = prefs.get("Sensis_Path", prefs.get("Sensis_Path", ""));
+		
 		sensis = new Sensis(sensisPath);
 		if(sensis instanceof Sensis) {
 			tblModel = new TblExamFilesModel(sensis.getFilesForFolder(".HIS"));

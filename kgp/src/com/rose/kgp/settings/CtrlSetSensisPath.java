@@ -21,7 +21,6 @@ public class CtrlSetSensisPath {
 
 	public CtrlSetSensisPath() {
 		prefs = Preferences.userNodeForPackage(this.getClass());
-		prefs.put("Sensis_Path", "a string");
 		pnlSetSensisPath = new PnlSetSensisPath();
 		setListener();
 	}
@@ -41,7 +40,7 @@ public class CtrlSetSensisPath {
 			JFileChooser chooser = new JFileChooser();
 			int returnValue = chooser.showDialog(null, "Auswählen");
 			if(returnValue == JFileChooser.APPROVE_OPTION){
-				fileName = chooser.getSelectedFile().getAbsolutePath();
+				fileName = chooser.getSelectedFile().getParent();
 				pnlSetSensisPath.getTxtPath().setText(fileName);
 				prefs.put("Sensis_Path", fileName);
 			}

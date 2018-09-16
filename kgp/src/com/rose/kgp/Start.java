@@ -1,23 +1,15 @@
 package com.rose.kgp;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-import com.rose.kgp.administration.AccountingType;
-import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.Dlg_DBSettings;
 import com.rose.kgp.db.SQL_INSERT;
-import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.Examination;
-import com.rose.kgp.personnel.Patient;
+import com.rose.kgp.settings.CheckSettings;
 import com.rose.kgp.ui.Controller_FrmMain;
-import com.rose.kgp.ui.Dlg_LogIn;
 
 /**
  * entry point of the application 
@@ -101,9 +93,14 @@ public class Start {
 //		patient.setId(10);
 //		SQL_INSERT.Patient_Changes(patient);
 		
+		//check the settings, responsible for this application
+		CheckSettings checkSettings = new CheckSettings();
+		while(!checkSettings.sensisPath());
+			
 		
 		Controller_FrmMain conFrmMain = new Controller_FrmMain();
 		conFrmMain.build();
+		
 	
 		
 	}
