@@ -155,7 +155,7 @@ public class Dlg_DBSettings extends JDialog {
 						password = txtPW.getPassword(); 
 						try {
 							Class.forName("com.mysql.jdbc.Driver").newInstance();							
-							String connectionCommand = "jdbc:mysql://"+host+"/?user="+user+"&password="+String.valueOf(password);	
+							String connectionCommand = "jdbc:mysql://"+host+"/?user="+user+"&password="+String.valueOf(password)+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";	
 							try {
 								con = DriverManager.getConnection(connectionCommand);
 								lblTestResultText.setText("Success!");

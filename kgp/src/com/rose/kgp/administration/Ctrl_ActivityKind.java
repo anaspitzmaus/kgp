@@ -334,19 +334,19 @@ public class Ctrl_ActivityKind implements Observer{
 		public Component getListCellRendererComponent(
 				JList<? extends Allocator> list, Allocator allocator, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			
-			setText(allocator.getClinicalInstitution().getShortNotation());
-			this.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			if (isSelected) {
-				// set the font color of the selected element     
-			      this.setForeground(Color.BLACK);
-			      // set the background color      
-			      this.setBackground(Color.RED);
-		    } else {
-		         setForeground(list.getForeground());
-		         setBackground(list.getBackground());
-		    }
-			
+			if(allocator instanceof Allocator) {
+				setText(allocator.getClinicalInstitution().getShortNotation());
+				this.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				if (isSelected) {
+					// set the font color of the selected element     
+				      this.setForeground(Color.BLACK);
+				      // set the background color      
+				      this.setBackground(Color.RED);
+			    } else {
+			         setForeground(list.getForeground());
+			         setBackground(list.getBackground());
+			    }
+			}
 			return this;
 		}
 	}
