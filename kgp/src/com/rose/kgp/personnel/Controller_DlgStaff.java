@@ -20,6 +20,7 @@ abstract class Controller_DlgStaff {
 	protected Tbl_PersonnelModel tblPersonnelModel;
 	protected ArrayList<? extends Staff> staff;
 	protected Controller_PnlNewStaff conPnlNewStaff;
+	protected Boolean newStaff = false;
 	
 	public void showDialog(){
 		dlgStaff.setModal(true);
@@ -57,6 +58,7 @@ abstract class Controller_DlgStaff {
 			if(dlgStaff.getTblPersonnel().getSelectedRow() >= 0){				
 				Staff staffSel = (Staff) dlgStaff.getTblPersonnel().getModel().getValueAt(dlgStaff.getTblPersonnel().getSelectedRow(), 0);
 				showSelectedStaff(staffSel);
+				newStaff = false;
 			 }
 			
 		}	

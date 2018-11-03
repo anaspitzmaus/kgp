@@ -76,7 +76,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	/**
 	 * add all listeners of input fields of that panel
 	 */
-	private void setListener(){
+	protected void setListener(){
 		
 		pnlNewStaff.addSurnameListener(surnameListener);
 		pnlNewStaff.addFirstnameListener(firstnameListener);		
@@ -320,12 +320,10 @@ public abstract class Controller_PnlNewStaff extends Observable{
 		 * @return true if data are valid, false if not
 		 */
 		protected Boolean dataReadyToStore(){
-			if(staff.getId() == null && checkSurname() && checkFirstname()){//if a new staff member has to be added
+			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
 				staff.setBirthday(conPnlSetBirthDate.getDate());
-				staff.setOnset(conPnlSetOnsetDate.getDate());
-				
-				return true;
-					
+				staff.setOnset(conPnlSetOnsetDate.getDate());				
+				return true;					
 			}else{
 				return false;
 			}

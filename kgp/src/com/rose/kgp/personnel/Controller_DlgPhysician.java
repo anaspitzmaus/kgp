@@ -73,7 +73,8 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Controller_PnlNewPhysician)conPnlNewStaff).prepareForNewPhysician();			
+			((Controller_PnlNewPhysician)conPnlNewStaff).prepareForNewPhysician();
+			newStaff = true;
 		}
 		
 	}
@@ -90,7 +91,11 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 	            Physician physician = (Physician) value;
 	            switch (column) {
 				case 0:
-					setText(physician.getId().toString());
+					if(physician.getId() != null){
+						setText(physician.getId().toString());
+					}else{
+						setText("null");
+					}
 					break;
 				case 1:
 					setText(physician.getTitle());
@@ -136,6 +141,7 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 		//Tbl_PhysicianModel model = (Tbl_PhysicianModel) dlgPhysician.getTblPersonnel().getModel();
 		((ArrayList<Physician>)tblPersonnelModel.getStaff()).add((Physician)physician);
 		tblPersonnelModel.fireTableDataChanged();
+		
 	}
 
 

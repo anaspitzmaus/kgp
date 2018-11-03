@@ -70,6 +70,8 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 	
 	
 	
+	
+	
 	/**
 	 * prepares the panel before a new physician is to be created
 	 * therefore the data fields are enabled and the right dates are set
@@ -172,7 +174,10 @@ public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
 					pnlNewStaff.getComboSex().repaint();
 					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setSelectedIndex(-1);
 					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().repaint();
+					//set the id of the staff to null
+					//staff.setId(null);
 					//add all listeners to the input fields
+					setListener();
 					setExtraListener();
 				
 			}
