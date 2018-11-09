@@ -33,8 +33,11 @@ public class Sensis implements DataOutput{
 	 */
 	public Sensis(String path) {		
 		this.folderPath = Paths.get(path);	
+		
 		listFilesForFolder(this.folderPath.toFile(), ".HIS");
 	}
+	
+	
 	
 	/**
 	 * lists all files of a folder and returns it as an arrayList

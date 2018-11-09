@@ -4,6 +4,9 @@ import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -145,6 +148,13 @@ public class Controller_PnlTblExamFiles {
 			Examination examSel = null;
 			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
 				File fileSel = (File) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
+				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
+				try {
+					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				Sensis sensis = new Sensis(fileSel.getParent());
 				 
 				try {
