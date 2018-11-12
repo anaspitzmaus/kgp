@@ -51,7 +51,13 @@ public class Controller_PnlTblExamFiles {
 		
 		sensis = new Sensis(sensisPath);
 		if(sensis instanceof Sensis) {
-			tblModel = new TblExamFilesModel(sensis.getFilesForFolder(".HIS"));
+			ArrayList<File> files = sensis.getFilesForFolder(".HIS");
+			ArrayList<FileContent> filesContent = new ArrayList<FileContent>();
+			for(File file: files){
+				FileContent fileContent= new FileContent(file);
+				filesContent.add(fileContent);
+			}
+			tblModel = new TblExamFilesModel(filesContent);
 			pnlTblExamFiles = new Pnl_TblExamFiles();
 			//pnlTblExamFiles.getTblExamFiles().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());		
 			pnlTblExamFiles.getTblExamFiles().setModel(tblModel);
@@ -93,7 +99,7 @@ public class Controller_PnlTblExamFiles {
 			 if(value != null){
 				 BasicFileAttributes attr = null;
 					try {
-						attr = Files.readAttributes(((File)value).toPath(), BasicFileAttributes.class);
+						attr = Files.readAttributes(((FileContent)value).getFile().toPath(), BasicFileAttributes.class);
 						Instant instant = attr.creationTime().toInstant();
 						ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 						LocalDate ldate= zdt.toLocalDate();
@@ -121,11 +127,11 @@ public class Controller_PnlTblExamFiles {
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
 			switch (table.getColumnName(column) ){
-			case "Filename":
-				value = ((File)value).getAbsoluteFile().getName();
+			case "Patient":
+				value = ((FileContent)value).getPatient().getSurname() + ", " + ((FileContent)value).getPatient().getFirstname();
 				break;
 			case "Status":
-				value = ((File)value).getName();//has to be changed
+				value = ((FileContent)value).getFile().getName();//has to be changed
 			default:
 				break;
 			} 
@@ -147,14 +153,15 @@ public class Controller_PnlTblExamFiles {
 			HashMap<String, HashMap<String, ArrayList<String>>> values = null;
 			Examination examSel = null;
 			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
-				File fileSel = (File) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
-				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
-				try {
-					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
+				File fileSel = fileContent.getFile();
+//				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
+//				try {
+//					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 				Sensis sensis = new Sensis(fileSel.getParent());
 				 
 				try {

@@ -22,10 +22,10 @@ public class TblExamFilesModel extends AbstractTableModel{
 	private static final long serialVersionUID = 4671536849207726819L;
 
 	protected ArrayList<String> columnNames;
-	private ArrayList<File> examFiles;
+	private ArrayList<FileContent> examFiles;
 	private int rowCount;
 	
-	public TblExamFilesModel(ArrayList<File> examFiles) {
+	public TblExamFilesModel(ArrayList<FileContent> examFiles) {
 		this.examFiles = examFiles;
 		columnNames = new ArrayList<String>();
 		setColumnNames();
@@ -40,7 +40,7 @@ public class TblExamFilesModel extends AbstractTableModel{
 			columnNames.clear();
 			columnNames.add("Nr.");
 			columnNames.add("Datum");
-			columnNames.add("Filename");
+			columnNames.add("Patient");
 			columnNames.add("Status");
 		}
 	}
