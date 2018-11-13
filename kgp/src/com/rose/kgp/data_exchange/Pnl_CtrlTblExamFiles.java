@@ -15,6 +15,8 @@ public class Pnl_CtrlTblExamFiles extends JPanel {
 	public Pnl_CtrlTblExamFiles() {
 		ctrlStartDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusMonths(100));
 		ctrlEndDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusMonths(100));
+		ctrlStartDate.getPanel().setLabelDateText("von:");
+		ctrlEndDate.getPanel().setLabelDateText("bis:");
 		add(ctrlStartDate.getPanel());
 		add(ctrlEndDate.getPanel());
 	}
