@@ -155,17 +155,19 @@ public class Controller_PnlTblExamFiles {
 			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
 				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
 				File fileSel = fileContent.getFile();
-//				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
-//				try {
-//					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-				Sensis sensis = new Sensis(fileSel.getParent());
-				 
+				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
+				File targetFile = pathTarget.toFile();
 				try {
-					values = sensis.readExamFile(fileSel.getName());
+					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println(fileSel.getParent());
+				//Sensis sensis = new Sensis(fileSel.getParent());
+				Sensis sensis = new Sensis(targetFile.getParent()); 
+				try {
+					values = sensis.readExamFile(targetFile.getName());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
