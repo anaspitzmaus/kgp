@@ -5,31 +5,36 @@ import java.awt.event.ActionListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-public class CtrlSetSensisPath {
-	PnlSetSensisPath pnlSetSensisPath;
+/**
+ * class to control the panel to input the path where files of Sensis protocols can be copied to
+ * @author Administrator
+ *
+ */
+
+public class CtrlSetSensisCopyPath {
+
+	PnlSetSensisCopyPath pnlSetSensisCopyPath;
 	Preferences prefs;
 	OpenFileChooserListener openFileChooserListener;
 	String fileName;
 	
 	
-	public PnlSetSensisPath getPnlSetSensisPath() {
-		return pnlSetSensisPath;
+	public PnlSetSensisCopyPath getPnlSetSensisCopyPath() {
+		return pnlSetSensisCopyPath;
 	}
 
-	public CtrlSetSensisPath() {
+	public CtrlSetSensisCopyPath() {
 		prefs = Preferences.userNodeForPackage(this.getClass());
-		pnlSetSensisPath = new PnlSetSensisPath();
-		pnlSetSensisPath.getLblPath().setText("Sensis_Pfad");
+		pnlSetSensisCopyPath = new PnlSetSensisCopyPath();
+		pnlSetSensisCopyPath.getLblPath().setText("Dateikopie_Pfad");
 		setListener();
 	}
 	
 	private void setListener(){		
 		
 		openFileChooserListener = new OpenFileChooserListener();
-		pnlSetSensisPath.addFileChooserListener(openFileChooserListener);
+		pnlSetSensisCopyPath.addFileChooserListener(openFileChooserListener);
 	}
 	
 	
@@ -42,8 +47,8 @@ public class CtrlSetSensisPath {
 			int returnValue = chooser.showDialog(null, "Auswählen");
 			if(returnValue == JFileChooser.APPROVE_OPTION){
 				fileName = chooser.getSelectedFile().getParent();
-				pnlSetSensisPath.getTxtPath().setText(fileName);
-				prefs.put("Sensis_Path", fileName);
+				pnlSetSensisCopyPath.getTxtPath().setText(fileName);
+				prefs.put("Sensis_Copy_Path", fileName);
 			}
 			
 		}

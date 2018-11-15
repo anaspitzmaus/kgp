@@ -10,7 +10,11 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
-
+/**
+ * a primitive abstract class to set a path 
+ * @author Administrator
+ *
+ */
 public abstract class PnlSetPath extends JPanel {
 	
 	private static final long serialVersionUID = -3236609115107776133L;
