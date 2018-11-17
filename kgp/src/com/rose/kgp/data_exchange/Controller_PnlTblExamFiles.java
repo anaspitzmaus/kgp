@@ -164,8 +164,7 @@ public class Controller_PnlTblExamFiles {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println(fileSel.getParent());
-				//Sensis sensis = new Sensis(fileSel.getParent());
+				
 				Sensis sensis = new Sensis(targetFile.getParent()); 
 				try {
 					values = sensis.readExamFile(targetFile.getName());
