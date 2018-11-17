@@ -2,6 +2,7 @@ package com.rose.kgp.settings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
@@ -17,7 +18,7 @@ public class CtrlSetSensisCopyPath {
 	PnlSetSensisCopyPath pnlSetSensisCopyPath;
 	Preferences prefs;
 	OpenFileChooserListener openFileChooserListener;
-	String fileName;
+	Path pathName;
 	
 	
 	public PnlSetSensisCopyPath getPnlSetSensisCopyPath() {
@@ -44,11 +45,12 @@ public class CtrlSetSensisCopyPath {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			JFileChooser chooser = new JFileChooser();
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			int returnValue = chooser.showDialog(null, "Auswählen");
 			if(returnValue == JFileChooser.APPROVE_OPTION){
-				fileName = chooser.getSelectedFile().getParent();
-				pnlSetSensisCopyPath.getTxtPath().setText(fileName);
-				prefs.put("Sensis_Copy_Path", fileName);
+				pathName = chooser.getSelectedFile().toPath();
+				pnlSetSensisCopyPath.getTxtPath().setText(pathName.toString());
+				prefs.put("Sensis_Copy_Path", pathName.toString());
 			}
 			
 		}

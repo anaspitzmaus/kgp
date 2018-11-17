@@ -155,7 +155,8 @@ public class Controller_PnlTblExamFiles {
 			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
 				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
 				File fileSel = fileContent.getFile();
-				Path pathTarget = Paths.get("C:/RoSoft/Temp/SensisFile");
+				String sensisCopyPath = prefs.get("Sensis_Copy_Path", prefs.get("Sensis_Copy_Path", ""));
+				Path pathTarget = Paths.get(sensisCopyPath + "/SensisCopy.txt");
 				File targetFile = pathTarget.toFile();
 				try {
 					Files.copy(fileSel.toPath(), pathTarget, StandardCopyOption.REPLACE_EXISTING);
