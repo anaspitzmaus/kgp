@@ -1,6 +1,8 @@
 package com.rose.kgp.data_exchange;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,14 +33,15 @@ import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.settings.CtrlSetSensisPath;
 import com.rose.kgp.useful.DateMethods;
 
-
-
 public class Controller_PnlTblExamFiles {
 	private TblExamFilesModel tblModel;
 	private Pnl_TblExamFiles pnlTblExamFiles;
 	private Sensis sensis;
 	private TblRowSelectionListener tblRowSelectionListener;
 	private Preferences prefs; 
+	private Ctrl_PnlCtrlTblExamFiles ctrl_PnlCtrlTblExamFiles;
+	private ActualizeListener actualizeListener;
+	ArrayList<FileContent> filesContent;
 	
 	
 	public TblRowSelectionListener getTblRowSelectionListener() {
@@ -49,16 +52,25 @@ public class Controller_PnlTblExamFiles {
 		prefs = Preferences.userNodeForPackage(CtrlSetSensisPath.class);
 		String sensisPath = prefs.get("Sensis_Path", prefs.get("Sensis_Path", ""));
 		
+		//create and add the control panel to the tables panel
+		ctrl_PnlCtrlTblExamFiles = new Ctrl_PnlCtrlTblExamFiles();
+		ctrl_PnlCtrlTblExamFiles.getCtrlStartDate().setDate(LocalDate.now().minusDays(300));//set the start date
+		ctrl_PnlCtrlTblExamFiles.getCtrlEndDate().setDate(LocalDate.now().minusDays(0));//set the end date
+		pnlTblExamFiles = new Pnl_TblExamFiles(ctrl_PnlCtrlTblExamFiles.getPnlCtrlTblExamFiles());
+		
+		//create the table and its model
 		sensis = new Sensis(sensisPath);
 		if(sensis instanceof Sensis) {
-			ArrayList<File> files = sensis.getFilesForFolder(".HIS");
-			ArrayList<FileContent> filesContent = new ArrayList<FileContent>();
+			LocalDate startDate = ctrl_PnlCtrlTblExamFiles.getCtrlStartDate().getDate();
+			LocalDate endDate = ctrl_PnlCtrlTblExamFiles.getCtrlEndDate().getDate();
+			ArrayList<File> files = sensis.getFilesForFolder(".HIS", startDate, endDate);
+			filesContent = new ArrayList<FileContent>();
 			for(File file: files){
 				FileContent fileContent= new FileContent(file);
 				filesContent.add(fileContent);
 			}
 			tblModel = new TblExamFilesModel(filesContent);
-			pnlTblExamFiles = new Pnl_TblExamFiles();
+			
 			//pnlTblExamFiles.getTblExamFiles().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());		
 			pnlTblExamFiles.getTblExamFiles().setModel(tblModel);
 			setRenderer();
@@ -70,6 +82,8 @@ public class Controller_PnlTblExamFiles {
 	private void setListener(){
 		tblRowSelectionListener = new TblRowSelectionListener();
 		pnlTblExamFiles.getTblExamFiles().addRowSelectionListener(tblRowSelectionListener);
+		actualizeListener = new ActualizeListener();
+		ctrl_PnlCtrlTblExamFiles.getPnlCtrlTblExamFiles().addActualizeListener(actualizeListener);
 	}
 	
 	private void setRenderer(){
@@ -214,5 +228,29 @@ public class Controller_PnlTblExamFiles {
 				return null;
 			}
 		}
+	}
+	
+	/**
+	 * listener for actualizing the exam table
+	 * @author Administrator
+	 *
+	 */
+	class ActualizeListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(sensis instanceof Sensis) {
+				LocalDate startDate = ctrl_PnlCtrlTblExamFiles.getCtrlStartDate().getDate();
+				LocalDate endDate = ctrl_PnlCtrlTblExamFiles.getCtrlEndDate().getDate();
+				ArrayList<File> files = sensis.getFilesForFolder(".HIS", startDate, endDate);
+				filesContent.clear();
+				for(File file: files){
+					FileContent fileContent= new FileContent(file);
+					filesContent.add(fileContent);
+				}
+				tblModel.updateTableModel(filesContent);;
+			}
+		}
+		
 	}
 }

@@ -11,19 +11,17 @@ public class Pnl_TblExamFiles extends JPanel {
 	 */
 	private static final long serialVersionUID = 3499616821959090753L;
 	private TblExamFiles tblExamFiles;
-	private Pnl_CtrlTblExamFiles pnlCtrlTblExamFiles;
-		
+			
 	protected TblExamFiles getTblExamFiles(){
 		return this.tblExamFiles;
-	}
+	}	
 
 	/**
 	 * Create the panel.
 	 */
-	public Pnl_TblExamFiles() {
+	public Pnl_TblExamFiles(Pnl_CtrlTblExamFiles pnlCtrlTblExamFiles) {
 		setLayout(new BorderLayout(0, 0));
 		
-		pnlCtrlTblExamFiles = new Pnl_CtrlTblExamFiles();
 		add(pnlCtrlTblExamFiles, BorderLayout.NORTH);
 		
 		JScrollPane scrollPane = new JScrollPane();

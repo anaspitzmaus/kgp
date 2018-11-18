@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -99,14 +100,16 @@ public class Sensis implements DataOutput{
 	 * @param folder
 	 * @return an arrayList with the files of the folder
 	 */
-	public ArrayList<File> getFilesForFolder(String extension) {
+	public ArrayList<File> getFilesForFolder(String extension, LocalDate startDate, LocalDate endDate) {
 		ArrayList<File> files = new ArrayList<File>();
 		File folder = this.folderPath.toFile();
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);
 	        } else {
-	        	if(fileEntry.getName().endsWith(extension)){
+	        	LocalDate fileDate =
+	        		    Instant.ofEpochMilli(fileEntry.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
+	        	if(fileEntry.getName().endsWith(extension) && !fileDate.isAfter(endDate) && !fileDate.isBefore(startDate)){
 	        		files.add(fileEntry);
 	        	}
 	           // FilenameUtils.getExtension(fileEntry.getName()); //returns the extension of a file (Apache Commons IO)

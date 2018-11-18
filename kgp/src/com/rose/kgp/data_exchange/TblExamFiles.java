@@ -1,11 +1,12 @@
 package com.rose.kgp.data_exchange;
 
+
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
+
 
 
 class TblExamFiles extends JTable {
@@ -21,11 +22,14 @@ class TblExamFiles extends JTable {
 		setFillsViewportHeight(true); 
 		setRowHeight(30);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//setAutoCreateRowSorter(true);
 	}
 	
 	protected void addRowSelectionListener(ListSelectionListener l){
 		getSelectionModel().addListSelectionListener(l);
 	}
+	
+	 
 	
 	
 }

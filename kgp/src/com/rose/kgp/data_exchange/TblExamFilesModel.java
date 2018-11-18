@@ -1,24 +1,13 @@
 package com.rose.kgp.data_exchange;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-
-
 
 import javax.swing.table.AbstractTableModel;
 
 public class TblExamFilesModel extends AbstractTableModel{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 4671536849207726819L;
 
 	protected ArrayList<String> columnNames;
@@ -61,8 +50,10 @@ public class TblExamFilesModel extends AbstractTableModel{
     }
 	
 	@Override
-    public Class<?> getColumnClass(int column) {		
-    	return getValueAt(0, column).getClass(); 
+    public Class<?> getColumnClass(int column) {
+		
+		return getValueAt(0, column).getClass(); 
+		
 	}
 
 	@Override
@@ -83,7 +74,15 @@ public class TblExamFilesModel extends AbstractTableModel{
 		if(this.getColumnName(colIndex) == "Nr."){
 			return rowIndex + 1;
 		}
-		return examFiles.get(rowIndex);		
+		
+			return examFiles.get(rowIndex);	
+		
+	}
+	
+	public void updateTableModel(ArrayList<FileContent> examFiles){
+		this.examFiles = examFiles;
+		rowCount = examFiles.size();
+		fireTableDataChanged();
 	}
 
 }
