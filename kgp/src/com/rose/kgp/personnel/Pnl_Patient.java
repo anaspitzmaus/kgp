@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import com.rose.kgp.useful.EFormattedTextField;
+import javax.swing.SwingConstants;
 /**
  * JPanel that shows the patient data:
  * surname, first name, birth, sex and number
@@ -77,9 +78,10 @@ public class Pnl_Patient extends JPanel {
 		add(lblNummer, "cell 0 0,alignx left,aligny center");
 		
 		txtName = new JTextField();
+		txtName.setHorizontalAlignment(SwingConstants.LEFT);
 		txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		add(txtName, "cell 1 1,alignx left");
-		txtName.setColumns(10);
+		txtName.setColumns(20);
 		
 		lblBirth = new JLabel("Geburtsdatum:");
 		lblBirth.setFont(new Font("Tahoma", Font.PLAIN, 14));
