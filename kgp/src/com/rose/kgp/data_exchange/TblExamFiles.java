@@ -22,7 +22,7 @@ class TblExamFiles extends JTable {
 		setFillsViewportHeight(true); 
 		setRowHeight(30);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		//setAutoCreateRowSorter(true);
+		setAutoCreateRowSorter(true);
 	}
 	
 	protected void addRowSelectionListener(ListSelectionListener l){

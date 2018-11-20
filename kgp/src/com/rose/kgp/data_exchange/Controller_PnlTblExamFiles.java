@@ -10,12 +10,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.prefs.Preferences;
@@ -25,6 +27,8 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.examination.LeftHeartCatheter;
@@ -73,6 +77,16 @@ public class Controller_PnlTblExamFiles {
 			
 			//pnlTblExamFiles.getTblExamFiles().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());		
 			pnlTblExamFiles.getTblExamFiles().setModel(tblModel);
+			 // Der TableRowSorter wird die Daten des Models sortieren
+	        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>();
+	        
+	        // Der Sorter muss dem JTable bekannt sein
+	        pnlTblExamFiles.getTblExamFiles().setRowSorter( sorter );
+	        
+	        // ... und der Sorter muss wissen, welche Daten er sortieren muss
+	        sorter.setModel(tblModel);
+	        // Den Comparator für die 2. Spalte (mit den Points) setzen.
+	        sorter.setComparator( 1, new LocalDateComparator());
 			setRenderer();
 			setListener();
 		}
@@ -250,6 +264,17 @@ public class Controller_PnlTblExamFiles {
 				}
 				tblModel.updateTableModel(filesContent);;
 			}
+		}
+		
+	}
+	
+	class LocalDateComparator implements Comparator<FileContent>{
+
+		@Override
+		public int compare(FileContent fc_1, FileContent fc_2) {
+			Timestamp a = new Timestamp(fc_1.getFile().lastModified());
+			Timestamp b = new Timestamp(fc_2.getFile().lastModified());
+			return a.compareTo(b);
 		}
 		
 	}

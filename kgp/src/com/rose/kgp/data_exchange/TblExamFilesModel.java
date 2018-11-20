@@ -51,7 +51,9 @@ public class TblExamFilesModel extends AbstractTableModel{
 	
 	@Override
     public Class<?> getColumnClass(int column) {
-		
+		if (examFiles.isEmpty()) {
+	        return Object.class;
+	    }
 		return getValueAt(0, column).getClass(); 
 		
 	}
