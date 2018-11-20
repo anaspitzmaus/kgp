@@ -1,6 +1,8 @@
 package com.rose.kgp.data_exchange;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -24,6 +26,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -86,7 +89,7 @@ public class Controller_PnlTblExamFiles {
 	        // ... und der Sorter muss wissen, welche Daten er sortieren muss
 	        sorter.setModel(tblModel);
 	        // Den Comparator für die 2. Spalte (mit den Points) setzen.
-	        sorter.setComparator( 1, new LocalDateComparator());
+	       // sorter.setComparator( 1, new LocalDateComparator());
 			setRenderer();
 			setListener();
 		}
@@ -104,7 +107,7 @@ public class Controller_PnlTblExamFiles {
 		ColumnFileRenderer fileRenderer = new ColumnFileRenderer();
 		ColumnDateRenderer dateRenderer = new ColumnDateRenderer();
 		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(1).setCellRenderer(dateRenderer);
-		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(2).setCellRenderer(fileRenderer);
+		//pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(2).setCellRenderer(fileRenderer);
 		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(3).setCellRenderer(fileRenderer);
 	}
 	
@@ -123,24 +126,33 @@ public class Controller_PnlTblExamFiles {
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
 			 
-			 simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			// simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			 if(value != null){
-				 BasicFileAttributes attr = null;
-					try {
-						attr = Files.readAttributes(((FileContent)value).getFile().toPath(), BasicFileAttributes.class);
-						Instant instant = attr.creationTime().toInstant();
-						ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-						LocalDate ldate= zdt.toLocalDate();
-						value = simpleDateFormat.format(DateMethods.ConvertLocalDateToDate(ldate));
-						setHorizontalAlignment(JLabel.CENTER);
-						
-					} catch (IOException e) {
-						value = null;
-					}			
+				 LocalDate date = (LocalDate)value;
+				 setText(String.format("%02d", date.getDayOfMonth()) + "." + String.format("%02d", date.getMonthValue()) + "." + date.getYear());
+				 setFont(new Font("Tahoma", Font.PLAIN, 18));
+				 setHorizontalAlignment(CENTER);
+				 if(isSelected){
+					 setBackground(UIManager.getColor("Table.selectionBackground"));
+				 }else{
+					 setBackground(Color.WHITE);
+				 }
+//				 BasicFileAttributes attr = null;
+//					try {
+//						attr = Files.readAttributes(((FileContent)value).getFile().toPath(), BasicFileAttributes.class);
+//						Instant instant = attr.creationTime().toInstant();
+//						ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+//						LocalDate ldate= zdt.toLocalDate();
+//						value = simpleDateFormat.format(DateMethods.ConvertLocalDateToDate(ldate));
+//						setHorizontalAlignment(JLabel.CENTER);
+//						
+//					} catch (IOException e) {
+//						value = null;
+//					}			
 				
-			 }			 
-			 return super.getTableCellRendererComponent(table, value, isSelected,
-		                hasFocus, row, column);
+			 }	
+			 return this;
+			 //return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
 	}
 	
@@ -181,7 +193,7 @@ public class Controller_PnlTblExamFiles {
 			HashMap<String, HashMap<String, ArrayList<String>>> values = null;
 			Examination examSel = null;
 			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
-				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 1);
+				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 3);
 				File fileSel = fileContent.getFile();
 				String sensisCopyPath = prefs.get("Sensis_Copy_Path", prefs.get("Sensis_Copy_Path", ""));
 				Path pathTarget = Paths.get(sensisCopyPath + "/SensisCopy.txt");

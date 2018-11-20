@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.rose.kgp.useful.DateMethods;
+
 public class TblExamFilesModel extends AbstractTableModel{
 
 	
@@ -75,6 +77,10 @@ public class TblExamFilesModel extends AbstractTableModel{
 					
 		if(this.getColumnName(colIndex) == "Nr."){
 			return rowIndex + 1;
+		}else if(this.getColumnName(colIndex) =="Datum"){
+			return DateMethods.getDateFromTimestamp(examFiles.get(rowIndex).getFile().lastModified());
+		}else if(this.getColumnName(colIndex) =="Patient"){
+			return examFiles.get(rowIndex).getPatient().getSurname() + ", " + examFiles.get(rowIndex).getPatient().getFirstname();
 		}
 		
 			return examFiles.get(rowIndex);	

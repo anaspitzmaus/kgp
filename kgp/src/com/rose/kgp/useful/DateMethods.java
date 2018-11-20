@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateMethods {
 
@@ -30,5 +31,18 @@ public class DateMethods {
 		Instant instant = Instant.ofEpochMilli(cal.getTimeInMillis());
 		LocalTime convert = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 		return convert;
+	}
+	
+	public static LocalDate getDateFromTimestamp(long timestamp) {
+		LocalDate date =
+			    Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();
+	    return date;
+	}
+	
+	public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
+	    if (timestamp == 0)
+	      return null;
+	    return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone
+	        .getDefault().toZoneId());
 	}
 }
