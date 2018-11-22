@@ -107,6 +107,7 @@ public class Controller_PnlSetDate {
 		@Override
 		public void propertyChange(PropertyChangeEvent arg0) {
 			dateSet = DateMethods.ConvertDateToLocalDate((Date)pnlSetDate.getFtxtCalendar().getValue());
+			
 		}
 		
 	}

@@ -125,7 +125,7 @@ public class Controller_PnlTblExamFiles {
 		private static final long serialVersionUID = 3498636126051341094L;
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
-			 
+			int rowSel = table.convertRowIndexToModel(row);
 			// simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			 if(value != null){
 				 LocalDate date = (LocalDate)value;
@@ -166,6 +166,7 @@ public class Controller_PnlTblExamFiles {
 		private static final long serialVersionUID = -909986640885548467L;
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+			int rowSel = table.convertRowIndexToModel(row);
 			switch (table.getColumnName(column) ){
 			case "Patient":
 				value = ((FileContent)value).getPatient().getSurname() + ", " + ((FileContent)value).getPatient().getFirstname();
@@ -177,7 +178,7 @@ public class Controller_PnlTblExamFiles {
 			} 
 					 
 			 return super.getTableCellRendererComponent(table, value, isSelected,
-		                hasFocus, row, column);
+		                hasFocus, rowSel, column);
 		}
 	}
 	

@@ -29,7 +29,6 @@ public class Ctrl_PnlCtrlTblExamFiles {
 		ctrlEndDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusMonths(100));
 		pnl_CtrlTblExamFiles = new Pnl_CtrlTblExamFiles(ctrlStartDate, ctrlEndDate);
 		
-		
 	}
 	
 	

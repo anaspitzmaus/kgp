@@ -1,6 +1,6 @@
 package com.rose.kgp.data_exchange;
 
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -76,7 +76,7 @@ public class TblExamFilesModel extends AbstractTableModel{
 		
 					
 		if(this.getColumnName(colIndex) == "Nr."){
-			return rowIndex + 1;
+			return rowIndex;
 		}else if(this.getColumnName(colIndex) =="Datum"){
 			return DateMethods.getDateFromTimestamp(examFiles.get(rowIndex).getFile().lastModified());
 		}else if(this.getColumnName(colIndex) =="Patient"){
