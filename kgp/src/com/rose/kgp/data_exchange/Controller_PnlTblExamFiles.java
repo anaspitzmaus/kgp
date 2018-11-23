@@ -106,8 +106,9 @@ public class Controller_PnlTblExamFiles {
 	private void setRenderer(){
 		ColumnFileRenderer fileRenderer = new ColumnFileRenderer();
 		ColumnDateRenderer dateRenderer = new ColumnDateRenderer();
+		PatientRenderer patientRenderer = new PatientRenderer();
 		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(1).setCellRenderer(dateRenderer);
-		//pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(2).setCellRenderer(fileRenderer);
+		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(2).setCellRenderer(patientRenderer);
 		pnlTblExamFiles.getTblExamFiles().getColumnModel().getColumn(3).setCellRenderer(fileRenderer);
 	}
 	
@@ -126,6 +127,7 @@ public class Controller_PnlTblExamFiles {
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
 			int rowSel = table.convertRowIndexToModel(row);
+			value = ((TblExamFilesModel)table.getModel()).getValueAt(rowSel, column);
 			// simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			 if(value != null){
 				 LocalDate date = (LocalDate)value;
@@ -167,6 +169,7 @@ public class Controller_PnlTblExamFiles {
 		SimpleDateFormat simpleDateFormat;
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
 			int rowSel = table.convertRowIndexToModel(row);
+			value = table.getModel().getValueAt(rowSel, column);
 			switch (table.getColumnName(column) ){
 			case "Patient":
 				value = ((FileContent)value).getPatient().getSurname() + ", " + ((FileContent)value).getPatient().getFirstname();
@@ -179,6 +182,18 @@ public class Controller_PnlTblExamFiles {
 					 
 			 return super.getTableCellRendererComponent(table, value, isSelected,
 		                hasFocus, rowSel, column);
+		}
+	}
+	
+	class PatientRenderer extends DefaultTableCellRenderer{
+
+		private static final long serialVersionUID = 6002067683300989766L;
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+			int rowSel = table.convertRowIndexToModel(row);
+			value = table.getModel().getValueAt(rowSel, column);
+			setText((String) value);
+			//value = ((FileContent)value).getPatient().getSurname() + ", " + ((FileContent)value).getPatient().getFirstname();
+			return this;
 		}
 	}
 	
