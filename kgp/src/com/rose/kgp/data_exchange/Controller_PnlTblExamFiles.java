@@ -208,8 +208,9 @@ public class Controller_PnlTblExamFiles {
 		public void valueChanged(ListSelectionEvent arg0) {
 			HashMap<String, HashMap<String, ArrayList<String>>> values = null;
 			Examination examSel = null;
-			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){				
-				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(pnlTblExamFiles.getTblExamFiles().getSelectedRow(), 3);
+			if(pnlTblExamFiles.getTblExamFiles().getSelectedRow() >= 0){
+				int rowSel = pnlTblExamFiles.getTblExamFiles().convertRowIndexToModel(pnlTblExamFiles.getTblExamFiles().getSelectedRow());
+				FileContent fileContent = (FileContent) pnlTblExamFiles.getTblExamFiles().getModel().getValueAt(rowSel, 3);
 				File fileSel = fileContent.getFile();
 				String sensisCopyPath = prefs.get("Sensis_Copy_Path", prefs.get("Sensis_Copy_Path", ""));
 				Path pathTarget = Paths.get(sensisCopyPath + "/SensisCopy.txt");
