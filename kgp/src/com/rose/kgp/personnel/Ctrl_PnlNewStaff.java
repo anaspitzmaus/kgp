@@ -18,16 +18,16 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import com.rose.kgp.useful.*;
 
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 /**
  * abstract class that controls an inherited panel of the abstract panel 'Pnl_NewStaff' 
  * @author Ekkehard Rose
  *
  */
-public abstract class Controller_PnlNewStaff extends Observable{
+public abstract class Ctrl_PnlNewStaff extends Observable{
 
-	protected Controller_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
+	protected Ctrl_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
 	protected SexModel sexModel;
 	protected Pnl_NewStaff pnlNewStaff;
 	protected Staff staff; 
@@ -38,9 +38,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	
 	protected Pnl_NewStaff getPanel(){
 		return this.pnlNewStaff;
-	}
-	
-	
+	}	
 	
 	/**
 	 * standard constructor
@@ -48,7 +46,7 @@ public abstract class Controller_PnlNewStaff extends Observable{
 	 * @param conPnlSetOnsetDate
 	 * @param pnlNewStaff the JPanel that has to be controlled by this controller class
 	 */
-	public Controller_PnlNewStaff(Controller_PnlSetDate conPnlSetBirthDate, Controller_PnlSetDate conPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
+	public Ctrl_PnlNewStaff(Ctrl_PnlSetDate conPnlSetBirthDate, Ctrl_PnlSetDate conPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
 		staff = null;
 		this.pnlNewStaff = pnlNewStaff;
 		this.conPnlSetBirthDate = conPnlSetBirthDate;

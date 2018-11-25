@@ -2,13 +2,17 @@ package com.rose.kgp.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import com.rose.kgp.allocator.Ctrl_DlgClinicalInstitution;
-import com.rose.kgp.personnel.Controller_DlgNurse;
-import com.rose.kgp.personnel.Controller_DlgPhysician;
+import com.rose.kgp.personnel.Ctrl_DlgNurse;
+import com.rose.kgp.personnel.Ctrl_DlgPhysician;
+import com.rose.kgp.personnel.Ctrl_PnlNewNurse;
+import com.rose.kgp.personnel.Ctrl_PnlNewPhysician;
 
 public class Controller_MenuMain {
 	Pnl_MenuMain pnlMenuMain;
+	Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	
 	public Controller_MenuMain() {
 		pnlMenuMain = new Pnl_MenuMain();
@@ -20,8 +24,14 @@ public class Controller_MenuMain {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller_DlgPhysician conDlgPhysician = new Controller_DlgPhysician();
-				conDlgPhysician.showDialog();
+				//prepare to instantiate the panel for the new physician
+				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
+				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
+				//instantiate the controller of the panel for the new physician
+				Ctrl_PnlNewPhysician ctrlPnlNewPhysician = new Ctrl_PnlNewPhysician(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
+				//instantiate the controller of the dialog
+				Ctrl_DlgPhysician ctrlDlgPhysician = new Ctrl_DlgPhysician(ctrlPnlNewPhysician);
+				ctrlDlgPhysician.showDialog();
 			}
 		});
 		
@@ -29,7 +39,13 @@ public class Controller_MenuMain {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller_DlgNurse conDlgNurse = new Controller_DlgNurse();
+				//prepare to instantiate the panel for the new nurse
+				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
+				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
+				//instantiate the controller of the panel for the new nurse
+				Ctrl_PnlNewNurse ctrlPnlNewNurse = new Ctrl_PnlNewNurse(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
+				//instantiate the controller of the dialog
+				Ctrl_DlgNurse conDlgNurse = new Ctrl_DlgNurse(ctrlPnlNewNurse);
 				conDlgNurse.showDialog();
 				
 			}

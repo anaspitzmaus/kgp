@@ -14,25 +14,24 @@ import java.util.Observer;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 
 
-public class Controller_DlgPhysician extends Controller_DlgStaff implements Observer{
+public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	//Dlg_Physician dlgPhysician;
 	//ArrayList<Physician> physicians;
 	//Controller_PnlNewPhysician conPnlNewPhysician;
-	Controller_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
+	
 	//Tbl_PhysicianModel tblPhysicianModel;
 	
 	
 	@SuppressWarnings("unchecked")
-	public Controller_DlgPhysician() {
-		dlgStaff = new Dlg_Physician();
+	public Ctrl_DlgPhysician(Ctrl_PnlNewPhysician ctrlPnlNewPhysician) {
+		super(ctrlPnlNewPhysician, new Dlg_Physician());		
 		staff = SQL_SELECT.activePhysicians(LocalDate.now());
 		tblPersonnelModel = new Tbl_PhysicianModel((ArrayList<Physician>) staff);
 		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
@@ -45,11 +44,8 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 		dlgStaff.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		
 		//add the panel for a new physician to the dialog
-		conPnlSetBirthDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
-		conPnlSetOnsetDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-		conPnlNewStaff = new Controller_PnlNewPhysician(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
-		dlgStaff.contentPanel.add(conPnlNewStaff.getPanel(), BorderLayout.SOUTH);
-		conPnlNewStaff.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
+		
+		
 		setListener();
 	}
 	
@@ -66,14 +62,14 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 	
 	protected void showSelectedPhysician(Physician physician){
 		super.showSelectedStaff(physician);
-		((Pnl_NewPhysician)conPnlNewStaff.getPanel()).getComboTitle().setEnabled(true);		
+		((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setEnabled(true);		
 	}
 	
 	class NewPhysicianListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Controller_PnlNewPhysician)conPnlNewStaff).prepareForNewPhysician();
+			((Ctrl_PnlNewPhysician)ctrlPnlNewStaff).prepareForNewPhysician();
 			setModus(Modus.NEW);
 			newStaff = true;
 		}
@@ -136,17 +132,7 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 	
 	
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void update(Observable o, Object physician) {
-		//Tbl_PhysicianModel model = (Tbl_PhysicianModel) dlgPhysician.getTblPersonnel().getModel();
-		((ArrayList<Physician>)tblPersonnelModel.getStaff()).add((Physician)physician);
-		tblPersonnelModel.fireTableDataChanged();
-		
-	}
-
-
-
+	
 	@Override
 	void removeListener() {
 		// TODO Auto-generated method stub

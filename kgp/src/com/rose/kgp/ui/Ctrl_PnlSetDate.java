@@ -11,12 +11,12 @@ import java.util.Date;
 import com.rose.kgp.useful.DateMethods;
 
 
-public class Controller_PnlSetDate {
+public class Ctrl_PnlSetDate {
 	protected Pnl_SetDate pnlSetDate;
 	DateChangeListener dateChangeListener;
 	LocalDate minDate, dateSet;
 	
-	public Controller_PnlSetDate(String dateFormat, LocalDate ld, LocalDate minDate){
+	public Ctrl_PnlSetDate(String dateFormat, LocalDate ld, LocalDate minDate){
 		pnlSetDate = new Pnl_SetDate(dateFormat, ld, minDate);
 		pnlSetDate.addCalendarListener(new CalendarListener(minDate));
 		dateChangeListener = new DateChangeListener();

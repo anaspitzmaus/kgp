@@ -16,17 +16,17 @@ import javax.swing.event.ListDataListener;
 
 
 import com.rose.kgp.db.SQL_INSERT;
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
-public class Controller_PnlNewPhysician extends Controller_PnlNewStaff{
+public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 
 	
 	private TitleListener titleListener;
 	
 	private SetNewPhysicianListener setNewPhysicianListener;
 	
-	public Controller_PnlNewPhysician(Controller_PnlSetDate conPnlSetBirthDate, Controller_PnlSetDate conPnlSetOnsetDate) {
-		super(conPnlSetBirthDate, conPnlSetOnsetDate, new Pnl_NewPhysician());
+	public Ctrl_PnlNewPhysician(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate) {
+		super(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate, new Pnl_NewPhysician());
 		//pnlNewStaff = new Pnl_NewPhysician();
 		pnlNewStaff.add(this.conPnlSetBirthDate.getPanel(), "cell 1 5,growx,aligny top");
 		pnlNewStaff.add(this.conPnlSetOnsetDate.getPanel(), "cell 1 6,growx,aligny top");		

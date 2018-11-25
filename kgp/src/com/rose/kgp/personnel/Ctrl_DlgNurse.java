@@ -16,21 +16,23 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.personnel.Controller_DlgStaff.Modus;
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.personnel.Ctrl_DlgStaff.Modus;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 
-public class Controller_DlgNurse extends Controller_DlgStaff implements Observer{
+public class Ctrl_DlgNurse extends Ctrl_DlgStaff implements Observer{
 
 	//Dlg_Nurse dlgNurse;
 	//ArrayList<Nurse> nurses;
 	//Controller_PnlNewNurse conPnlNewNurse;
-	Controller_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
+	Ctrl_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
 	//Tbl_NurseModel tblNurseModel;
 	
 	@SuppressWarnings("unchecked")
-	public Controller_DlgNurse() {
-		dlgStaff = new Dlg_Nurse();
+	public Ctrl_DlgNurse(Ctrl_PnlNewNurse ctrlPnlNewNurse) {
+		super(ctrlPnlNewNurse, new Dlg_Nurse());
+		
+		
 		staff = SQL_SELECT.activeNurses(LocalDate.now());
 		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staff);
 		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
@@ -44,11 +46,11 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 		dlgStaff.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		
 		//add the panel for a new nurse to the dialog
-		conPnlSetBirthDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
-		conPnlSetOnsetDate = new Controller_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-		conPnlNewStaff = new Controller_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
-		dlgStaff.contentPanel.add(conPnlNewStaff.getPanel(), BorderLayout.SOUTH);
-		conPnlNewStaff.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
+		conPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
+		conPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
+		ctrlPnlNewStaff = new Ctrl_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
+		dlgStaff.contentPanel.add(ctrlPnlNewStaff.getPanel(), BorderLayout.SOUTH);
+		ctrlPnlNewStaff.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
 		setListener();
 		
 	}
@@ -78,7 +80,7 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Controller_PnlNewNurse)conPnlNewStaff).prepareForNewNurse();	
+			((Ctrl_PnlNewNurse)ctrlPnlNewStaff).prepareForNewNurse();	
 			setModus(Modus.NEW);
 		}
 		

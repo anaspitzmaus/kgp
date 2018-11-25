@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 public class Pnl_CtrlTblExamFiles extends JPanel {
 	JButton btnActualize;
@@ -21,7 +21,7 @@ public class Pnl_CtrlTblExamFiles extends JPanel {
 		return this.btnActualize;
 	}
 	
-	public Pnl_CtrlTblExamFiles(Controller_PnlSetDate ctrlStartDate, Controller_PnlSetDate ctrlEndDate) {
+	public Pnl_CtrlTblExamFiles(Ctrl_PnlSetDate ctrlStartDate, Ctrl_PnlSetDate ctrlEndDate) {
 		FlowLayout flowLayout = (FlowLayout) getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		ctrlStartDate.getPanel().setLabelDateText("von:");

@@ -1,5 +1,6 @@
 package com.rose.kgp.personnel;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -7,21 +8,26 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.JTable;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.useful.DateMethods;
 
-abstract class Controller_DlgStaff {
+abstract class Ctrl_DlgStaff {
 
 	protected Dlg_Staff dlgStaff;
 	protected Tbl_PersonnelModel tblPersonnelModel;
 	protected ArrayList<? extends Staff> staff;
-	protected Controller_PnlNewStaff conPnlNewStaff;
+	protected Ctrl_PnlNewStaff ctrlPnlNewStaff;
 	protected Boolean newStaff = false;
 	protected enum Modus {NEW, UPDATE};
+	
+	public Ctrl_DlgStaff(Ctrl_PnlNewStaff ctrlPnlNewStaff, Dlg_Staff dlgStaff) {
+		this.ctrlPnlNewStaff = ctrlPnlNewStaff;
+		this.dlgStaff = dlgStaff;
+		dlgStaff.contentPanel.add(ctrlPnlNewStaff.getPanel(), BorderLayout.SOUTH);
+	}
 	
 	public void showDialog(){
 		dlgStaff.setModal(true);
@@ -36,12 +42,12 @@ abstract class Controller_DlgStaff {
 	abstract void removeListener();
 	
 	protected void showSelectedStaff(Staff staff) {
-		conPnlNewStaff.staff = staff;
-		conPnlNewStaff.getPanel().getTxtId().setText(staff.getId().toString());
-		conPnlNewStaff.getPanel().getTxtSurname().setText(staff.getSurname());
-		conPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());	
-		conPnlNewStaff.getPanel().getTxtAlias().setText(staff.getAlias());
-		conPnlNewStaff.conPnlSetOnsetDate.setDate(staff.getOnset());
+		ctrlPnlNewStaff.staff = staff;
+		ctrlPnlNewStaff.getPanel().getTxtId().setText(staff.getId().toString());
+		ctrlPnlNewStaff.getPanel().getTxtSurname().setText(staff.getSurname());
+		ctrlPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());	
+		ctrlPnlNewStaff.getPanel().getTxtAlias().setText(staff.getAlias());
+		ctrlPnlNewStaff.conPnlSetOnsetDate.setDate(staff.getOnset());
 		
 	}
 	
@@ -54,24 +60,31 @@ abstract class Controller_DlgStaff {
 	protected void setModus(Modus modus) {
 		switch (modus) {
 		case NEW:
-			conPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
-			conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-			conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-			conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
-			conPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
-			conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
+			ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
+			ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
+			ctrlPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
 			break;
 		case UPDATE:
-			conPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
-			conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-			conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-			conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
-			conPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
-			conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
+			ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
+			ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
+			ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
+			ctrlPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
 			break;
 		default:
 			break;
 		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addStaff(Staff staff) {
+		((ArrayList<Staff>)tblPersonnelModel.getStaff()).add((Staff)staff);
+		tblPersonnelModel.fireTableDataChanged();
 		
 	}
 	/**

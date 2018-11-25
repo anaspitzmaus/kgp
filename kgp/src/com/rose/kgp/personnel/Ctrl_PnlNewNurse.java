@@ -6,14 +6,14 @@ import java.time.LocalDate;
 
 import com.rose.kgp.db.SQL_INSERT;
 
-import com.rose.kgp.personnel.Controller_PnlNewPhysician.TitleListener;
-import com.rose.kgp.ui.Controller_PnlSetDate;
+import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleListener;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
-public class Controller_PnlNewNurse extends Controller_PnlNewStaff{
+public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
 	
 	private SetNewNurseListener setNewNurseListener;
 	
-	public Controller_PnlNewNurse(Controller_PnlSetDate conPnlSetBirthDate, Controller_PnlSetDate conPnlSetOnsetDate) {
+	public Ctrl_PnlNewNurse(Ctrl_PnlSetDate conPnlSetBirthDate, Ctrl_PnlSetDate conPnlSetOnsetDate) {
 		super(conPnlSetBirthDate, conPnlSetOnsetDate, new Pnl_NewNurse());
 		
 		this.pnlNewStaff.add(this.conPnlSetBirthDate.getPanel(), "cell 1 4,growx,aligny top");
