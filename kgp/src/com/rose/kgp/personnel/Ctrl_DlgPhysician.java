@@ -1,39 +1,33 @@
 package com.rose.kgp.personnel;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.ui.Ctrl_PnlSetDate;
+import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleModel;
+
 
 
 
 public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
-	//Dlg_Physician dlgPhysician;
-	//ArrayList<Physician> physicians;
-	//Controller_PnlNewPhysician conPnlNewPhysician;
-	
-	//Tbl_PhysicianModel tblPhysicianModel;
+	private SetNewPhysicianListener setNewPhysicianListener;
 	
 	
 	@SuppressWarnings("unchecked")
 	public Ctrl_DlgPhysician(Ctrl_PnlNewPhysician ctrlPnlNewPhysician) {
 		super(ctrlPnlNewPhysician, new Dlg_Physician());		
-		staff = SQL_SELECT.activePhysicians(LocalDate.now());
-		tblPersonnelModel = new Tbl_PhysicianModel((ArrayList<Physician>) staff);
+		staffMembers = SQL_SELECT.activePhysicians(LocalDate.now());
+		tblPersonnelModel = new Tbl_PhysicianModel((ArrayList<Physician>) staffMembers);
 		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
 		dlgStaff.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //		ColumnDateRenderer dateRenderer = new ColumnDateRenderer();
@@ -55,14 +49,24 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
 		dlgStaff.addNewStaffListener(newPhysicianListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dlgStaff.addRowSelectionListener(tblRowSelectionListener);		
+		dlgStaff.addRowSelectionListener(tblRowSelectionListener);
+		setNewPhysicianListener = new SetNewPhysicianListener();
+		ctrlPnlNewStaff.getPanel().addSetNewStaffListener(setNewPhysicianListener);
 	}
 	
 	
-	
-	protected void showSelectedPhysician(Physician physician){
+	@Override
+	protected void showSelectedStaff(Staff physician){
 		super.showSelectedStaff(physician);
-		((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setEnabled(true);		
+		//set the comboTitle enabled
+		((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setEnabled(true);
+		TitleModel model = (TitleModel) ((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().getModel();
+		//check the title of the selected physician and display at the comboBox
+		for(int i = 0; i<model.getSize(); i++){
+			if(model.getElementAt(i).equals(((Physician)physician).getTitle())){
+				((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setSelectedIndex(i);
+			}
+		}		
 	}
 	
 	class NewPhysicianListener implements ActionListener{
@@ -70,8 +74,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			((Ctrl_PnlNewPhysician)ctrlPnlNewStaff).prepareForNewPhysician();
-			setModus(Modus.NEW);
-			newStaff = true;
+			setModus(Modus.NEW);			
 		}
 		
 	}
@@ -137,6 +140,40 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	void removeListener() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	class SetNewPhysicianListener extends SetNewStaffListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {	
+			
+			if(dataReadyToStore()){
+				
+				//insert into database
+				Integer id = SQL_INSERT.Physician((Physician)staffMember, LocalDate.now());
+					if(id != null){
+						staffMember.setId(id);
+//						setChanged();
+//						notifyObservers(staffMembers);//notify the Controller of the Dialog 'Controller_DlgPhysician'
+					}
+					
+					removeListener(); //remove all listeners
+					//empty all input fields
+					ctrlPnlNewStaff.getPanel().getTxtSurname().setText("");
+					ctrlPnlNewStaff.getPanel().getTxtFirstname().setText("");
+					ctrlPnlNewStaff.getPanel().getTxtAlias().setText("");
+					ctrlPnlNewStaff.getPanel().getComboSex().setSelectedIndex(-1);
+					ctrlPnlNewStaff.getPanel().getComboSex().repaint();
+					((Pnl_NewPhysician) ctrlPnlNewStaff.getPanel()).getComboTitle().setSelectedIndex(-1);
+					((Pnl_NewPhysician) ctrlPnlNewStaff.getPanel()).getComboTitle().repaint();
+					//set the id of the staff to null
+					//staff.setId(null);
+					//add all listeners to the input fields
+					setListener();
+					
+				
+			}
+		}		
 	}
 
 	

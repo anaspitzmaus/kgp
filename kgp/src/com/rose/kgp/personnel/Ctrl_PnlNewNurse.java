@@ -16,8 +16,8 @@ public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
 	public Ctrl_PnlNewNurse(Ctrl_PnlSetDate conPnlSetBirthDate, Ctrl_PnlSetDate conPnlSetOnsetDate) {
 		super(conPnlSetBirthDate, conPnlSetOnsetDate, new Pnl_NewNurse());
 		
-		this.pnlNewStaff.add(this.conPnlSetBirthDate.getPanel(), "cell 1 4,growx,aligny top");
-		this.pnlNewStaff.add(this.conPnlSetOnsetDate.getPanel(), "cell 1 5,growx,aligny top");
+		this.pnlNewStaff.add(this.ctrlPnlSetBirthDate.getPanel(), "cell 1 4,growx,aligny top");
+		this.pnlNewStaff.add(this.ctrlPnlSetOnsetDate.getPanel(), "cell 1 5,growx,aligny top");
 		initializeExtraListener();
 		setExtraListener();
 	}
@@ -53,14 +53,14 @@ public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
 		public void actionPerformed(ActionEvent arg0) {	
 			
 			if(staff.getId() == null){//if a new physician has to be added
-				staff.setBirthday(conPnlSetBirthDate.getDate());
-				staff.setOnset(conPnlSetOnsetDate.getDate());
+				staff.setBirthday(ctrlPnlSetBirthDate.getDate());
+				staff.setOnset(ctrlPnlSetOnsetDate.getDate());
 				//insert into database
 				Integer id = SQL_INSERT.Nurse((Nurse)staff, LocalDate.now());
 					if(id != null){
 						staff.setId(id);
-						setChanged();
-						notifyObservers(staff);//notify the Controller of the Dialog 'Controller_DlgPhysician'
+//						setChanged();
+//						notifyObservers(staff);//notify the Controller of the Dialog 'Controller_DlgPhysician'
 					}
 					
 					removeListener(); //remove all listeners

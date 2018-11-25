@@ -1,13 +1,9 @@
 package com.rose.kgp.personnel;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
-import java.util.Observable;
-
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -16,8 +12,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import com.rose.kgp.useful.*;
-
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 /**
@@ -25,9 +19,9 @@ import com.rose.kgp.ui.Ctrl_PnlSetDate;
  * @author Ekkehard Rose
  *
  */
-public abstract class Ctrl_PnlNewStaff extends Observable{
+public abstract class Ctrl_PnlNewStaff {
 
-	protected Ctrl_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
+	protected Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	protected SexModel sexModel;
 	protected Pnl_NewStaff pnlNewStaff;
 	protected Staff staff; 
@@ -38,27 +32,35 @@ public abstract class Ctrl_PnlNewStaff extends Observable{
 	
 	protected Pnl_NewStaff getPanel(){
 		return this.pnlNewStaff;
-	}	
+	}
+	
+	protected Ctrl_PnlSetDate getCtrlPnlSetBirthDate(){
+		return this.ctrlPnlSetBirthDate;
+	}
+	
+	protected Ctrl_PnlSetDate getCtrlPnlSetOnsetDate(){
+		return this.ctrlPnlSetOnsetDate;
+	}
 	
 	/**
 	 * standard constructor
-	 * @param conPnlSetBirthDate
-	 * @param conPnlSetOnsetDate
+	 * @param ctrlPnlSetBirthDate
+	 * @param ctrlPnlSetOnsetDate
 	 * @param pnlNewStaff the JPanel that has to be controlled by this controller class
 	 */
-	public Ctrl_PnlNewStaff(Ctrl_PnlSetDate conPnlSetBirthDate, Ctrl_PnlSetDate conPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
+	public Ctrl_PnlNewStaff(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
 		staff = null;
 		this.pnlNewStaff = pnlNewStaff;
-		this.conPnlSetBirthDate = conPnlSetBirthDate;
-		this.conPnlSetOnsetDate = conPnlSetOnsetDate;
+		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
+		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
 		this.pnlNewStaff.getTxtFirstname().setEnabled(false);
 		this.pnlNewStaff.getTxtSurname().setEnabled(false);
 		this.pnlNewStaff.getComboSex().setEnabled(false);
 		sexModel = new SexModel();
 		this.pnlNewStaff.getComboSex().setModel(this.sexModel);
 		this.pnlNewStaff.getTxtAlias().setEnabled(false);
-		this.conPnlSetBirthDate.setPnlEnabled(false);
-		this.conPnlSetOnsetDate.setPnlEnabled(false);
+		this.ctrlPnlSetBirthDate.setPnlEnabled(false);
+		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
 		this.pnlNewStaff.getBtnSetStaff().setEnabled(false);
 		initializeListeners();
 		setListener();
@@ -104,13 +106,14 @@ public abstract class Ctrl_PnlNewStaff extends Observable{
 		pnlNewStaff.getComboSex().setEnabled(true);
 		pnlNewStaff.getTxtAlias().setEnabled(true);
 		pnlNewStaff.getBtnSetStaff().setEnabled(true);
-		this.conPnlSetBirthDate.setPnlEnabled(true);
-		this.conPnlSetOnsetDate.setPnlEnabled(true);
+		this.ctrlPnlSetBirthDate.setPnlEnabled(true);
+		this.ctrlPnlSetOnsetDate.setPnlEnabled(true);
 		//when activating the dateSetPnl: set the Date of the DateSetPanel to a specific date
-		this.conPnlSetBirthDate.setDate(LocalDate.now().minusYears(40));
-		this.conPnlSetOnsetDate.setDate(LocalDate.now());
+		this.ctrlPnlSetBirthDate.setDate(LocalDate.now().minusYears(40));
+		this.ctrlPnlSetOnsetDate.setDate(LocalDate.now());
 		pnlNewStaff.getTxtSurname().setText("");
 		pnlNewStaff.getTxtFirstname().setText("");
+		pnlNewStaff.getTxtAlias().setText("");
 		pnlNewStaff.getComboSex().setSelectedItem(null);
 		pnlNewStaff.getComboSex().repaint();
 		this.staff = staff;
@@ -304,59 +307,7 @@ public abstract class Ctrl_PnlNewStaff extends Observable{
 		}		
 	}
 	
-	abstract class SetNewStaffListener implements ActionListener{
-		
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			
-		}
-		/**
-		 * check if data of new staff member are valid for being stored in database
-		 * a new staff member must not have an id and need to have a valid surname and a valid firstname
-		 * @return true if data are valid, false if not
-		 */
-		protected Boolean dataReadyToStore(){
-			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
-				staff.setBirthday(conPnlSetBirthDate.getDate());
-				staff.setOnset(conPnlSetOnsetDate.getDate());				
-				return true;					
-			}else{
-				return false;
-			}
-		}
-		/**
-		 * check if surname of the new staff member is valid (need to have at least 1 character)
-		 * @return true if surname is valid, else return false
-		 */
-		private Boolean checkSurname(){
-			if(staff.getSurname().length() > 0){
-				return true;
-			}
-			MyColor myColor = MyColor.RED;
-			pnlNewStaff.getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
-			return false;
-			
-		}
-		
-		/**
-		 * check if firstname of the new staff member is valid (need to have at least 1 character)
-		 * @return true if firstname is valid, else return false
-		 */
-		private Boolean checkFirstname(){
-			if(staff.getFirstname().length() > 0){
-				return true;
-			}
-			MyColor myColor = MyColor.RED;
-			pnlNewStaff.getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
-			return false;
-			
-		}
-		
-		
-		
-	}
+	
 	
 	
 }

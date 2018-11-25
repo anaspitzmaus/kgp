@@ -1,7 +1,10 @@
 package com.rose.kgp.personnel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,16 +15,20 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleModel;
 import com.rose.kgp.useful.DateMethods;
+import com.rose.kgp.useful.MyColor;
 
 abstract class Ctrl_DlgStaff {
 
 	protected Dlg_Staff dlgStaff;
 	protected Tbl_PersonnelModel tblPersonnelModel;
-	protected ArrayList<? extends Staff> staff;
+	protected ArrayList<? extends Staff> staffMembers;
 	protected Ctrl_PnlNewStaff ctrlPnlNewStaff;
 	protected Boolean newStaff = false;
 	protected enum Modus {NEW, UPDATE};
+	protected Modus modus;
+	protected Staff staffMember;
 	
 	public Ctrl_DlgStaff(Ctrl_PnlNewStaff ctrlPnlNewStaff, Dlg_Staff dlgStaff) {
 		this.ctrlPnlNewStaff = ctrlPnlNewStaff;
@@ -41,14 +48,32 @@ abstract class Ctrl_DlgStaff {
 	
 	abstract void removeListener();
 	
-	protected void showSelectedStaff(Staff staff) {
-		ctrlPnlNewStaff.staff = staff;
-		ctrlPnlNewStaff.getPanel().getTxtId().setText(staff.getId().toString());
-		ctrlPnlNewStaff.getPanel().getTxtSurname().setText(staff.getSurname());
-		ctrlPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());	
-		ctrlPnlNewStaff.getPanel().getTxtAlias().setText(staff.getAlias());
-		ctrlPnlNewStaff.conPnlSetOnsetDate.setDate(staff.getOnset());
+	/**
+	 * displays the selected staff member (selected in the table)
+	 * @param staffMember
+	 */
+	protected void showSelectedStaff(Staff staffMember) {
+		ctrlPnlNewStaff.staff = staffMember;
+		//enable all textFields and dropDownFields
+		ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
+		ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
+		ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);	
+		ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
+		ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
 		
+		//fill in all textFields and comboBoxes
+		Ctrl_PnlNewStaff.SexModel model = (Ctrl_PnlNewStaff.SexModel) ctrlPnlNewStaff.getPanel().getComboSex().getModel();
+		//check the title of the selected physician and display at the comboBox
+		for(int i = 0; i<model.getSize(); i++){
+			if(model.getElementAt(i).equals(staffMember.getSex())){
+				ctrlPnlNewStaff.getPanel().getComboSex().setSelectedIndex(i);
+			}
+		}	
+		ctrlPnlNewStaff.getPanel().getTxtId().setText(staffMember.getId().toString());
+		ctrlPnlNewStaff.getPanel().getTxtSurname().setText(staffMember.getSurname());
+		ctrlPnlNewStaff.getPanel().getTxtFirstname().setText(staffMember.getFirstname());	
+		ctrlPnlNewStaff.getPanel().getTxtAlias().setText(staffMember.getAlias());
+		ctrlPnlNewStaff.ctrlPnlSetOnsetDate.setDate(staffMember.getOnset());		
 	}
 	
 	/**
@@ -58,27 +83,7 @@ abstract class Ctrl_DlgStaff {
 	 * @param modus
 	 */
 	protected void setModus(Modus modus) {
-		switch (modus) {
-		case NEW:
-			ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-			ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
-			ctrlPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
-			break;
-		case UPDATE:
-			ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-			ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
-			ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
-			ctrlPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
-			break;
-		default:
-			break;
-		}
-		
+		this.modus = modus;		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -98,9 +103,8 @@ abstract class Ctrl_DlgStaff {
 		public void valueChanged(ListSelectionEvent arg0) {
 			if(dlgStaff.getTblPersonnel().getSelectedRow() >= 0){				
 				Staff staffSel = (Staff) dlgStaff.getTblPersonnel().getModel().getValueAt(dlgStaff.getTblPersonnel().getSelectedRow(), 0);
-				setModus(Modus.UPDATE);
-				showSelectedStaff(staffSel);				
-				newStaff = false;
+				showSelectedStaff(staffSel);
+				setModus(Modus.UPDATE);			
 			 }
 			
 		}	
@@ -125,6 +129,60 @@ abstract class Ctrl_DlgStaff {
 			 return super.getTableCellRendererComponent(table, value, isSelected,
 		                hasFocus, row, column);
 		}
+	}
+	
+	abstract class SetNewStaffListener implements ActionListener{
+		
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+		}
+		/**
+		 * check if data of new staff member are valid for being stored in database
+		 * a new staff member must not have an id and need to have a valid surname and a valid firstname
+		 * @return true if data are valid, false if not
+		 */
+		protected Boolean dataReadyToStore(){
+			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
+				staffMember.setBirthday(ctrlPnlNewStaff.getCtrlPnlSetBirthDate().getDate());
+				staffMember.setOnset(ctrlPnlNewStaff.getCtrlPnlSetOnsetDate().getDate());				
+				return true;					
+			}else{
+				return false;
+			}
+		}
+		/**
+		 * check if surname of the new staff member is valid (need to have at least 1 character)
+		 * @return true if surname is valid, else return false
+		 */
+		private Boolean checkSurname(){
+			if(staffMember.getSurname().length() > 0){
+				return true;
+			}
+			MyColor myColor = MyColor.RED;
+			ctrlPnlNewStaff.getPanel().getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			return false;
+			
+		}
+		
+		/**
+		 * check if firstname of the new staff member is valid (need to have at least 1 character)
+		 * @return true if firstname is valid, else return false
+		 */
+		private Boolean checkFirstname(){
+			if(staffMember.getFirstname().length() > 0){
+				return true;
+			}
+			MyColor myColor = MyColor.RED;
+			ctrlPnlNewStaff.getPanel().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			return false;
+			
+		}
+		
+		
+		
 	}
 	
 	

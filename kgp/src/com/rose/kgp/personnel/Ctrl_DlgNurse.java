@@ -20,7 +20,7 @@ import com.rose.kgp.personnel.Ctrl_DlgStaff.Modus;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 
-public class Ctrl_DlgNurse extends Ctrl_DlgStaff implements Observer{
+public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 
 	//Dlg_Nurse dlgNurse;
 	//ArrayList<Nurse> nurses;
@@ -33,8 +33,8 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff implements Observer{
 		super(ctrlPnlNewNurse, new Dlg_Nurse());
 		
 		
-		staff = SQL_SELECT.activeNurses(LocalDate.now());
-		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staff);
+		staffMembers = SQL_SELECT.activeNurses(LocalDate.now());
+		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staffMembers);
 		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
 		dlgStaff.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -50,7 +50,7 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff implements Observer{
 		conPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
 		ctrlPnlNewStaff = new Ctrl_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
 		dlgStaff.contentPanel.add(ctrlPnlNewStaff.getPanel(), BorderLayout.SOUTH);
-		ctrlPnlNewStaff.addObserver(this); //add the Controller of this dialog as an observer to the controller of the included panel
+		
 		setListener();
 		
 	}
@@ -67,14 +67,6 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff implements Observer{
 	}
 	
 	
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public void update(Observable o, Object nurse) {
-		((ArrayList<Nurse>)tblPersonnelModel.getStaff()).add((Nurse)nurse);
-		tblPersonnelModel.fireTableDataChanged();
-		
-	}
 	
 	class NewNurseListener implements ActionListener{
 

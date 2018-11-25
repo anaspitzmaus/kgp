@@ -23,13 +23,13 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	
 	private TitleListener titleListener;
 	
-	private SetNewPhysicianListener setNewPhysicianListener;
+	
 	
 	public Ctrl_PnlNewPhysician(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate) {
 		super(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate, new Pnl_NewPhysician());
 		//pnlNewStaff = new Pnl_NewPhysician();
-		pnlNewStaff.add(this.conPnlSetBirthDate.getPanel(), "cell 1 5,growx,aligny top");
-		pnlNewStaff.add(this.conPnlSetOnsetDate.getPanel(), "cell 1 6,growx,aligny top");		
+		pnlNewStaff.add(this.ctrlPnlSetBirthDate.getPanel(), "cell 1 5,growx,aligny top");
+		pnlNewStaff.add(this.ctrlPnlSetOnsetDate.getPanel(), "cell 1 6,growx,aligny top");		
 		TitleModel titleModel = new TitleModel();
 		((Pnl_NewPhysician)pnlNewStaff).getComboTitle().setModel(titleModel);
 		
@@ -45,7 +45,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	
 	private void initializeExtraListener(){		
 		titleListener = new TitleListener();		
-		setNewPhysicianListener = new SetNewPhysicianListener();
+		
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	 */
 	private void setExtraListener(){				
 		((Pnl_NewPhysician) pnlNewStaff).addTitleListener(titleListener);		
-		pnlNewStaff.addSetNewStaffListener(setNewPhysicianListener);
+		
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	protected void removeListener(){
 		super.removeListener();
 		((Pnl_NewPhysician) pnlNewStaff).removeTitleListener(titleListener);
-		pnlNewStaff.removeSetNewStaffListener(setNewPhysicianListener);
+		
 	}
 	
 	
@@ -151,38 +151,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	}	
 	
 	
-	class SetNewPhysicianListener extends SetNewStaffListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {	
-			
-			if(dataReadyToStore()){
-				//insert into database
-				Integer id = SQL_INSERT.Physician((Physician)staff, LocalDate.now());
-					if(id != null){
-						staff.setId(id);
-						setChanged();
-						notifyObservers(staff);//notify the Controller of the Dialog 'Controller_DlgPhysician'
-					}
-					
-					removeListener(); //remove all listeners
-					//empty all input fields
-					pnlNewStaff.getTxtSurname().setText("");
-					pnlNewStaff.getTxtFirstname().setText("");
-					pnlNewStaff.getTxtAlias().setText("");
-					pnlNewStaff.getComboSex().setSelectedIndex(-1);
-					pnlNewStaff.getComboSex().repaint();
-					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setSelectedIndex(-1);
-					((Pnl_NewPhysician) pnlNewStaff).getComboTitle().repaint();
-					//set the id of the staff to null
-					//staff.setId(null);
-					//add all listeners to the input fields
-					setListener();
-					setExtraListener();
-				
-			}
-		}		
-	}
+	
 	
 	
 	
