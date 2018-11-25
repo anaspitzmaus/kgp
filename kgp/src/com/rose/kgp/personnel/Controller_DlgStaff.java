@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.Enumeration;
 
 import javax.swing.JTable;
 
@@ -21,6 +21,7 @@ abstract class Controller_DlgStaff {
 	protected ArrayList<? extends Staff> staff;
 	protected Controller_PnlNewStaff conPnlNewStaff;
 	protected Boolean newStaff = false;
+	protected enum Modus {NEW, UPDATE};
 	
 	public void showDialog(){
 		dlgStaff.setModal(true);
@@ -37,13 +38,40 @@ abstract class Controller_DlgStaff {
 	protected void showSelectedStaff(Staff staff) {
 		conPnlNewStaff.staff = staff;
 		conPnlNewStaff.getPanel().getTxtId().setText(staff.getId().toString());
-		conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-		conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-		conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
-		conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
 		conPnlNewStaff.getPanel().getTxtSurname().setText(staff.getSurname());
-		conPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());		
+		conPnlNewStaff.getPanel().getTxtFirstname().setText(staff.getFirstname());	
+		conPnlNewStaff.getPanel().getTxtAlias().setText(staff.getAlias());
 		conPnlNewStaff.conPnlSetOnsetDate.setDate(staff.getOnset());
+		
+	}
+	
+	/**
+	 * set the modus of the Dialog 
+	 * modus can be to create a new staff member (NEW)
+	 * or to update an already existing staff member (UPDATE)
+	 * @param modus
+	 */
+	protected void setModus(Modus modus) {
+		switch (modus) {
+		case NEW:
+			conPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
+			conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
+			conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
+			conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
+			conPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
+			conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
+			break;
+		case UPDATE:
+			conPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
+			conPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
+			conPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
+			conPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);
+			conPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
+			conPnlNewStaff.conPnlSetOnsetDate.setPnlEnabled(true);
+			break;
+		default:
+			break;
+		}
 		
 	}
 	/**
@@ -57,7 +85,8 @@ abstract class Controller_DlgStaff {
 		public void valueChanged(ListSelectionEvent arg0) {
 			if(dlgStaff.getTblPersonnel().getSelectedRow() >= 0){				
 				Staff staffSel = (Staff) dlgStaff.getTblPersonnel().getModel().getValueAt(dlgStaff.getTblPersonnel().getSelectedRow(), 0);
-				showSelectedStaff(staffSel);
+				setModus(Modus.UPDATE);
+				showSelectedStaff(staffSel);				
 				newStaff = false;
 			 }
 			

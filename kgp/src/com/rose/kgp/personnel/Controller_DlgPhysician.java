@@ -74,6 +74,7 @@ public class Controller_DlgPhysician extends Controller_DlgStaff implements Obse
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			((Controller_PnlNewPhysician)conPnlNewStaff).prepareForNewPhysician();
+			setModus(Modus.NEW);
 			newStaff = true;
 		}
 		
