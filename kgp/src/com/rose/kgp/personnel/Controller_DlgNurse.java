@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.personnel.Controller_DlgStaff.Modus;
 import com.rose.kgp.ui.Controller_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 
@@ -77,7 +78,8 @@ public class Controller_DlgNurse extends Controller_DlgStaff implements Observer
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Controller_PnlNewNurse)conPnlNewStaff).prepareForNewNurse();			
+			((Controller_PnlNewNurse)conPnlNewStaff).prepareForNewNurse();	
+			setModus(Modus.NEW);
 		}
 		
 	}
