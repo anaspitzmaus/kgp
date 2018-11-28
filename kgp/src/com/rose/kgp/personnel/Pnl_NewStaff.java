@@ -22,7 +22,7 @@ public abstract class Pnl_NewStaff extends JPanel {
 	private JTextField txtId;
 	private JLabel lblId;
 	private JLabel lblSex;
-	private JComboBox<String> comboSex;
+	private JComboBox<Sex> comboSex;
 	private JLabel lblSurname, lblFirstname;
 	private JTextField txtSurname;
 	private JTextField txtFirstname;
@@ -44,7 +44,7 @@ public abstract class Pnl_NewStaff extends JPanel {
 		return this.lblSex;
 	}
 	
-	protected JComboBox<String> getComboSex() {
+	protected JComboBox<Sex> getComboSex() {
 		return this.comboSex;
 	}	
 
@@ -102,7 +102,7 @@ public abstract class Pnl_NewStaff extends JPanel {
 		lblSex = new JLabel("Anrede:");
 		lblSex.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		comboSex = new JComboBox<String>();
+		comboSex = new JComboBox<Sex>();
 		comboSex.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		lblSurname = new JLabel("Nachname:");

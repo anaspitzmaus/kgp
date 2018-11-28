@@ -1,17 +1,26 @@
 package com.rose.kgp.personnel;
 
 
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 /**
@@ -58,6 +67,7 @@ public abstract class Ctrl_PnlNewStaff {
 		this.pnlNewStaff.getComboSex().setEnabled(false);
 		sexModel = new SexModel();
 		this.pnlNewStaff.getComboSex().setModel(this.sexModel);
+		this.pnlNewStaff.getComboSex().setRenderer(new SexComboRenderer());
 		this.pnlNewStaff.getTxtAlias().setEnabled(false);
 		this.ctrlPnlSetBirthDate.setPnlEnabled(false);
 		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
@@ -125,14 +135,19 @@ public abstract class Ctrl_PnlNewStaff {
 	 * @author Ekkehard Rose
 	 *
 	 */
-	class SexModel extends AbstractListModel<String> implements ComboBoxModel<String>{
+	class SexModel extends AbstractListModel<Sex> implements ComboBoxModel<Sex>{
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -5723909430414256587L;
-		String[] sex = {"Frau", "Herr"};
-		String selection = null;
+		
+		Sex selection = null;
+		List<Sex> sexList;
+		
+		public SexModel() {
+			sexList = Arrays.asList(Sex.values());			
+		}
 		
 		@Override
 		public void addListDataListener(ListDataListener arg0) {
@@ -140,13 +155,13 @@ public abstract class Ctrl_PnlNewStaff {
 		}
 
 		@Override
-		public String getElementAt(int index) {
-			return sex[index];
+		public Sex getElementAt(int index) {
+			return sexList.get(index);
 		}
 
 		@Override
 		public int getSize() {
-			return sex.length;
+			return sexList.size();
 		}
 
 		@Override
@@ -162,7 +177,7 @@ public abstract class Ctrl_PnlNewStaff {
 
 		@Override
 		public void setSelectedItem(Object sex) {
-			selection= (String) sex;
+			selection= (Sex) sex;
 			
 		}
 		
@@ -286,25 +301,76 @@ public abstract class Ctrl_PnlNewStaff {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void itemStateChanged(ItemEvent evt) {
-			JComboBox<String> comboSex;
+			JComboBox<Sex> comboSex;
 			if(evt.getSource() instanceof JComboBox<?>){
-				comboSex = (JComboBox<String>) evt.getSource();
-				switch ((String) comboSex.getModel().getSelectedItem()) {
-				case "Frau":
-					staff.setSexCode(1);
-					break;				
-				case "Herr":
-					staff.setSexCode(2);
-					break;
-				case "":
-					staff.setSexCode(0);
-					break;
-				default:
+				comboSex = (JComboBox<Sex>) evt.getSource();
+				
+				try{
+					switch ((Sex) comboSex.getModel().getSelectedItem()) {
+					case FEMALE:
+						staff.setSexCode(1);
+						break;				
+					case MALE:
+						staff.setSexCode(2);
+						break;
+					case INDIFFERENT:
+						staff.setSexCode(0);
+						break;
+					default:
 					staff.setSexCode(9);
 					break;
-				}				
+					}	
+				}catch(NullPointerException e){
+					staff.setSexCode(9);
+				}
+							
 			}			
 		}		
+	}
+	
+	/**
+	 * renderer for the comboBox that displays the sex
+	 * @author Administrator
+	 *
+	 */
+	class SexComboRenderer implements ListCellRenderer<Sex>{
+		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+		
+		@Override
+		public Component getListCellRendererComponent(
+				JList<? extends Sex> list, Sex value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			// TODO Auto-generated method stub
+			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
+			        isSelected, cellHasFocus);
+			if(value instanceof Sex){
+				switch(value){
+				case FEMALE:
+					renderer.setText("Frau");
+					break;
+				case MALE:
+					renderer.setText("Herr");
+					break;
+				case INDIFFERENT:
+					renderer.setText("Indifferent");
+					break;
+				case NOT_KNOWN:
+					renderer.setText("unbekannt");
+					break;
+				default:
+					renderer.setText("unbekannt");
+					break;
+				}
+			}else{//if value is null
+				renderer.setText("");
+			}
+			return renderer;
+		}
+
+		
+
+			
+		
 	}
 	
 	

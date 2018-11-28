@@ -73,8 +73,8 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Ctrl_PnlNewPhysician)ctrlPnlNewStaff).prepareForNewPhysician();
-			setModus(Modus.NEW);			
+			
+						
 		}
 		
 	}
