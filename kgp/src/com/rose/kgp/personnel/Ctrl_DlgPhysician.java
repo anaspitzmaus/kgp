@@ -3,6 +3,7 @@ package com.rose.kgp.personnel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -73,10 +74,10 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
+			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
+			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
 						
-		}
-		
+		}		
 	}
 	
 	
