@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleModel;
+import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleModel;
 
 
 
@@ -25,18 +25,18 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	
 	
 	@SuppressWarnings("unchecked")
-	public Ctrl_DlgPhysician(Ctrl_PnlNewPhysician ctrlPnlNewPhysician) {
+	public Ctrl_DlgPhysician(Ctrl_PnlPhysician ctrlPnlNewPhysician) {
 		super(ctrlPnlNewPhysician, new Dlg_Physician());		
 		staffMembers = SQL_SELECT.activePhysicians(LocalDate.now());
 		tblPersonnelModel = new Tbl_PhysicianModel((ArrayList<Physician>) staffMembers);
-		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
-		dlgStaff.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		dialog.getTblPersonnel().setModel(tblPersonnelModel);
+		dialog.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //		ColumnDateRenderer dateRenderer = new ColumnDateRenderer();
 //		dlgPhysician.getTblPersonnel().getColumnModel().getColumn(0).setCellRenderer(Physician.class, new PhysicianCellRenderer());
 //		this.getColumnModel().getColumn(1).setCellRenderer(dateRenderer);
 //		this.getColumnModel().getColumn(2).setCellRenderer(notationRenderer);	
-		dlgStaff.getTblPersonnel().setDefaultRenderer(Physician.class, new PhysicianCellRenderer());
-		dlgStaff.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
+		dialog.getTblPersonnel().setDefaultRenderer(Physician.class, new PhysicianCellRenderer());
+		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		
 		//add the panel for a new physician to the dialog
 		
@@ -48,11 +48,11 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	
 	@Override void setListener(){
 		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
-		dlgStaff.addNewStaffListener(newPhysicianListener);
+		dialog.addNewStaffListener(newPhysicianListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dlgStaff.addRowSelectionListener(tblRowSelectionListener);
+		dialog.addRowSelectionListener(tblRowSelectionListener);
 		setNewPhysicianListener = new SetNewPhysicianListener();
-		ctrlPnlNewStaff.getPanel().addSetNewStaffListener(setNewPhysicianListener);
+		ctrlPnlStaff.getPanel().addSetNewStaffListener(setNewPhysicianListener);
 	}
 	
 	
@@ -60,12 +60,12 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	protected void showSelectedStaff(Staff physician){
 		super.showSelectedStaff(physician);
 		//set the comboTitle enabled
-		((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setEnabled(true);
-		TitleModel model = (TitleModel) ((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().getModel();
+		((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().setEnabled(true);
+		TitleModel model = (TitleModel) ((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().getModel();
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<model.getSize(); i++){
 			if(model.getElementAt(i).equals(((Physician)physician).getTitle())){
-				((Pnl_NewPhysician)ctrlPnlNewStaff.getPanel()).getComboTitle().setSelectedIndex(i);
+				((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().setSelectedIndex(i);
 			}
 		}		
 	}
@@ -160,13 +160,13 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 					
 					removeListener(); //remove all listeners
 					//empty all input fields
-					ctrlPnlNewStaff.getPanel().getTxtSurname().setText("");
-					ctrlPnlNewStaff.getPanel().getTxtFirstname().setText("");
-					ctrlPnlNewStaff.getPanel().getTxtAlias().setText("");
-					ctrlPnlNewStaff.getPanel().getComboSex().setSelectedIndex(-1);
-					ctrlPnlNewStaff.getPanel().getComboSex().repaint();
-					((Pnl_NewPhysician) ctrlPnlNewStaff.getPanel()).getComboTitle().setSelectedIndex(-1);
-					((Pnl_NewPhysician) ctrlPnlNewStaff.getPanel()).getComboTitle().repaint();
+					ctrlPnlStaff.getPanel().getTxtSurname().setText("");
+					ctrlPnlStaff.getPanel().getTxtFirstname().setText("");
+					ctrlPnlStaff.getPanel().getTxtAlias().setText("");
+					ctrlPnlStaff.getPanel().getComboSex().setSelectedIndex(-1);
+					ctrlPnlStaff.getPanel().getComboSex().repaint();
+					((Pnl_Physician) ctrlPnlStaff.getPanel()).getComboTitle().setSelectedIndex(-1);
+					((Pnl_Physician) ctrlPnlStaff.getPanel()).getComboTitle().repaint();
 					//set the id of the staff to null
 					//staff.setId(null);
 					//add all listeners to the input fields

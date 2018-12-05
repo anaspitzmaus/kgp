@@ -15,16 +15,22 @@ public class Dlg_NewPhysician extends JDialog {
 
 	
 	private static final long serialVersionUID = 1347322373688853431L;
-
+	private Pnl_Physician pnlPhysician;
+	
+	protected Pnl_Physician getPnlPhysician(){
+		return this.pnlPhysician;
+	}
+	
 	/**
 	 * Create the dialog.
 	 */
-	public Dlg_NewPhysician(Pnl_NewPhysician pnlNewPhysician) {
+	public Dlg_NewPhysician(Pnl_Physician pnlPhysician) {
+		this.pnlPhysician = pnlPhysician;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		
 		
-		getContentPane().add(pnlNewPhysician, BorderLayout.CENTER);
+		getContentPane().add(pnlPhysician, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

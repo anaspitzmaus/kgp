@@ -22,56 +22,54 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
+import com.rose.kgp.ui.Pnl_SetDate;
 
 /**
  * abstract class that controls an inherited panel of the abstract panel 'Pnl_NewStaff' 
  * @author Ekkehard Rose
  *
  */
-public abstract class Ctrl_PnlNewStaff {
+public abstract class Ctrl_PnlStaff {
 
-	protected Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
+	protected Pnl_SetDate pnlSetBirthDate, pnlSetOnsetDate;
 	protected SexModel sexModel;
-	protected Pnl_NewStaff pnlNewStaff;
+	protected Pnl_Staff panel;
 	protected Staff staff; 
 	protected SurnameListener surnameListener;
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
 	protected SexListener sexListener;
 	
-	protected Pnl_NewStaff getPanel(){
-		return this.pnlNewStaff;
+	protected Pnl_Staff getPanel(){
+		return this.panel;
 	}
 	
-	protected Ctrl_PnlSetDate getCtrlPnlSetBirthDate(){
-		return this.ctrlPnlSetBirthDate;
+	protected Pnl_SetDate getPnlSetBirthDate(){
+		return this.pnlSetBirthDate;
 	}
 	
-	protected Ctrl_PnlSetDate getCtrlPnlSetOnsetDate(){
-		return this.ctrlPnlSetOnsetDate;
+	protected Pnl_SetDate getPnlSetOnsetDate(){
+		return this.pnlSetOnsetDate;
 	}
+	
+	protected SexModel getSexModel(){
+		return this.sexModel;
+	}
+	
+	
 	
 	/**
 	 * standard constructor
 	 * @param ctrlPnlSetBirthDate
 	 * @param ctrlPnlSetOnsetDate
-	 * @param pnlNewStaff the JPanel that has to be controlled by this controller class
+	 * @param panel the JPanel that has to be controlled by this controller class
 	 */
-	public Ctrl_PnlNewStaff(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate, Pnl_NewStaff pnlNewStaff) {
-		staff = null;
-		this.pnlNewStaff = pnlNewStaff;
-		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
-		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
-		this.pnlNewStaff.getTxtFirstname().setEnabled(false);
-		this.pnlNewStaff.getTxtSurname().setEnabled(false);
-		this.pnlNewStaff.getComboSex().setEnabled(false);
+	public Ctrl_PnlStaff() {
+		staff = null;	
 		sexModel = new SexModel();
-		this.pnlNewStaff.getComboSex().setModel(this.sexModel);
-		this.pnlNewStaff.getComboSex().setRenderer(new SexComboRenderer());
-		this.pnlNewStaff.getTxtAlias().setEnabled(false);
-		this.ctrlPnlSetBirthDate.setPnlEnabled(false);
-		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
-		this.pnlNewStaff.getBtnSetStaff().setEnabled(false);
+		this.panel.getComboSex().setModel(this.sexModel);
+		this.panel.getComboSex().setRenderer(new SexComboRenderer());
+
 		initializeListeners();
 		setListener();
 	}
@@ -88,10 +86,10 @@ public abstract class Ctrl_PnlNewStaff {
 	 */
 	protected void setListener(){
 		
-		pnlNewStaff.addSurnameListener(surnameListener);
-		pnlNewStaff.addFirstnameListener(firstnameListener);		
-		pnlNewStaff.addSexListener(sexListener);
-		pnlNewStaff.addAliasListener(aliasListener);
+		panel.addSurnameListener(surnameListener);
+		panel.addFirstnameListener(firstnameListener);		
+		panel.addSexListener(sexListener);
+		panel.addAliasListener(aliasListener);
 		
 	}
 	
@@ -99,11 +97,24 @@ public abstract class Ctrl_PnlNewStaff {
 	 * removes all listeners of input fields of that panel
 	 */
 	protected void removeListener(){
-		pnlNewStaff.removeSurnameListener(surnameListener);
-		pnlNewStaff.removeFirstnameListener(firstnameListener);
-		pnlNewStaff.removeAliasListener(aliasListener);		
-		pnlNewStaff.removeSexListener(sexListener);
-		
+		panel.removeSurnameListener(surnameListener);
+		panel.removeFirstnameListener(firstnameListener);
+		panel.removeAliasListener(aliasListener);		
+		panel.removeSexListener(sexListener);		
+	}
+	
+	protected void addPnlSetOnsetDate(Pnl_SetDate pnlSetOnsetDate){
+		if(this.pnlSetOnsetDate instanceof Pnl_SetDate){
+			this.pnlSetOnsetDate = pnlSetOnsetDate;
+			panel.add(this.pnlSetOnsetDate, "cell 1 4,growx,aligny top");
+		}
+	}
+	
+	protected void addPnlSetBirthDate(Pnl_SetDate pnlSetBirthDate){
+		if(this.pnlSetBirthDate instanceof Pnl_SetDate){
+			this.pnlSetBirthDate = pnlSetBirthDate;
+			panel.add(this.pnlSetBirthDate, "cell 1 5,growx,aligny top");
+		}
 	}
 	
 	/**
@@ -111,21 +122,21 @@ public abstract class Ctrl_PnlNewStaff {
 	 * therefore the data fields are enabled and the right dates are set
 	 */
 	protected void prepareForNewStaff(Staff staff){
-		pnlNewStaff.getTxtFirstname().setEnabled(true);
-		pnlNewStaff.getTxtSurname().setEnabled(true);
-		pnlNewStaff.getComboSex().setEnabled(true);
-		pnlNewStaff.getTxtAlias().setEnabled(true);
-		pnlNewStaff.getBtnSetStaff().setEnabled(true);
-		this.ctrlPnlSetBirthDate.setPnlEnabled(true);
-		this.ctrlPnlSetOnsetDate.setPnlEnabled(true);
+		panel.getTxtFirstname().setEnabled(true);
+		panel.getTxtSurname().setEnabled(true);
+		panel.getComboSex().setEnabled(true);
+		panel.getTxtAlias().setEnabled(true);
+		panel.getBtnSetStaff().setEnabled(true);
+//		this.ctrlPnlSetBirthDate.setPnlEnabled(true);
+//		this.ctrlPnlSetOnsetDate.setPnlEnabled(true);
 		//when activating the dateSetPnl: set the Date of the DateSetPanel to a specific date
-		this.ctrlPnlSetBirthDate.setDate(LocalDate.now().minusYears(40));
-		this.ctrlPnlSetOnsetDate.setDate(LocalDate.now());
-		pnlNewStaff.getTxtSurname().setText("");
-		pnlNewStaff.getTxtFirstname().setText("");
-		pnlNewStaff.getTxtAlias().setText("");
-		pnlNewStaff.getComboSex().setSelectedItem(null);
-		pnlNewStaff.getComboSex().repaint();
+//		this.ctrlPnlSetBirthDate.setDate(LocalDate.now().minusYears(40));
+//		this.ctrlPnlSetOnsetDate.setDate(LocalDate.now());
+		panel.getTxtSurname().setText("");
+		panel.getTxtFirstname().setText("");
+		panel.getTxtAlias().setText("");
+		panel.getComboSex().setSelectedItem(null);
+		panel.getComboSex().repaint();
 		this.staff = staff;
 		
 	}

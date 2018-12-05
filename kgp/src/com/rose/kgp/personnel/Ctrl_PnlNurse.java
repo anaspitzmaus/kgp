@@ -6,18 +6,38 @@ import java.time.LocalDate;
 
 import com.rose.kgp.db.SQL_INSERT;
 
-import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleListener;
+import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleListener;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
+/**
+ * control class of the panel, a new nurse can be created
+ * @author Administrator
+ *
+ */
 
-public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
+
+
+public class Ctrl_PnlNurse extends Ctrl_PnlStaff{
 	
 	private SetNewNurseListener setNewNurseListener;
+	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	
-	public Ctrl_PnlNewNurse(Ctrl_PnlSetDate conPnlSetBirthDate, Ctrl_PnlSetDate conPnlSetOnsetDate) {
-		super(conPnlSetBirthDate, conPnlSetOnsetDate, new Pnl_NewNurse());
 		
-		this.pnlNewStaff.add(this.ctrlPnlSetBirthDate.getPanel(), "cell 1 4,growx,aligny top");
-		this.pnlNewStaff.add(this.ctrlPnlSetOnsetDate.getPanel(), "cell 1 5,growx,aligny top");
+	protected Ctrl_PnlSetDate getCtrlPnlSetBirthDate() {
+		return ctrlPnlSetBirthDate;
+	}
+
+	protected Ctrl_PnlSetDate getCtrlPnlSetOnsetDate() {
+		return ctrlPnlSetOnsetDate;
+	}
+
+	public Ctrl_PnlNurse(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate) {
+		this.panel = new Pnl_Nurse();
+		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
+		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
+		//add the date panels to the basic panel
+		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
+		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());
+		
 		initializeExtraListener();
 		setExtraListener();
 	}
@@ -36,7 +56,7 @@ public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
 	 */
 	private void setExtraListener(){				
 				
-		pnlNewStaff.addSetNewStaffListener(setNewNurseListener);
+		panel.addSetNewStaffListener(setNewNurseListener);
 	}
 
 	/**
@@ -65,11 +85,11 @@ public class Ctrl_PnlNewNurse extends Ctrl_PnlNewStaff{
 					
 					removeListener(); //remove all listeners
 					//empty all input fields
-					pnlNewStaff.getTxtSurname().setText("");
-					pnlNewStaff.getTxtFirstname().setText("");
-					pnlNewStaff.getTxtAlias().setText("");
-					pnlNewStaff.getComboSex().setSelectedIndex(-1);
-					pnlNewStaff.getComboSex().repaint();
+					panel.getTxtSurname().setText("");
+					panel.getTxtFirstname().setText("");
+					panel.getTxtAlias().setText("");
+					panel.getComboSex().setSelectedIndex(-1);
+					panel.getComboSex().repaint();
 					
 					//add all listeners to the input fields
 					setExtraListener();

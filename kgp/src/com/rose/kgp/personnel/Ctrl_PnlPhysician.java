@@ -1,39 +1,45 @@
 package com.rose.kgp.personnel;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.time.LocalDate;
-
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
-
 import javax.swing.event.ListDataListener;
 
-
-import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
+import com.rose.kgp.ui.Pnl_SetDate;
 
-public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
+public class Ctrl_PnlPhysician extends Ctrl_PnlStaff{
 
 	
 	private TitleListener titleListener;
 	
+	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	
 	
-	public Ctrl_PnlNewPhysician(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate) {
-		super(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate, new Pnl_NewPhysician());
-		//pnlNewStaff = new Pnl_NewPhysician();
-		pnlNewStaff.add(this.ctrlPnlSetBirthDate.getPanel(), "cell 1 5,growx,aligny top");
-		pnlNewStaff.add(this.ctrlPnlSetOnsetDate.getPanel(), "cell 1 6,growx,aligny top");		
-		TitleModel titleModel = new TitleModel();
-		((Pnl_NewPhysician)pnlNewStaff).getComboTitle().setModel(titleModel);
+	protected Ctrl_PnlSetDate getCtrlPnlSetBirthDate() {
+		return ctrlPnlSetBirthDate;
+	}
+
+	protected Ctrl_PnlSetDate getCtrlPnlSetOnsetDate() {
+		return ctrlPnlSetOnsetDate;
+	}
+	
+	public Ctrl_PnlPhysician(Ctrl_PnlSetDate ctrlPnlSetBirthDate, Ctrl_PnlSetDate ctrlPnlSetOnsetDate) {		
 		
-		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setEnabled(false);
+		this.panel = new Pnl_Physician();
+		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
+		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
+		//add the date panels to the basic panel
+		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
+		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());		
+		TitleModel titleModel = new TitleModel();
+		((Pnl_Physician)panel).getComboTitle().setModel(titleModel);		
+		((Pnl_Physician) panel).getComboTitle().setEnabled(false);
 		
 		initializeExtraListener();
 		setExtraListener();
@@ -52,7 +58,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	 * add all listeners of input fields of that panel
 	 */
 	private void setExtraListener(){				
-		((Pnl_NewPhysician) pnlNewStaff).addTitleListener(titleListener);		
+		((Pnl_Physician) panel).addTitleListener(titleListener);		
 		
 	}
 	
@@ -62,7 +68,7 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	@Override
 	protected void removeListener(){
 		super.removeListener();
-		((Pnl_NewPhysician) pnlNewStaff).removeTitleListener(titleListener);
+		((Pnl_Physician) panel).removeTitleListener(titleListener);
 		
 	}
 	
@@ -79,9 +85,9 @@ public class Ctrl_PnlNewPhysician extends Ctrl_PnlNewStaff{
 	protected void prepareForNewPhysician(){
 		super.prepareForNewStaff(new Physician(""));
 		
-		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setEnabled(true);		
-		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().setSelectedItem(null);
-		((Pnl_NewPhysician) pnlNewStaff).getComboTitle().repaint();
+		((Pnl_Physician) panel).getComboTitle().setEnabled(true);		
+		((Pnl_Physician) panel).getComboTitle().setSelectedItem(null);
+		((Pnl_Physician) panel).getComboTitle().repaint();
 		
 	}
 	

@@ -2,7 +2,7 @@ package com.rose.kgp.personnel;
 
 
 
-public class Pnl_NewNurse extends Pnl_NewStaff{
+public class Pnl_Nurse extends Pnl_Staff{
 
 	/**
 	 * 
@@ -12,7 +12,7 @@ public class Pnl_NewNurse extends Pnl_NewStaff{
 	/**
 	 * Create the panel.
 	 */
-	public Pnl_NewNurse() {
+	public Pnl_Nurse() {
 		add(getLblId(), "cell 0 0,alignx left");
 		add(getTxtId(), "cell 1 0,alignx left");		
 		add(getLblSex(), "cell 0 1,alignx left");		

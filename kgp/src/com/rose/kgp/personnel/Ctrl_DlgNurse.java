@@ -29,27 +29,27 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	//Tbl_NurseModel tblNurseModel;
 	
 	@SuppressWarnings("unchecked")
-	public Ctrl_DlgNurse(Ctrl_PnlNewNurse ctrlPnlNewNurse) {
+	public Ctrl_DlgNurse(Ctrl_PnlNurse ctrlPnlNewNurse) {
 		super(ctrlPnlNewNurse, new Dlg_Nurse());
 		
 		
 		staffMembers = SQL_SELECT.activeNurses(LocalDate.now());
 		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staffMembers);
-		dlgStaff.getTblPersonnel().setModel(tblPersonnelModel);
-		dlgStaff.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		dialog.getTblPersonnel().setModel(tblPersonnelModel);
+		dialog.getTblPersonnel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 //		ColumnDateRenderer dateRenderer = new ColumnDateRenderer();
 //		dlgPhysician.getTblPersonnel().getColumnModel().getColumn(0).setCellRenderer(Physician.class, new PhysicianCellRenderer());
 //		this.getColumnModel().getColumn(1).setCellRenderer(dateRenderer);
 //		this.getColumnModel().getColumn(2).setCellRenderer(notationRenderer);	
-		dlgStaff.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
-		dlgStaff.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
+		dialog.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
+		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		
 		//add the panel for a new nurse to the dialog
 		conPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 		conPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-		ctrlPnlNewStaff = new Ctrl_PnlNewNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
-		dlgStaff.contentPanel.add(ctrlPnlNewStaff.getPanel(), BorderLayout.SOUTH);
+		ctrlPnlStaff = new Ctrl_PnlNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
+		dialog.contentPanel.add(ctrlPnlStaff.getPanel(), BorderLayout.SOUTH);
 		
 		setListener();
 		
@@ -57,9 +57,9 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	
 	void setListener(){
 		NewNurseListener newNurseListener = new NewNurseListener();
-		dlgStaff.addNewStaffListener(newNurseListener);
+		dialog.addNewStaffListener(newNurseListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dlgStaff.addRowSelectionListener(tblRowSelectionListener);	
+		dialog.addRowSelectionListener(tblRowSelectionListener);	
 	}
 	
 	void removeListener(){
@@ -72,7 +72,7 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			((Ctrl_PnlNewNurse)ctrlPnlNewStaff).prepareForNewNurse();	
+			((Ctrl_PnlNurse)ctrlPnlStaff).prepareForNewNurse();	
 			setModus(Modus.NEW);
 		}
 		

@@ -15,31 +15,36 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.rose.kgp.personnel.Ctrl_PnlNewPhysician.TitleModel;
+import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleModel;
 import com.rose.kgp.useful.DateMethods;
 import com.rose.kgp.useful.MyColor;
 
 abstract class Ctrl_DlgStaff {
 
-	protected Dlg_Staff dlgStaff;
+	protected Dlg_Staff dialog;
 	protected Tbl_PersonnelModel tblPersonnelModel;
 	protected ArrayList<? extends Staff> staffMembers;
-	protected Ctrl_PnlNewStaff ctrlPnlNewStaff;
+	protected Ctrl_PnlStaff ctrlPnlStaff;
 	protected Boolean newStaff = false;
 	protected enum Modus {NEW, UPDATE};
 	protected Modus modus;
 	protected Staff staffMember;
 	
-	public Ctrl_DlgStaff(Ctrl_PnlNewStaff ctrlPnlNewStaff, Dlg_Staff dlgStaff) {
-		this.ctrlPnlNewStaff = ctrlPnlNewStaff;
-		this.dlgStaff = dlgStaff;
-		dlgStaff.contentPanel.add(ctrlPnlNewStaff.getPanel(), BorderLayout.SOUTH);
+	protected void setDialog(Dlg_Staff dialog){
+		this.dialog = dialog;
+		dialog.contentPanel.add(this.ctrlPnlStaff.getPanel(), BorderLayout.SOUTH);
+	}
+	
+	public Ctrl_DlgStaff(Ctrl_PnlStaff ctrlPnlNewStaff) {
+		this.ctrlPnlStaff = ctrlPnlNewStaff;		
 	}
 	
 	public void showDialog(){
-		dlgStaff.setModal(true);
-		dlgStaff.setVisible(true);
-		dlgStaff.repaint();
+		if(this.dialog instanceof Dlg_Staff){
+			dialog.setModal(true);
+			dialog.setVisible(true);
+			dialog.repaint();
+		}
 	}
 	
 	abstract void setListener();
@@ -53,27 +58,27 @@ abstract class Ctrl_DlgStaff {
 	 * @param staffMember
 	 */
 	protected void showSelectedStaff(Staff staffMember) {
-		ctrlPnlNewStaff.staff = staffMember;
+		ctrlPnlStaff.staff = staffMember;
 		//enable all textFields and dropDownFields
-		ctrlPnlNewStaff.getPanel().getComboSex().setEnabled(true);		
-		ctrlPnlNewStaff.getPanel().getTxtSurname().setEnabled(true);
-		ctrlPnlNewStaff.getPanel().getTxtFirstname().setEnabled(true);	
-		ctrlPnlNewStaff.getPanel().getTxtAlias().setEnabled(true);
-		ctrlPnlNewStaff.getPanel().getBtnSetStaff().setEnabled(true);
+		ctrlPnlStaff.getPanel().getComboSex().setEnabled(true);		
+		ctrlPnlStaff.getPanel().getTxtSurname().setEnabled(true);
+		ctrlPnlStaff.getPanel().getTxtFirstname().setEnabled(true);	
+		ctrlPnlStaff.getPanel().getTxtAlias().setEnabled(true);
+		ctrlPnlStaff.getPanel().getBtnSetStaff().setEnabled(true);
 		
 		//fill in all textFields and comboBoxes
-		Ctrl_PnlNewStaff.SexModel model = (Ctrl_PnlNewStaff.SexModel) ctrlPnlNewStaff.getPanel().getComboSex().getModel();
+		Ctrl_PnlStaff.SexModel model = (Ctrl_PnlStaff.SexModel) ctrlPnlStaff.getPanel().getComboSex().getModel();
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<model.getSize(); i++){
 			if(model.getElementAt(i).equals(staffMember.getSex())){
-				ctrlPnlNewStaff.getPanel().getComboSex().setSelectedIndex(i);
+				ctrlPnlStaff.getPanel().getComboSex().setSelectedIndex(i);
 			}
 		}	
-		ctrlPnlNewStaff.getPanel().getTxtId().setText(staffMember.getId().toString());
-		ctrlPnlNewStaff.getPanel().getTxtSurname().setText(staffMember.getSurname());
-		ctrlPnlNewStaff.getPanel().getTxtFirstname().setText(staffMember.getFirstname());	
-		ctrlPnlNewStaff.getPanel().getTxtAlias().setText(staffMember.getAlias());
-		ctrlPnlNewStaff.ctrlPnlSetOnsetDate.setDate(staffMember.getOnset());		
+		ctrlPnlStaff.getPanel().getTxtId().setText(staffMember.getId().toString());
+		ctrlPnlStaff.getPanel().getTxtSurname().setText(staffMember.getSurname());
+		ctrlPnlStaff.getPanel().getTxtFirstname().setText(staffMember.getFirstname());	
+		ctrlPnlStaff.getPanel().getTxtAlias().setText(staffMember.getAlias());
+		//ctrlPnlNewStaff.ctrlPnlSetOnsetDate.setDate(staffMember.getOnset());		
 	}
 	
 	/**
@@ -101,8 +106,8 @@ abstract class Ctrl_DlgStaff {
 
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
-			if(dlgStaff.getTblPersonnel().getSelectedRow() >= 0){				
-				Staff staffSel = (Staff) dlgStaff.getTblPersonnel().getModel().getValueAt(dlgStaff.getTblPersonnel().getSelectedRow(), 0);
+			if(dialog.getTblPersonnel().getSelectedRow() >= 0){				
+				Staff staffSel = (Staff) dialog.getTblPersonnel().getModel().getValueAt(dialog.getTblPersonnel().getSelectedRow(), 0);
 				showSelectedStaff(staffSel);
 				setModus(Modus.UPDATE);			
 			 }
@@ -146,8 +151,8 @@ abstract class Ctrl_DlgStaff {
 		 */
 		protected Boolean dataReadyToStore(){
 			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
-				staffMember.setBirthday(ctrlPnlNewStaff.getCtrlPnlSetBirthDate().getDate());
-				staffMember.setOnset(ctrlPnlNewStaff.getCtrlPnlSetOnsetDate().getDate());				
+				staffMember.setBirthday(ctrlPnlStaff.getCtrlPnlSetBirthDate().getDate());
+				staffMember.setOnset(ctrlPnlStaff.getCtrlPnlSetOnsetDate().getDate());				
 				return true;					
 			}else{
 				return false;
@@ -162,7 +167,7 @@ abstract class Ctrl_DlgStaff {
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
-			ctrlPnlNewStaff.getPanel().getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			ctrlPnlStaff.getPanel().getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
 			return false;
 			
 		}
@@ -176,7 +181,7 @@ abstract class Ctrl_DlgStaff {
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
-			ctrlPnlNewStaff.getPanel().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			ctrlPnlStaff.getPanel().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
 			return false;
 			
 		}

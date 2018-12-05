@@ -13,11 +13,9 @@ import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
-public abstract class Pnl_NewStaff extends JPanel {
+public abstract class Pnl_Staff extends JPanel {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -4454238429902436587L;
 	private JTextField txtId;
 	private JLabel lblId;
@@ -88,7 +86,7 @@ public abstract class Pnl_NewStaff extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Pnl_NewStaff() {
+	public Pnl_Staff() {
 		setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][grow]"));
 		
 		lblId = new JLabel("Id:");

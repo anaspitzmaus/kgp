@@ -15,7 +15,7 @@ import javax.swing.event.DocumentListener;
 import net.miginfocom.swing.MigLayout;
 
 
-public class Pnl_NewPhysician extends Pnl_NewStaff {
+public class Pnl_Physician extends Pnl_Staff {
 	/**
 	 * 
 	 */
@@ -28,7 +28,7 @@ public class Pnl_NewPhysician extends Pnl_NewStaff {
 	/**
 	 * Create the panel.
 	 */
-	public Pnl_NewPhysician() {
+	public Pnl_Physician() {
 		
 		add(getLblId(), "cell 0 0,alignx left");
 		add(getTxtId(), "cell 1 0,alignx left");		
