@@ -5,22 +5,29 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
+
 import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleModel;
+
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 import com.rose.kgp.useful.MyColor;
@@ -30,13 +37,14 @@ abstract class Ctrl_DlgStaff {
 	protected Dlg_Staff dialog;
 	protected Tbl_PersonnelModel tblPersonnelModel;
 	protected ArrayList<? extends Staff> staffMembers;
-	protected Ctrl_PnlStaff ctrlPnlStaff;
 	protected Boolean newStaff = false;
 	protected enum Modus {NEW, UPDATE};
 	protected Modus modus;
-	protected Staff staffMember;
+	protected Staff staffMember; //the selected staffMember
 	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	SexModel sexModel;
+	SexComboRenderer sexComboRenderer;
+	SexListener sexListener;
 	
 	
 	
@@ -52,7 +60,9 @@ abstract class Ctrl_DlgStaff {
 	public Ctrl_DlgStaff() {
 		ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 		ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));		
-		
+		sexModel = new SexModel();
+		sexComboRenderer = new SexComboRenderer();
+		sexListener = new SexListener();
 	}
 	
 	public void showDialog(){
@@ -182,7 +192,7 @@ abstract class Ctrl_DlgStaff {
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
-			ctrlPnlStaff.getPanel().getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			dialog.getPnlStaff().getTxtSurname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
 			return false;
 			
 		}
@@ -196,7 +206,7 @@ abstract class Ctrl_DlgStaff {
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
-			ctrlPnlStaff.getPanel().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
+			dialog.getPnlStaff().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
 			return false;
 			
 		}		
@@ -204,7 +214,7 @@ abstract class Ctrl_DlgStaff {
 	}
 	
 	/**
-	 * model for the comboBox that shows the address of a new staff member
+	 * model for the comboBox that shows the sex of the staff member
 	 * @author Ekkehard Rose
 	 *
 	 */
@@ -254,6 +264,88 @@ abstract class Ctrl_DlgStaff {
 			
 		}
 		
+	}
+	
+	/**
+	 * renderer for the comboBox that displays the sex
+	 * @author Administrator
+	 *
+	 */
+	class SexComboRenderer implements ListCellRenderer<Sex>{
+		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+		
+		@Override
+		public Component getListCellRendererComponent(
+				JList<? extends Sex> list, Sex value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			// TODO Auto-generated method stub
+			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
+			        isSelected, cellHasFocus);
+			if(value instanceof Sex){
+				switch(value){
+				case FEMALE:
+					renderer.setText("Frau");
+					break;
+				case MALE:
+					renderer.setText("Herr");
+					break;
+				case INDIFFERENT:
+					renderer.setText("Indifferent");
+					break;
+				case NOT_KNOWN:
+					renderer.setText("unbekannt");
+					break;
+				default:
+					renderer.setText("unbekannt");
+					break;
+				}
+			}else{//if value is null
+				renderer.setText("");
+			}
+			return renderer;
+		}
+
+		
+
+			
+		
+	}
+	
+	/**
+	 * listener for setting the sex of the staff member depending on its address 
+	 * @author Ekkehard Rose
+	 *
+	 */
+	class SexListener implements ItemListener{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void itemStateChanged(ItemEvent evt) {
+			JComboBox<Sex> comboSex;
+			if(evt.getSource() instanceof JComboBox<?>){
+				comboSex = (JComboBox<Sex>) evt.getSource();
+				
+				try{
+					switch ((Sex) comboSex.getModel().getSelectedItem()) {
+					case FEMALE:
+						staffMember.setSexCode(1);
+						break;				
+					case MALE:
+						staffMember.setSexCode(2);
+						break;
+					case INDIFFERENT:
+						staffMember.setSexCode(0);
+						break;
+					default:
+					staffMember.setSexCode(9);
+					break;
+					}	
+				}catch(NullPointerException e){
+					staffMember.setSexCode(9);
+				}
+							
+			}			
+		}		
 	}
 	
 	

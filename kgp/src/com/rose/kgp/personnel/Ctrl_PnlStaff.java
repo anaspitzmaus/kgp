@@ -31,8 +31,7 @@ import com.rose.kgp.ui.Pnl_SetDate;
  */
 public abstract class Ctrl_PnlStaff {
 
-	protected Pnl_SetDate pnlSetBirthDate, pnlSetOnsetDate;
-	protected SexModel sexModel;
+	protected Pnl_SetDate pnlSetBirthDate, pnlSetOnsetDate;	
 	protected Pnl_Staff panel;
 	protected Staff staff; 
 	protected SurnameListener surnameListener;
@@ -52,9 +51,7 @@ public abstract class Ctrl_PnlStaff {
 		return this.pnlSetOnsetDate;
 	}
 	
-	protected SexModel getSexModel(){
-		return this.sexModel;
-	}
+	
 	
 	
 	
@@ -65,10 +62,8 @@ public abstract class Ctrl_PnlStaff {
 	 * @param panel the JPanel that has to be controlled by this controller class
 	 */
 	public Ctrl_PnlStaff() {
-		staff = null;	
-		sexModel = new SexModel();
-		this.panel.getComboSex().setModel(this.sexModel);
-		this.panel.getComboSex().setRenderer(new SexComboRenderer());
+		staff = null;			
+		
 
 		initializeListeners();
 		setListener();
@@ -141,58 +136,6 @@ public abstract class Ctrl_PnlStaff {
 		
 	}
 	
-	/**
-	 * model for the comboBox that shows the address of a new physician
-	 * @author Ekkehard Rose
-	 *
-	 */
-	class SexModel extends AbstractListModel<Sex> implements ComboBoxModel<Sex>{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -5723909430414256587L;
-		
-		Sex selection = null;
-		List<Sex> sexList;
-		
-		public SexModel() {
-			sexList = Arrays.asList(Sex.values());			
-		}
-		
-		@Override
-		public void addListDataListener(ListDataListener arg0) {
-			// TODO Auto-generated method stub			
-		}
-
-		@Override
-		public Sex getElementAt(int index) {
-			return sexList.get(index);
-		}
-
-		@Override
-		public int getSize() {
-			return sexList.size();
-		}
-
-		@Override
-		public void removeListDataListener(ListDataListener arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public Object getSelectedItem() {
-			return selection;
-		}
-
-		@Override
-		public void setSelectedItem(Object sex) {
-			selection= (Sex) sex;
-			
-		}
-		
-	}
 	
 	/**
 	 * Document Listener for changing the surname of the staff member
@@ -302,87 +245,9 @@ public abstract class Ctrl_PnlStaff {
 		}
 	}
 	
-	/**
-	 * listener for setting the sex of the staff member depending on its address 
-	 * @author Ekkehard Rose
-	 *
-	 */
-	class SexListener implements ItemListener{
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public void itemStateChanged(ItemEvent evt) {
-			JComboBox<Sex> comboSex;
-			if(evt.getSource() instanceof JComboBox<?>){
-				comboSex = (JComboBox<Sex>) evt.getSource();
-				
-				try{
-					switch ((Sex) comboSex.getModel().getSelectedItem()) {
-					case FEMALE:
-						staff.setSexCode(1);
-						break;				
-					case MALE:
-						staff.setSexCode(2);
-						break;
-					case INDIFFERENT:
-						staff.setSexCode(0);
-						break;
-					default:
-					staff.setSexCode(9);
-					break;
-					}	
-				}catch(NullPointerException e){
-					staff.setSexCode(9);
-				}
-							
-			}			
-		}		
-	}
 	
-	/**
-	 * renderer for the comboBox that displays the sex
-	 * @author Administrator
-	 *
-	 */
-	class SexComboRenderer implements ListCellRenderer<Sex>{
-		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
-		
-		@Override
-		public Component getListCellRendererComponent(
-				JList<? extends Sex> list, Sex value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			// TODO Auto-generated method stub
-			JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
-			        isSelected, cellHasFocus);
-			if(value instanceof Sex){
-				switch(value){
-				case FEMALE:
-					renderer.setText("Frau");
-					break;
-				case MALE:
-					renderer.setText("Herr");
-					break;
-				case INDIFFERENT:
-					renderer.setText("Indifferent");
-					break;
-				case NOT_KNOWN:
-					renderer.setText("unbekannt");
-					break;
-				default:
-					renderer.setText("unbekannt");
-					break;
-				}
-			}else{//if value is null
-				renderer.setText("");
-			}
-			return renderer;
-		}
-
-		
-
-			
-		
-	}
+	
+	
 	
 	
 	

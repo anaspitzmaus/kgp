@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import com.rose.kgp.db.SQL_INSERT;
 
-import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleListener;
+
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 /**
  * control class of the panel, a new nurse can be created
