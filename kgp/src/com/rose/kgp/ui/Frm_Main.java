@@ -45,10 +45,17 @@ public class Frm_Main extends JFrame {
 		setContentPane(contentPane);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Leistungserfassung", panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
+		//create the tab for the schedule
+		JPanel pnlSchedule = new JPanel();
+		tabbedPane.addTab("Dienstplan", pnlSchedule);
+		panel.setLayout(new BorderLayout(0,0));
+		
+		//create the settings panel and add it to the tab
 		ctrlSettings = new CtrlSettings(); // create the controller for the settings panels
 		tabbedPane.addTab("Einstellungen", ctrlSettings.getPnlSettings()); //add panel for the settings to the tab		
 		

@@ -1,5 +1,7 @@
 package com.rose.kgp.personnel;
 
+import com.rose.kgp.ui.Pnl_SetDate;
+
 
 
 public class Pnl_Nurse extends Pnl_Staff{
@@ -34,6 +36,22 @@ public class Pnl_Nurse extends Pnl_Staff{
 		add(getTxtAlias(), "cell 1 6,growx");		
 		
 		add(getBtnSetStaff(), "cell 1 7,alignx right");
+	}
+
+	@Override
+	protected void addBirthDatePanel(Pnl_SetDate datePanel){		
+		if(!(birthPanel instanceof Pnl_SetDate)){
+			this.birthPanel = datePanel;
+			add(datePanel, "cell 1 5,growx,aligny top");
+		}
+	}
+	
+	@Override
+	protected void addOnsetDatePanel(Pnl_SetDate datePanel){
+		if(!(onsetPanel instanceof Pnl_SetDate)){
+			this.onsetPanel = datePanel;
+			add(datePanel, "cell 1 4,growx,aligny top");
+		}
 	}
 
 }

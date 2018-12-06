@@ -1,6 +1,7 @@
 package com.rose.kgp.personnel;
 
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog.ModalityType;
@@ -16,17 +17,20 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleModel;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 
 
 
-public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
+public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	private SetNewPhysicianListener setNewPhysicianListener;
 	
 	
 	@SuppressWarnings("unchecked")
-	public Ctrl_DlgPhysician(Ctrl_PnlPhysician ctrlPnlNewPhysician) {
-		super(ctrlPnlNewPhysician, new Dlg_Physician());		
+	public Ctrl_DlgPhysician() {
+		
+		dialog = new Dlg_Physician(getCtrlPnlSetOnsetDate().getPanel(), getCtrlPnlSetBirthDate().getPanel());//instantiate the Dialog
+			
 		staffMembers = SQL_SELECT.activePhysicians(LocalDate.now());
 		tblPersonnelModel = new Tbl_PhysicianModel((ArrayList<Physician>) staffMembers);
 		dialog.getTblPersonnel().setModel(tblPersonnelModel);
@@ -37,7 +41,8 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 //		this.getColumnModel().getColumn(2).setCellRenderer(notationRenderer);	
 		dialog.getTblPersonnel().setDefaultRenderer(Physician.class, new PhysicianCellRenderer());
 		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
-		
+		sexModel = new SexModel();
+		dialog.getPnlStaff().getComboSex().setModel(sexModel);
 		//add the panel for a new physician to the dialog
 		
 		
@@ -52,7 +57,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dialog.addRowSelectionListener(tblRowSelectionListener);
 		setNewPhysicianListener = new SetNewPhysicianListener();
-		ctrlPnlStaff.getPanel().addSetNewStaffListener(setNewPhysicianListener);
+		dialog.getPnlStaff().addSetNewStaffListener(setNewPhysicianListener);
 	}
 	
 	
@@ -60,7 +65,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff {
 	protected void showSelectedStaff(Staff physician){
 		super.showSelectedStaff(physician);
 		//set the comboTitle enabled
-		((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().setEnabled(true);
+		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(true);
 		TitleModel model = (TitleModel) ((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().getModel();
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<model.getSize(); i++){

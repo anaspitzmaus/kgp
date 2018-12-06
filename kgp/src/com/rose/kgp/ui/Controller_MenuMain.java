@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import com.rose.kgp.allocator.Ctrl_DlgClinicalInstitution;
 import com.rose.kgp.personnel.Ctrl_DlgNurse;
 import com.rose.kgp.personnel.Ctrl_DlgPhysician;
-import com.rose.kgp.personnel.Ctrl_PnlNewNurse;
-import com.rose.kgp.personnel.Ctrl_PnlNewPhysician;
+import com.rose.kgp.personnel.Ctrl_PnlNurse;
+import com.rose.kgp.personnel.Ctrl_PnlPhysician;
 
 public class Controller_MenuMain {
 	Pnl_MenuMain pnlMenuMain;
@@ -28,9 +28,9 @@ public class Controller_MenuMain {
 				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
 				//instantiate the controller of the panel for the new physician
-				Ctrl_PnlNewPhysician ctrlPnlNewPhysician = new Ctrl_PnlNewPhysician(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
+				
 				//instantiate the controller of the dialog
-				Ctrl_DlgPhysician ctrlDlgPhysician = new Ctrl_DlgPhysician(ctrlPnlNewPhysician);
+				Ctrl_DlgPhysician ctrlDlgPhysician = new Ctrl_DlgPhysician();
 				ctrlDlgPhysician.showDialog();
 			}
 		});
@@ -43,7 +43,7 @@ public class Controller_MenuMain {
 				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
 				//instantiate the controller of the panel for the new nurse
-				Ctrl_PnlNewNurse ctrlPnlNewNurse = new Ctrl_PnlNewNurse(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
+				Ctrl_PnlNurse ctrlPnlNewNurse = new Ctrl_PnlNurse(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
 				//instantiate the controller of the dialog
 				Ctrl_DlgNurse conDlgNurse = new Ctrl_DlgNurse(ctrlPnlNewNurse);
 				conDlgNurse.showDialog();

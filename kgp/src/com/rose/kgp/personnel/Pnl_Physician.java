@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
+import com.rose.kgp.ui.Pnl_SetDate;
+
 import net.miginfocom.swing.MigLayout;
 
 
@@ -22,7 +24,7 @@ public class Pnl_Physician extends Pnl_Staff {
 	private static final long serialVersionUID = -5495745236150149390L;
 	
 	private JComboBox<String> comboTitle;
-		
+	
 	
 
 	/**
@@ -73,7 +75,25 @@ public class Pnl_Physician extends Pnl_Staff {
 	protected void removeTitleListener(ItemListener l){
 		comboTitle.removeItemListener(l);
 	}	
-
+	
+	@Override
+	protected void addBirthDatePanel(Pnl_SetDate datePanel){		
+		if(!(birthPanel instanceof Pnl_SetDate)){
+			this.birthPanel = datePanel;
+			add(datePanel, "cell 1 6,growx,aligny top");
+		}
+	}
+	
+	@Override
+	protected void addOnsetDatePanel(Pnl_SetDate datePanel){
+		if(!(onsetPanel instanceof Pnl_SetDate)){
+			this.onsetPanel = datePanel;
+			add(datePanel, "cell 1 5,growx,aligny top");
+		}
+	}
+	
+	
+ 
 	
 
 	

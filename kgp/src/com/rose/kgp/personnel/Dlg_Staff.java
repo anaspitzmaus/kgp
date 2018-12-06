@@ -23,6 +23,19 @@ public abstract class Dlg_Staff extends JDialog {
 	protected final JPanel contentPanel = new JPanel();
 	protected JButton btnNewStaff;
 	protected JTable tblPersonnel;
+	private Pnl_Staff pnlStaff;
+	
+	
+	
+	protected Pnl_Staff getPnlStaff() {
+		return pnlStaff;
+	}
+	
+	protected void setPnlStaff(Pnl_Staff pnlStaff) {
+		this.pnlStaff = pnlStaff;
+	}
+
+
 
 	/**
 	 * Create the dialog.
@@ -47,6 +60,8 @@ public abstract class Dlg_Staff extends JDialog {
 		//tblPersonnel.getColumnModel().getColumn(0).setPreferredWidth(120);
 						
 		scrollPaneTblPersonnel.setViewportView(tblPersonnel);
+		
+		
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

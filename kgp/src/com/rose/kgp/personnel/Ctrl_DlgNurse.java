@@ -30,7 +30,7 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	
 	@SuppressWarnings("unchecked")
 	public Ctrl_DlgNurse(Ctrl_PnlNurse ctrlPnlNewNurse) {
-		super(ctrlPnlNewNurse, new Dlg_Nurse());
+		
 		
 		
 		staffMembers = SQL_SELECT.activeNurses(LocalDate.now());

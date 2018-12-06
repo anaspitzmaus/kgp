@@ -8,14 +8,20 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
+import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
 import javax.swing.JTable;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.personnel.Ctrl_PnlPhysician.TitleModel;
+import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 import com.rose.kgp.useful.MyColor;
 
@@ -29,14 +35,24 @@ abstract class Ctrl_DlgStaff {
 	protected enum Modus {NEW, UPDATE};
 	protected Modus modus;
 	protected Staff staffMember;
+	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
+	SexModel sexModel;
 	
-	protected void setDialog(Dlg_Staff dialog){
-		this.dialog = dialog;
-		dialog.contentPanel.add(this.ctrlPnlStaff.getPanel(), BorderLayout.SOUTH);
+	
+	
+	protected Ctrl_PnlSetDate getCtrlPnlSetBirthDate() {
+		return ctrlPnlSetBirthDate;
 	}
-	
-	public Ctrl_DlgStaff(Ctrl_PnlStaff ctrlPnlNewStaff) {
-		this.ctrlPnlStaff = ctrlPnlNewStaff;		
+
+	protected Ctrl_PnlSetDate getCtrlPnlSetOnsetDate() {
+		return ctrlPnlSetOnsetDate;
+	}
+
+		
+	public Ctrl_DlgStaff() {
+		ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
+		ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));		
+		
 	}
 	
 	public void showDialog(){
@@ -58,26 +74,25 @@ abstract class Ctrl_DlgStaff {
 	 * @param staffMember
 	 */
 	protected void showSelectedStaff(Staff staffMember) {
-		ctrlPnlStaff.staff = staffMember;
+		this.staffMember = staffMember;
 		//enable all textFields and dropDownFields
-		ctrlPnlStaff.getPanel().getComboSex().setEnabled(true);		
-		ctrlPnlStaff.getPanel().getTxtSurname().setEnabled(true);
-		ctrlPnlStaff.getPanel().getTxtFirstname().setEnabled(true);	
-		ctrlPnlStaff.getPanel().getTxtAlias().setEnabled(true);
-		ctrlPnlStaff.getPanel().getBtnSetStaff().setEnabled(true);
+		dialog.getPnlStaff().getComboSex().setEnabled(true);		
+		dialog.getPnlStaff().getTxtSurname().setEnabled(true);
+		dialog.getPnlStaff().getTxtFirstname().setEnabled(true);	
+		dialog.getPnlStaff().getTxtAlias().setEnabled(true);
+		dialog.getPnlStaff().getBtnSetStaff().setEnabled(true);
 		
-		//fill in all textFields and comboBoxes
-		Ctrl_PnlStaff.SexModel model = (Ctrl_PnlStaff.SexModel) ctrlPnlStaff.getPanel().getComboSex().getModel();
+		
 		//check the title of the selected physician and display at the comboBox
-		for(int i = 0; i<model.getSize(); i++){
-			if(model.getElementAt(i).equals(staffMember.getSex())){
-				ctrlPnlStaff.getPanel().getComboSex().setSelectedIndex(i);
+		for(int i = 0; i<sexModel.getSize(); i++){
+			if(sexModel.getElementAt(i).equals(staffMember.getSex())){
+				dialog.getPnlStaff().getComboSex().setSelectedIndex(i);
 			}
 		}	
-		ctrlPnlStaff.getPanel().getTxtId().setText(staffMember.getId().toString());
-		ctrlPnlStaff.getPanel().getTxtSurname().setText(staffMember.getSurname());
-		ctrlPnlStaff.getPanel().getTxtFirstname().setText(staffMember.getFirstname());	
-		ctrlPnlStaff.getPanel().getTxtAlias().setText(staffMember.getAlias());
+		dialog.getPnlStaff().getTxtId().setText(staffMember.getId().toString());
+		dialog.getPnlStaff().getTxtSurname().setText(staffMember.getSurname());
+		dialog.getPnlStaff().getTxtFirstname().setText(staffMember.getFirstname());	
+		dialog.getPnlStaff().getTxtAlias().setText(staffMember.getAlias());
 		//ctrlPnlNewStaff.ctrlPnlSetOnsetDate.setDate(staffMember.getOnset());		
 	}
 	
@@ -151,8 +166,8 @@ abstract class Ctrl_DlgStaff {
 		 */
 		protected Boolean dataReadyToStore(){
 			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
-				staffMember.setBirthday(ctrlPnlStaff.getCtrlPnlSetBirthDate().getDate());
-				staffMember.setOnset(ctrlPnlStaff.getCtrlPnlSetOnsetDate().getDate());				
+				staffMember.setBirthday(getCtrlPnlSetBirthDate().getDate());
+				staffMember.setOnset(getCtrlPnlSetOnsetDate().getDate());				
 				return true;					
 			}else{
 				return false;
@@ -184,9 +199,60 @@ abstract class Ctrl_DlgStaff {
 			ctrlPnlStaff.getPanel().getTxtFirstname().setBackground(new Color(myColor.getR(), myColor.getG(), myColor.getB()));
 			return false;
 			
+		}		
+		
+	}
+	
+	/**
+	 * model for the comboBox that shows the address of a new staff member
+	 * @author Ekkehard Rose
+	 *
+	 */
+	class SexModel extends AbstractListModel<Sex> implements ComboBoxModel<Sex>{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -5723909430414256587L;
+		
+		Sex selection = null;
+		List<Sex> sexList;
+		
+		public SexModel() {
+			sexList = Arrays.asList(Sex.values());			
 		}
 		
-		
+		@Override
+		public void addListDataListener(ListDataListener arg0) {
+			// TODO Auto-generated method stub			
+		}
+
+		@Override
+		public Sex getElementAt(int index) {
+			return sexList.get(index);
+		}
+
+		@Override
+		public int getSize() {
+			return sexList.size();
+		}
+
+		@Override
+		public void removeListDataListener(ListDataListener arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Object getSelectedItem() {
+			return selection;
+		}
+
+		@Override
+		public void setSelectedItem(Object sex) {
+			selection= (Sex) sex;
+			
+		}
 		
 	}
 	

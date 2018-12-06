@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
+import com.rose.kgp.ui.Pnl_SetDate;
+
 import net.miginfocom.swing.MigLayout;
 
 public abstract class Pnl_Staff extends JPanel {
@@ -29,6 +31,8 @@ public abstract class Pnl_Staff extends JPanel {
 	private JLabel lblBirth;
 	private JLabel lblOnsetDate;
 	private JButton btnStaffSet;
+	protected Pnl_SetDate birthPanel;
+	protected Pnl_SetDate onsetPanel;
 	
 	protected JTextField getTxtId() {
 		return this.txtId;
@@ -132,6 +136,8 @@ public abstract class Pnl_Staff extends JPanel {
 		
 		btnStaffSet = new JButton("\u00DCbernehmen");
 	}
+	
+	
 
 	protected void addSurnameListener(DocumentListener l){
 		txtSurname.getDocument().addDocumentListener(l);
@@ -172,4 +178,16 @@ public abstract class Pnl_Staff extends JPanel {
 	protected void removeSetNewStaffListener(ActionListener l){
 		btnStaffSet.removeActionListener(l);
 	}
+	
+	/**
+	 * add the panel for the birth date to this panel
+	 * @param datePanel
+	 */
+	protected abstract void addBirthDatePanel(Pnl_SetDate datePanel);
+	
+	/**
+	 * add the panel for the onset date to this panel
+	 * @param datePanel
+	 */
+	protected abstract void addOnsetDatePanel(Pnl_SetDate datePanel);
 }
