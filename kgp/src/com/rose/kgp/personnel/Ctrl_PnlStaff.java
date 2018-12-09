@@ -37,19 +37,19 @@ public abstract class Ctrl_PnlStaff {
 	protected SurnameListener surnameListener;
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
-	protected SexListener sexListener;
+
 	
-	protected Pnl_Staff getPanel(){
-		return this.panel;
-	}
+//	protected Pnl_Staff getPanel(){
+//		return this.panel;
+//	}
 	
-	protected Pnl_SetDate getPnlSetBirthDate(){
-		return this.pnlSetBirthDate;
-	}
-	
-	protected Pnl_SetDate getPnlSetOnsetDate(){
-		return this.pnlSetOnsetDate;
-	}
+//	protected Pnl_SetDate getPnlSetBirthDate(){
+//		return this.pnlSetBirthDate;
+//	}
+//	
+//	protected Pnl_SetDate getPnlSetOnsetDate(){
+//		return this.pnlSetOnsetDate;
+//	}
 	
 	
 	
@@ -65,52 +65,52 @@ public abstract class Ctrl_PnlStaff {
 		staff = null;			
 		
 
-		initializeListeners();
-		setListener();
+//		initializeListeners();
+//		setListener();
 	}
 	
-	private void initializeListeners(){
-		surnameListener = new SurnameListener();
-		firstnameListener = new FirstnameListener();
-		aliasListener = new AliasListener();
-		sexListener = new SexListener();
-	}
+//	private void initializeListeners(){
+//		surnameListener = new SurnameListener();
+//		firstnameListener = new FirstnameListener();
+//		aliasListener = new AliasListener();
+//		
+//	}
 	
 	/**
 	 * add all listeners of input fields of that panel
 	 */
-	protected void setListener(){
-		
-		panel.addSurnameListener(surnameListener);
-		panel.addFirstnameListener(firstnameListener);		
-		panel.addSexListener(sexListener);
-		panel.addAliasListener(aliasListener);
-		
-	}
+//	protected void setListener(){
+//		
+//		panel.addSurnameListener(surnameListener);
+//		panel.addFirstnameListener(firstnameListener);		
+//		
+//		panel.addAliasListener(aliasListener);
+//		
+//	}
+//	
+//	/**
+//	 * removes all listeners of input fields of that panel
+//	 */
+//	protected void removeListener(){
+//		panel.removeSurnameListener(surnameListener);
+//		panel.removeFirstnameListener(firstnameListener);
+//		panel.removeAliasListener(aliasListener);		
+//			
+//	}
 	
-	/**
-	 * removes all listeners of input fields of that panel
-	 */
-	protected void removeListener(){
-		panel.removeSurnameListener(surnameListener);
-		panel.removeFirstnameListener(firstnameListener);
-		panel.removeAliasListener(aliasListener);		
-		panel.removeSexListener(sexListener);		
-	}
-	
-	protected void addPnlSetOnsetDate(Pnl_SetDate pnlSetOnsetDate){
-		if(this.pnlSetOnsetDate instanceof Pnl_SetDate){
-			this.pnlSetOnsetDate = pnlSetOnsetDate;
-			panel.add(this.pnlSetOnsetDate, "cell 1 4,growx,aligny top");
-		}
-	}
-	
-	protected void addPnlSetBirthDate(Pnl_SetDate pnlSetBirthDate){
-		if(this.pnlSetBirthDate instanceof Pnl_SetDate){
-			this.pnlSetBirthDate = pnlSetBirthDate;
-			panel.add(this.pnlSetBirthDate, "cell 1 5,growx,aligny top");
-		}
-	}
+//	protected void addPnlSetOnsetDate(Pnl_SetDate pnlSetOnsetDate){
+//		if(this.pnlSetOnsetDate instanceof Pnl_SetDate){
+//			this.pnlSetOnsetDate = pnlSetOnsetDate;
+//			panel.add(this.pnlSetOnsetDate, "cell 1 4,growx,aligny top");
+//		}
+//	}
+//	
+//	protected void addPnlSetBirthDate(Pnl_SetDate pnlSetBirthDate){
+//		if(this.pnlSetBirthDate instanceof Pnl_SetDate){
+//			this.pnlSetBirthDate = pnlSetBirthDate;
+//			panel.add(this.pnlSetBirthDate, "cell 1 5,growx,aligny top");
+//		}
+//	}
 	
 	/**
 	 * prepares the panel before a new staff is to be created

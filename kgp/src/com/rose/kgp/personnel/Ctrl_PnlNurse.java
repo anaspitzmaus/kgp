@@ -35,8 +35,8 @@ public class Ctrl_PnlNurse extends Ctrl_PnlStaff{
 		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
 		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
 		//add the date panels to the basic panel
-		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
-		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());
+//		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
+//		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());
 		
 		initializeExtraListener();
 		setExtraListener();
@@ -83,7 +83,7 @@ public class Ctrl_PnlNurse extends Ctrl_PnlStaff{
 //						notifyObservers(staff);//notify the Controller of the Dialog 'Controller_DlgPhysician'
 					}
 					
-					removeListener(); //remove all listeners
+//					removeListener(); //remove all listeners
 					//empty all input fields
 					panel.getTxtSurname().setText("");
 					panel.getTxtFirstname().setText("");

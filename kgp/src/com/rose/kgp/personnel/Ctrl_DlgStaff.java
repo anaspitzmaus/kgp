@@ -67,10 +67,21 @@ abstract class Ctrl_DlgStaff {
 	
 	public void showDialog(){
 		if(this.dialog instanceof Dlg_Staff){
-			dialog.setModal(true);
-			dialog.setVisible(true);
+			setFieldsDisabled();
 			dialog.repaint();
+			dialog.setModal(true);
+			dialog.setVisible(true);			
 		}
+	}
+	
+	protected void setFieldsDisabled(){
+		dialog.getPnlStaff().getComboSex().setEnabled(false);
+		dialog.getPnlStaff().getTxtAlias().setEnabled(false);
+		dialog.getPnlStaff().getTxtFirstname().setEnabled(false);
+		dialog.getPnlStaff().getTxtSurname().setEnabled(false);
+		dialog.getPnlStaff().getTxtId().setEnabled(false);
+		this.ctrlPnlSetBirthDate.setPnlEnabled(false);
+		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
 	}
 	
 	abstract void setListener();

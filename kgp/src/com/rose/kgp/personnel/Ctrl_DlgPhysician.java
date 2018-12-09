@@ -1,7 +1,6 @@
 package com.rose.kgp.personnel;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog.ModalityType;
@@ -22,13 +21,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.ui.Ctrl_PnlSetDate;
+
 
 
 
 
 public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
-	private SetNewPhysicianListener setNewPhysicianListener;
 	private TitleModel titleModel;
 	
 	@SuppressWarnings("unchecked")
@@ -55,16 +53,27 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		setListener();
 	}
 	
+	@Override
+	protected void setFieldsDisabled(){
+		dialog.getPnlStaff().getComboSex().setEnabled(false);
+		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(false);
+		dialog.getPnlStaff().getTxtAlias().setEnabled(false);
+		dialog.getPnlStaff().getTxtFirstname().setEnabled(false);
+		dialog.getPnlStaff().getTxtSurname().setEnabled(false);
+		dialog.getPnlStaff().getTxtId().setEnabled(false);
+		getCtrlPnlSetBirthDate().setPnlEnabled(false);
+		getCtrlPnlSetOnsetDate().setPnlEnabled(false);
+	}
+	
 	
 	
 	@Override void setListener(){
-		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
-		dialog.addNewStaffListener(newPhysicianListener);
+//		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
+//		dialog.addNewStaffListener(newPhysicianListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dialog.addRowSelectionListener(tblRowSelectionListener);
 		dialog.addSexListener(sexListener);
-		dialog.setSexComboRenderer(sexComboRenderer);
-		
+		dialog.setSexComboRenderer(sexComboRenderer);		
 	}
 	
 	
@@ -73,24 +82,24 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		super.showSelectedStaff(physician);
 		//set the comboTitle enabled
 		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(true);
-		TitleModel model = (TitleModel) ((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().getModel();
+		TitleModel model = (TitleModel) ((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().getModel();
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<model.getSize(); i++){
 			if(model.getElementAt(i).equals(((Physician)physician).getTitle())){
-				((Pnl_Physician)ctrlPnlStaff.getPanel()).getComboTitle().setSelectedIndex(i);
+				((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setSelectedIndex(i);
 			}
 		}		
 	}
 	
-	class NewPhysicianListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
-			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
-						
-		}		
-	}
+//	class NewPhysicianListener implements ActionListener{
+//
+//		@Override
+//		public void actionPerformed(ActionEvent arg0) {
+//			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
+//			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
+//						
+//		}		
+//	}
 	
 	
 	
@@ -172,13 +181,13 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 					
 					removeListener(); //remove all listeners
 					//empty all input fields
-					ctrlPnlStaff.getPanel().getTxtSurname().setText("");
-					ctrlPnlStaff.getPanel().getTxtFirstname().setText("");
-					ctrlPnlStaff.getPanel().getTxtAlias().setText("");
-					ctrlPnlStaff.getPanel().getComboSex().setSelectedIndex(-1);
-					ctrlPnlStaff.getPanel().getComboSex().repaint();
-					((Pnl_Physician) ctrlPnlStaff.getPanel()).getComboTitle().setSelectedIndex(-1);
-					((Pnl_Physician) ctrlPnlStaff.getPanel()).getComboTitle().repaint();
+					dialog.getPnlStaff().getTxtSurname().setText("");
+					dialog.getPnlStaff().getTxtFirstname().setText("");
+					dialog.getPnlStaff().getTxtAlias().setText("");
+					dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
+					dialog.getPnlStaff().getComboSex().repaint();
+					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().setSelectedIndex(-1);
+					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
 					//set the id of the staff to null
 					//staff.setId(null);
 					//add all listeners to the input fields

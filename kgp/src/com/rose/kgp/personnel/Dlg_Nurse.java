@@ -1,9 +1,8 @@
 package com.rose.kgp.personnel;
 
-import javax.swing.event.ListSelectionListener;
+import java.awt.BorderLayout;
 
-
-
+import com.rose.kgp.ui.Pnl_SetDate;
 
 
 public class Dlg_Nurse extends Dlg_Staff {
@@ -16,7 +15,11 @@ public class Dlg_Nurse extends Dlg_Staff {
 	/**
 	 * Create the dialog.
 	 */
-	public Dlg_Nurse() {
+	public Dlg_Nurse(Pnl_SetDate birthPanel, Pnl_SetDate onsetPanel) {
+		setPnlStaff(new Pnl_Nurse());
+		getPnlStaff().addBirthDatePanel(birthPanel);
+		getPnlStaff().addOnsetDatePanel(onsetPanel);
+		contentPanel.add(getPnlStaff(), BorderLayout.SOUTH);
 		btnNewStaff.setText("Schwester anlegen");
 	}
 	

@@ -35,8 +35,8 @@ public class Ctrl_PnlPhysician extends Ctrl_PnlStaff{
 		this.ctrlPnlSetBirthDate = ctrlPnlSetBirthDate;
 		this.ctrlPnlSetOnsetDate = ctrlPnlSetOnsetDate;
 		//add the date panels to the basic panel
-		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
-		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());		
+//		addPnlSetOnsetDate(this.ctrlPnlSetOnsetDate.getPanel());
+//		addPnlSetBirthDate(this.ctrlPnlSetBirthDate.getPanel());		
 				
 		((Pnl_Physician) panel).getComboTitle().setEnabled(false);
 		

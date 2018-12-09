@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.personnel.Ctrl_DlgPhysician.TitleModel;
 import com.rose.kgp.personnel.Ctrl_DlgStaff.Modus;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
@@ -32,6 +33,7 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	public Ctrl_DlgNurse(Ctrl_PnlNurse ctrlPnlNewNurse) {
 		
 		
+		dialog = new Dlg_Nurse(getCtrlPnlSetOnsetDate().getPanel(), getCtrlPnlSetBirthDate().getPanel());//instantiate the Dialog
 		
 		staffMembers = SQL_SELECT.activeNurses(LocalDate.now());
 		tblPersonnelModel = new Tbl_NurseModel((ArrayList<Nurse>) staffMembers);
@@ -44,39 +46,36 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 //		this.getColumnModel().getColumn(2).setCellRenderer(notationRenderer);	
 		dialog.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
 		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
+		dialog.getPnlStaff().getComboSex().setModel(sexModel);
 		
-		//add the panel for a new nurse to the dialog
-		conPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
-		conPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-		ctrlPnlStaff = new Ctrl_PnlNurse(this.conPnlSetBirthDate, this.conPnlSetOnsetDate);
-		dialog.contentPanel.add(ctrlPnlStaff.getPanel(), BorderLayout.SOUTH);
 		
 		setListener();
 		
 	}
 	
 	void setListener(){
-		NewNurseListener newNurseListener = new NewNurseListener();
-		dialog.addNewStaffListener(newNurseListener);
+//		NewNurseListener newNurseListener = new NewNurseListener();
+//		dialog.addNewStaffListener(newNurseListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dialog.addRowSelectionListener(tblRowSelectionListener);	
+		dialog.addRowSelectionListener(tblRowSelectionListener);
+		dialog.addSexListener(sexListener);
+		dialog.setSexComboRenderer(sexComboRenderer);
 	}
 	
 	void removeListener(){
 		
 	}
 	
-	
-	
-	class NewNurseListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			((Ctrl_PnlNurse)ctrlPnlStaff).prepareForNewNurse();	
-			setModus(Modus.NEW);
-		}
 		
-	}
+//	class NewNurseListener implements ActionListener{
+//
+//		@Override
+//		public void actionPerformed(ActionEvent arg0) {
+//			((Ctrl_PnlNurse)ctrlPnlStaff).prepareForNewNurse();	
+//			setModus(Modus.NEW);
+//		}
+//		
+//	}
 	
 		
 	class NurseCellRenderer extends DefaultTableCellRenderer{

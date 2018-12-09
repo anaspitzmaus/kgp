@@ -25,8 +25,8 @@ public class Controller_MenuMain {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//prepare to instantiate the panel for the new physician
-				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
-				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
+				//ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
+				//ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
 				//instantiate the controller of the panel for the new physician
 				
 				//instantiate the controller of the dialog
