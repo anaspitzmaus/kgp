@@ -61,7 +61,10 @@ public class Dlg_Calendar extends JDialog {
 				calendar.getDayChooser().removeAll();//remove the daypicker in the calendar 
 			}
 			
-			calendar.setDate((Date)ftxt.getValue());
+			//set the date of calendar only if a date is given in the formatted textField
+			if(ftxt.getValue() instanceof Date){
+				calendar.setDate((Date)ftxt.getValue());
+			}
 			calendar.setMinSelectableDate(minDate);
 			contentPanel.add(calendar);
 		}

@@ -30,7 +30,7 @@ public abstract class Pnl_Staff extends JPanel {
 	private JTextField txtAlias;
 	private JLabel lblBirth;
 	private JLabel lblOnsetDate;
-	private JButton btnStaffSet;
+	private JButton btnStaffMemberUpdate;
 	protected Pnl_SetDate birthPanel;
 	protected Pnl_SetDate onsetPanel;
 	
@@ -84,7 +84,7 @@ public abstract class Pnl_Staff extends JPanel {
 	}
 	
 	protected JButton getBtnSetStaff() {
-		return this.btnStaffSet;
+		return this.btnStaffMemberUpdate;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public abstract class Pnl_Staff extends JPanel {
 		lblOnsetDate = new JLabel("seit:");
 		lblOnsetDate.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		btnStaffSet = new JButton("\u00DCbernehmen");
+		btnStaffMemberUpdate = new JButton("\u00DCbernehmen");
 	}
 	
 	
@@ -171,12 +171,12 @@ public abstract class Pnl_Staff extends JPanel {
 		txtAlias.getDocument().removeDocumentListener(l);
 	}
 	
-	protected void addSetNewStaffListener(ActionListener l){
-		btnStaffSet.addActionListener(l);
+	protected void addUpdateStaffMemberListener(ActionListener l){
+		btnStaffMemberUpdate.addActionListener(l);
 	}
 	
-	protected void removeSetNewStaffListener(ActionListener l){
-		btnStaffSet.removeActionListener(l);
+	protected void removeUpdateStaffMemberListener(ActionListener l){
+		btnStaffMemberUpdate.removeActionListener(l);
 	}
 	
 	/**

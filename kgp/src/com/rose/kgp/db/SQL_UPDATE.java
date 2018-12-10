@@ -2,11 +2,13 @@ package com.rose.kgp.db;
 
 
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.allocator.Clinical_Institution;
+import com.rose.kgp.personnel.Physician;
 
 
 
@@ -34,5 +36,16 @@ public class SQL_UPDATE {
 				return false;
 			}
 		
+	}
+
+	public static Integer Physician(Physician physician, LocalDate now) {
+		stmt = DB.getStatement();
+		try {
+			stmt.executeUpdate("UPDATE 
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nInteger Physician(Physician physician, LocalDate now)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

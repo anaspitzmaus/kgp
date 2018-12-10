@@ -12,17 +12,29 @@ import java.util.TimeZone;
 
 public class DateMethods {
 
+	/**
+	 * converts a date of format 'Date' into a LocalDate format 
+	 * @param date
+	 * @return the date as LocalDate or null if conversion is not possible
+	 */
 	public static LocalDate ConvertDateToLocalDate(Date date){
 		Date input = date;
-		Instant instant = input.toInstant();
-		ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-		LocalDate ldate= zdt.toLocalDate();
+		LocalDate ldate = null;
+		if(input instanceof Date){
+			Instant instant = input.toInstant();
+			ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+			ldate= zdt.toLocalDate();
+		}
 		return ldate;
 	}
 	
 	public static Date ConvertLocalDateToDate(LocalDate localDate){
-		Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Date date = null;
+		if(localDate instanceof LocalDate){
+			date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());			
+		}
 		return date;
+		
 	}
 	
 	public static LocalTime ConvertDateToLocalTime(Date date){

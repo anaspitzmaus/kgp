@@ -85,7 +85,7 @@ public abstract class Dlg_Staff extends JDialog {
 		}
 	}
 	
-	protected void addNewStaffListener(ActionListener l){
+	protected void addNewStaffMemberListener(ActionListener l){
 		btnNewStaff.addActionListener(l);
 	}
 	
@@ -104,5 +104,7 @@ public abstract class Dlg_Staff extends JDialog {
 	protected void setSexComboRenderer(ListCellRenderer<Sex> r) {
 		pnlStaff.getComboSex().setRenderer(r);
 	}
+	
+	
 
 }

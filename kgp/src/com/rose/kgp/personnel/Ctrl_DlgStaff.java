@@ -46,7 +46,8 @@ abstract class Ctrl_DlgStaff {
 	protected Boolean newStaff = false;
 	protected enum Modus {NEW, UPDATE};
 	protected Modus modus;
-	protected Staff staffMember; //the selected staffMember
+	protected Staff staffMemberSel; //the selected staffMember
+	protected Staff staffMemberUpdate; //the updated staffMember
 	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
 	SexModel sexModel;
 	SexComboRenderer sexComboRenderer;
@@ -54,6 +55,7 @@ abstract class Ctrl_DlgStaff {
 	protected SurnameListener surnameListener;
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
+	protected UpdateStaffMemberListener updateStaffMemberListener;
 	
 	
 	
@@ -70,11 +72,12 @@ abstract class Ctrl_DlgStaff {
 		ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
 		ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));		
 		sexModel = new SexModel();
-		sexComboRenderer = new SexComboRenderer();
+		sexComboRenderer = new SexComboRenderer();		
 		sexListener = new SexListener();
 		surnameListener = new SurnameListener();
 		firstnameListener = new FirstnameListener();
 		aliasListener = new AliasListener();
+		
 	}
 	
 	public void showDialog(){
@@ -86,6 +89,9 @@ abstract class Ctrl_DlgStaff {
 		}
 	}
 	
+	/**
+	 * disable all fields of the panel
+	 */
 	protected void setFieldsDisabled(){
 		dialog.getPnlStaff().getComboSex().setEnabled(false);
 		dialog.getPnlStaff().getTxtAlias().setEnabled(false);
@@ -96,41 +102,55 @@ abstract class Ctrl_DlgStaff {
 		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
 	}
 	
+	/**
+	 * enable all fields of the panel without the textFields the shows the id of the staff member
+	 */
+	protected void setFieldsEnabled(){
+		dialog.getPnlStaff().getComboSex().setEnabled(true);
+		dialog.getPnlStaff().getTxtAlias().setEnabled(true);
+		dialog.getPnlStaff().getTxtFirstname().setEnabled(true);
+		dialog.getPnlStaff().getTxtSurname().setEnabled(true);
+		dialog.getPnlStaff().getTxtId().setEnabled(false); //keep disabled
+		this.ctrlPnlSetBirthDate.setPnlEnabled(true);
+		this.ctrlPnlSetOnsetDate.setPnlEnabled(true);
+	}
+	
 	protected void setListener() {
 		dialog.getPnlStaff().addAliasListener(aliasListener);
 		dialog.getPnlStaff().addFirstnameListener(firstnameListener);
 		dialog.getPnlStaff().addSurnameListener(surnameListener);
-		dialog.getPnlStaff().addSexListener(sexListener);		
+		dialog.getPnlStaff().addSexListener(sexListener);	
+		
 	};
 		
 	
 	
 	abstract void removeListener();
 	
+	
+	
 	/**
 	 * displays the selected staff member (selected in the table)
 	 * @param staffMember
 	 */
-	protected void showSelectedStaff(Staff staffMember) {
-		this.staffMember = staffMember;
+	protected void showSelectedStaff() {
+		
 		//enable all textFields and dropDownFields
-		dialog.getPnlStaff().getComboSex().setEnabled(true);		
-		dialog.getPnlStaff().getTxtSurname().setEnabled(true);
-		dialog.getPnlStaff().getTxtFirstname().setEnabled(true);	
-		dialog.getPnlStaff().getTxtAlias().setEnabled(true);
-		dialog.getPnlStaff().getBtnSetStaff().setEnabled(true);
+		setFieldsEnabled();
 		
 		
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<sexModel.getSize(); i++){
-			if(sexModel.getElementAt(i).equals(staffMember.getSex())){
+			if(sexModel.getElementAt(i).equals(staffMemberSel.getSex())){
 				dialog.getPnlStaff().getComboSex().setSelectedIndex(i);
 			}
 		}	
-		dialog.getPnlStaff().getTxtId().setText(staffMember.getId().toString());
-		dialog.getPnlStaff().getTxtSurname().setText(staffMember.getSurname());
-		dialog.getPnlStaff().getTxtFirstname().setText(staffMember.getFirstname());	
-		dialog.getPnlStaff().getTxtAlias().setText(staffMember.getAlias());
+		dialog.getPnlStaff().getTxtId().setText(staffMemberSel.getId().toString());
+		dialog.getPnlStaff().getTxtSurname().setText(staffMemberSel.getSurname());
+		dialog.getPnlStaff().getTxtFirstname().setText(staffMemberSel.getFirstname());	
+		dialog.getPnlStaff().getTxtAlias().setText(staffMemberSel.getAlias());
+		getCtrlPnlSetBirthDate().setDate(staffMemberSel.getBirthday());
+		getCtrlPnlSetOnsetDate().setDate(staffMemberSel.getOnset());
 		//ctrlPnlNewStaff.ctrlPnlSetOnsetDate.setDate(staffMember.getOnset());		
 	}
 	
@@ -160,13 +180,12 @@ abstract class Ctrl_DlgStaff {
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
 			if(dialog.getTblPersonnel().getSelectedRow() >= 0){				
-				Staff staffSel = (Staff) dialog.getTblPersonnel().getModel().getValueAt(dialog.getTblPersonnel().getSelectedRow(), 0);
-				showSelectedStaff(staffSel);
+				staffMemberSel = (Staff) dialog.getTblPersonnel().getModel().getValueAt(dialog.getTblPersonnel().getSelectedRow(), 0);
+				staffMemberUpdate = staffMemberSel;
+				showSelectedStaff();
 				setModus(Modus.UPDATE);			
-			 }
-			
-		}	
-		
+			 }			
+		}		
 	}
 	
 	/**
@@ -189,7 +208,7 @@ abstract class Ctrl_DlgStaff {
 		}
 	}
 	
-	abstract class SetNewStaffListener implements ActionListener{
+	abstract class UpdateStaffMemberListener implements ActionListener{
 		
 		
 		@Override
@@ -204,8 +223,8 @@ abstract class Ctrl_DlgStaff {
 		 */
 		protected Boolean dataReadyToStore(){
 			if(checkSurname() && checkFirstname()){//if a new staff member has to be added
-				staffMember.setBirthday(getCtrlPnlSetBirthDate().getDate());
-				staffMember.setOnset(getCtrlPnlSetOnsetDate().getDate());				
+				staffMemberSel.setBirthday(getCtrlPnlSetBirthDate().getDate());
+				staffMemberSel.setOnset(getCtrlPnlSetOnsetDate().getDate());				
 				return true;					
 			}else{
 				return false;
@@ -216,7 +235,7 @@ abstract class Ctrl_DlgStaff {
 		 * @return true if surname is valid, else return false
 		 */
 		private Boolean checkSurname(){
-			if(staffMember.getSurname().length() > 0){
+			if(staffMemberSel.getSurname().length() > 0){
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
@@ -230,7 +249,7 @@ abstract class Ctrl_DlgStaff {
 		 * @return true if firstname is valid, else return false
 		 */
 		private Boolean checkFirstname(){
-			if(staffMember.getFirstname().length() > 0){
+			if(staffMemberSel.getFirstname().length() > 0){
 				return true;
 			}
 			MyColor myColor = MyColor.RED;
@@ -356,20 +375,20 @@ abstract class Ctrl_DlgStaff {
 				try{
 					switch ((Sex) comboSex.getModel().getSelectedItem()) {
 					case FEMALE:
-						staffMember.setSexCode(1);
+						staffMemberUpdate.setSexCode(1);
 						break;				
 					case MALE:
-						staffMember.setSexCode(2);
+						staffMemberUpdate.setSexCode(2);
 						break;
 					case INDIFFERENT:
-						staffMember.setSexCode(0);
+						staffMemberUpdate.setSexCode(0);
 						break;
 					default:
-					staffMember.setSexCode(9);
+					staffMemberUpdate.setSexCode(9);
 					break;
 					}	
 				}catch(NullPointerException e){
-					staffMember.setSexCode(9);
+					staffMemberUpdate.setSexCode(9);
 				}
 							
 			}			
@@ -385,17 +404,17 @@ abstract class Ctrl_DlgStaff {
 
 		@Override
 		public void changedUpdate(DocumentEvent evt) {
-			staffMember.setSurname(getText(evt));			
+			staffMemberUpdate.setSurname(getText(evt));			
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent evt) {
-			staffMember.setSurname(getText(evt));			
+			staffMemberUpdate.setSurname(getText(evt));			
 		}
 
 		@Override
 		public void removeUpdate(DocumentEvent evt) {
-			staffMember.setSurname(getText(evt));			
+			staffMemberUpdate.setSurname(getText(evt));			
 		}
 		
 		private String getText(DocumentEvent event){
@@ -421,17 +440,17 @@ abstract class Ctrl_DlgStaff {
 
 		@Override
 		public void changedUpdate(DocumentEvent evt) {
-			staffMember.setFirstname(getText(evt));			
+			staffMemberUpdate.setFirstname(getText(evt));			
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent evt) {
-			staffMember.setFirstname(getText(evt));			
+			staffMemberUpdate.setFirstname(getText(evt));			
 		}
 
 		@Override
 		public void removeUpdate(DocumentEvent evt) {
-			staffMember.setFirstname(getText(evt));			
+			staffMemberUpdate.setFirstname(getText(evt));			
 		}
 		
 		private String getText(DocumentEvent event){
@@ -458,17 +477,17 @@ abstract class Ctrl_DlgStaff {
 	class AliasListener implements DocumentListener{
 		@Override
 		public void changedUpdate(DocumentEvent evt) {
-			staffMember.setAlias(getText(evt));			
+			staffMemberUpdate.setAlias(getText(evt));			
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent evt) {
-			staffMember.setAlias(getText(evt));			
+			staffMemberUpdate.setAlias(getText(evt));			
 		}
 
 		@Override
 		public void removeUpdate(DocumentEvent evt) {
-			staffMember.setAlias(getText(evt));			
+			staffMemberUpdate.setAlias(getText(evt));			
 		}
 		
 		private String getText(DocumentEvent event){

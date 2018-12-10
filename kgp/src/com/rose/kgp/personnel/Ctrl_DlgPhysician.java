@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.db.SQL_UPDATE;
 
 
 
@@ -47,9 +48,8 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		dialog.getPnlStaff().getComboSex().setModel(sexModel);
 		titleModel = new TitleModel();
 		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setModel(titleModel);
-		//add the panel for a new physician to the dialog
-		
-		
+		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
+				
 		setListener();
 	}
 	
@@ -69,24 +69,26 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	
 	@Override
 	protected void setListener(){
-		super.setListener();
-//		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
-//		dialog.addNewStaffListener(newPhysicianListener);
+		super.setListener();//set the basic listeners
+		//add the extra listeners of the dialog
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dialog.addRowSelectionListener(tblRowSelectionListener);		
-		dialog.setSexComboRenderer(sexComboRenderer);		
+		UpdateStaffMemberListener updateStaffMemberListener = new UpdatePhysicianListener();		
+		dialog.getPnlStaff().addUpdateStaffMemberListener(updateStaffMemberListener);
+		
 	}
 	
 	
+	
 	@Override
-	protected void showSelectedStaff(Staff physician){
-		super.showSelectedStaff(physician);
+	protected void showSelectedStaff(){
+		super.showSelectedStaff();
 		//set the comboTitle enabled
 		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(true);
 		TitleModel model = (TitleModel) ((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().getModel();
 		//check the title of the selected physician and display at the comboBox
 		for(int i = 0; i<model.getSize(); i++){
-			if(model.getElementAt(i).equals(((Physician)physician).getTitle())){
+			if(model.getElementAt(i).equals(((Physician)staffMemberSel).getTitle())){
 				((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setSelectedIndex(i);
 			}
 		}		
@@ -165,7 +167,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		
 	}
 	
-	class SetNewPhysicianListener extends SetNewStaffListener{
+	class UpdatePhysicianListener extends UpdateStaffMemberListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {	
@@ -173,11 +175,9 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 			if(dataReadyToStore()){
 				
 				//insert into database
-				Integer id = SQL_INSERT.Physician((Physician)staffMember, LocalDate.now());
+				Integer id = SQL_UPDATE.Physician((Physician)staffMemberSel, LocalDate.now());
 					if(id != null){
-						staffMember.setId(id);
-//						setChanged();
-//						notifyObservers(staffMembers);//notify the Controller of the Dialog 'Controller_DlgPhysician'
+						staffMemberSel.setId(id);
 					}
 					
 					removeListener(); //remove all listeners
@@ -256,7 +256,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 			JComboBox<String> comboTitle;
 			if(evt.getSource() instanceof JComboBox<?>){
 				comboTitle = (JComboBox<String>) evt.getSource();
-				((Physician) staffMember).setTitle((String) comboTitle.getModel().getSelectedItem());
+				((Physician) staffMemberSel).setTitle((String) comboTitle.getModel().getSelectedItem());
 			}			
 		}		
 	}	
