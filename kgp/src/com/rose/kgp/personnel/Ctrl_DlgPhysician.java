@@ -67,12 +67,13 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	
 	
 	
-	@Override void setListener(){
+	@Override
+	protected void setListener(){
+		super.setListener();
 //		NewPhysicianListener newPhysicianListener = new NewPhysicianListener();
 //		dialog.addNewStaffListener(newPhysicianListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dialog.addRowSelectionListener(tblRowSelectionListener);
-		dialog.addSexListener(sexListener);
+		dialog.addRowSelectionListener(tblRowSelectionListener);		
 		dialog.setSexComboRenderer(sexComboRenderer);		
 	}
 	

@@ -22,12 +22,18 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
-
+import com.rose.kgp.personnel.Ctrl_DlgStaff.AliasListener;
+import com.rose.kgp.personnel.Ctrl_DlgStaff.FirstnameListener;
+import com.rose.kgp.personnel.Ctrl_DlgStaff.SurnameListener;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 import com.rose.kgp.useful.DateMethods;
 import com.rose.kgp.useful.MyColor;
@@ -45,6 +51,9 @@ abstract class Ctrl_DlgStaff {
 	SexModel sexModel;
 	SexComboRenderer sexComboRenderer;
 	SexListener sexListener;
+	protected SurnameListener surnameListener;
+	protected FirstnameListener firstnameListener;
+	protected AliasListener aliasListener;
 	
 	
 	
@@ -63,6 +72,9 @@ abstract class Ctrl_DlgStaff {
 		sexModel = new SexModel();
 		sexComboRenderer = new SexComboRenderer();
 		sexListener = new SexListener();
+		surnameListener = new SurnameListener();
+		firstnameListener = new FirstnameListener();
+		aliasListener = new AliasListener();
 	}
 	
 	public void showDialog(){
@@ -84,7 +96,12 @@ abstract class Ctrl_DlgStaff {
 		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
 	}
 	
-	abstract void setListener();
+	protected void setListener() {
+		dialog.getPnlStaff().addAliasListener(aliasListener);
+		dialog.getPnlStaff().addFirstnameListener(firstnameListener);
+		dialog.getPnlStaff().addSurnameListener(surnameListener);
+		dialog.getPnlStaff().addSexListener(sexListener);		
+	};
 		
 	
 	
@@ -359,6 +376,113 @@ abstract class Ctrl_DlgStaff {
 		}		
 	}
 	
+	/**
+	 * Document Listener for changing the surname of the staff member
+	 * @author Administrator
+	 *
+	 */
+	class SurnameListener implements DocumentListener{
+
+		@Override
+		public void changedUpdate(DocumentEvent evt) {
+			staffMember.setSurname(getText(evt));			
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent evt) {
+			staffMember.setSurname(getText(evt));			
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent evt) {
+			staffMember.setSurname(getText(evt));			
+		}
+		
+		private String getText(DocumentEvent event){
+			Document source = event.getDocument();
+			int length = source.getLength();
+			String txt = "";
+			try {
+				txt = source.getText(0, length);
+			} catch (BadLocationException e) {
+				txt = "";
+			}
+			return txt;
+		}
+		
+	}
+	
+	/**
+	 * Document Listener for changing the firstname of the staff member
+	 * @author Administrator
+	 *
+	 */
+	class FirstnameListener implements DocumentListener{
+
+		@Override
+		public void changedUpdate(DocumentEvent evt) {
+			staffMember.setFirstname(getText(evt));			
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent evt) {
+			staffMember.setFirstname(getText(evt));			
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent evt) {
+			staffMember.setFirstname(getText(evt));			
+		}
+		
+		private String getText(DocumentEvent event){
+			Document source = event.getDocument();
+			int length = source.getLength();
+			String txt = "";
+			try {
+				txt = source.getText(0, length);
+			} catch (BadLocationException e) {
+				txt = "";
+			}
+			return txt;
+		}
+		
+	}
+	
+	/**
+	 * listener when creating the alias of the staff
+	 * the alias is a short form of the full staffs name
+	 * like 'Dr. Rose' instead of 'Dr. med. Ekkehard Rose'
+	 * @author Ekkehard Rose
+	 *
+	 */
+	class AliasListener implements DocumentListener{
+		@Override
+		public void changedUpdate(DocumentEvent evt) {
+			staffMember.setAlias(getText(evt));			
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent evt) {
+			staffMember.setAlias(getText(evt));			
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent evt) {
+			staffMember.setAlias(getText(evt));			
+		}
+		
+		private String getText(DocumentEvent event){
+			Document source = event.getDocument();
+			int length = source.getLength();
+			String txt = "";
+			try {
+				txt = source.getText(0, length);
+			} catch (BadLocationException e) {
+				txt = "";
+			}
+			return txt;
+		}
+	}
 	
 	
 }

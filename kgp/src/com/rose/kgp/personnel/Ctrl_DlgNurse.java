@@ -1,25 +1,21 @@
 package com.rose.kgp.personnel;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
+
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.personnel.Ctrl_DlgPhysician.TitleModel;
-import com.rose.kgp.personnel.Ctrl_DlgStaff.Modus;
+
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
-import com.rose.kgp.useful.DateMethods;
+
 
 public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 
@@ -49,16 +45,18 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 		dialog.getPnlStaff().getComboSex().setModel(sexModel);
 		
 		
+		
 		setListener();
 		
 	}
 	
-	void setListener(){
+	@Override
+	protected void setListener(){
+		super.setListener();
 //		NewNurseListener newNurseListener = new NewNurseListener();
 //		dialog.addNewStaffListener(newNurseListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dialog.addRowSelectionListener(tblRowSelectionListener);
-		dialog.addSexListener(sexListener);
 		dialog.setSexComboRenderer(sexComboRenderer);
 	}
 	

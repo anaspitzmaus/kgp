@@ -34,9 +34,7 @@ public abstract class Ctrl_PnlStaff {
 	protected Pnl_SetDate pnlSetBirthDate, pnlSetOnsetDate;	
 	protected Pnl_Staff panel;
 	protected Staff staff; 
-	protected SurnameListener surnameListener;
-	protected FirstnameListener firstnameListener;
-	protected AliasListener aliasListener;
+	
 
 	
 //	protected Pnl_Staff getPanel(){
@@ -137,113 +135,7 @@ public abstract class Ctrl_PnlStaff {
 	}
 	
 	
-	/**
-	 * Document Listener for changing the surname of the staff member
-	 * @author Administrator
-	 *
-	 */
-	class SurnameListener implements DocumentListener{
-
-		@Override
-		public void changedUpdate(DocumentEvent evt) {
-			staff.setSurname(getText(evt));			
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent evt) {
-			staff.setSurname(getText(evt));			
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent evt) {
-			staff.setSurname(getText(evt));			
-		}
-		
-		private String getText(DocumentEvent event){
-			Document source = event.getDocument();
-			int length = source.getLength();
-			String txt = "";
-			try {
-				txt = source.getText(0, length);
-			} catch (BadLocationException e) {
-				txt = "";
-			}
-			return txt;
-		}
-		
-	}
 	
-	/**
-	 * Document Listener for changing the firstname of the staff member
-	 * @author Administrator
-	 *
-	 */
-	class FirstnameListener implements DocumentListener{
-
-		@Override
-		public void changedUpdate(DocumentEvent evt) {
-			staff.setFirstname(getText(evt));			
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent evt) {
-			staff.setFirstname(getText(evt));			
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent evt) {
-			staff.setFirstname(getText(evt));			
-		}
-		
-		private String getText(DocumentEvent event){
-			Document source = event.getDocument();
-			int length = source.getLength();
-			String txt = "";
-			try {
-				txt = source.getText(0, length);
-			} catch (BadLocationException e) {
-				txt = "";
-			}
-			return txt;
-		}
-		
-	}
-	
-	/**
-	 * listener when creating the alias of the staff
-	 * the alias is a short form of the full staffs name
-	 * like 'Dr. Rose' instead of 'Dr. med. Ekkehard Rose'
-	 * @author Ekkehard Rose
-	 *
-	 */
-	class AliasListener implements DocumentListener{
-		@Override
-		public void changedUpdate(DocumentEvent evt) {
-			staff.setAlias(getText(evt));			
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent evt) {
-			staff.setAlias(getText(evt));			
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent evt) {
-			staff.setAlias(getText(evt));			
-		}
-		
-		private String getText(DocumentEvent event){
-			Document source = event.getDocument();
-			int length = source.getLength();
-			String txt = "";
-			try {
-				txt = source.getText(0, length);
-			} catch (BadLocationException e) {
-				txt = "";
-			}
-			return txt;
-		}
-	}
 	
 	
 	
