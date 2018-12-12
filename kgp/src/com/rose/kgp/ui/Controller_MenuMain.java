@@ -8,7 +8,7 @@ import com.rose.kgp.allocator.Ctrl_DlgClinicalInstitution;
 import com.rose.kgp.personnel.Ctrl_DlgNurse;
 import com.rose.kgp.personnel.Ctrl_DlgPhysician;
 import com.rose.kgp.personnel.Ctrl_PnlNurse;
-import com.rose.kgp.personnel.Ctrl_PnlPhysician;
+
 
 public class Controller_MenuMain {
 	Pnl_MenuMain pnlMenuMain;
@@ -39,13 +39,9 @@ public class Controller_MenuMain {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//prepare to instantiate the panel for the new nurse
-				ctrlPnlSetBirthDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusYears(60));
-				ctrlPnlSetOnsetDate = new Ctrl_PnlSetDate("dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(7));
-				//instantiate the controller of the panel for the new nurse
-				Ctrl_PnlNurse ctrlPnlNewNurse = new Ctrl_PnlNurse(ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate);
+				
 				//instantiate the controller of the dialog
-				Ctrl_DlgNurse conDlgNurse = new Ctrl_DlgNurse(ctrlPnlNewNurse);
+				Ctrl_DlgNurse conDlgNurse = new Ctrl_DlgNurse();
 				conDlgNurse.showDialog();
 				
 			}

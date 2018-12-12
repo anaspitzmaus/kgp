@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -56,6 +55,7 @@ abstract class Ctrl_DlgStaff {
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
 	protected UpdateStaffMemberListener updateStaffMemberListener;
+	protected TblRowSelectionListener tblRowSelectionListener;
 	
 	
 	
@@ -77,6 +77,7 @@ abstract class Ctrl_DlgStaff {
 		surnameListener = new SurnameListener();
 		firstnameListener = new FirstnameListener();
 		aliasListener = new AliasListener();
+		tblRowSelectionListener = new TblRowSelectionListener();
 		
 	}
 	
@@ -100,6 +101,7 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().getTxtId().setEnabled(false);
 		this.ctrlPnlSetBirthDate.setPnlEnabled(false);
 		this.ctrlPnlSetOnsetDate.setPnlEnabled(false);
+		dialog.getPnlStaff().getBtnSetStaff().setEnabled(false);
 	}
 	
 	/**
@@ -113,18 +115,30 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().getTxtId().setEnabled(false); //keep disabled
 		this.ctrlPnlSetBirthDate.setPnlEnabled(true);
 		this.ctrlPnlSetOnsetDate.setPnlEnabled(true);
+		dialog.getPnlStaff().getBtnSetStaff().setEnabled(true);
 	}
 	
 	protected void setListener() {
 		dialog.getPnlStaff().addAliasListener(aliasListener);
 		dialog.getPnlStaff().addFirstnameListener(firstnameListener);
 		dialog.getPnlStaff().addSurnameListener(surnameListener);
-		dialog.getPnlStaff().addSexListener(sexListener);			
+		dialog.getPnlStaff().addSexListener(sexListener);
+		dialog.addRowSelectionListener(tblRowSelectionListener);
+		dialog.getPnlStaff().addUpdateStaffMemberListener(updateStaffMemberListener);
 	};
 		
 	
-	
-	abstract void removeListener();
+	/**
+	 * removes all listeners of the basic staff panel
+	 */
+	protected void removeListener(){
+		dialog.getPnlStaff().removeSurnameListener(surnameListener);
+		dialog.getPnlStaff().removeFirstnameListener(firstnameListener);
+		dialog.getPnlStaff().removeAliasListener(aliasListener);
+		dialog.getPnlStaff().removeSexListener(sexListener);
+		dialog.removeRowSelectionListener(tblRowSelectionListener);
+		dialog.getPnlStaff().removeUpdateStaffMemberListener(updateStaffMemberListener);
+	};
 	
 	
 	
@@ -201,7 +215,20 @@ abstract class Ctrl_DlgStaff {
 			 simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			 if(value != null){
 				 value = simpleDateFormat.format(DateMethods.ConvertLocalDateToDate((LocalDate)value));
-			 }			 
+			 }	
+			 
+			 if (isSelected) {
+		            setBackground(table.getSelectionBackground());
+		        } else {
+		        	
+		           //set the table rows with alternating background colors
+		            	if((row % 2) == 0){
+		            		setBackground(Color.WHITE);
+		            	}else{
+		            		setBackground(Color.LIGHT_GRAY);
+		            	}
+		            
+		        }
 			 return super.getTableCellRendererComponent(table, value, isSelected,
 		                hasFocus, row, column);
 		}

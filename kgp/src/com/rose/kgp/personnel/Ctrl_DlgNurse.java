@@ -3,9 +3,15 @@ package com.rose.kgp.personnel;
 
 import java.awt.Color;
 import java.awt.Component;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+
+
+
+
 
 
 import javax.swing.JTable;
@@ -13,20 +19,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.rose.kgp.db.SQL_SELECT;
-
+import com.rose.kgp.db.SQL_UPDATE;
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
 
 public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 
-	//Dlg_Nurse dlgNurse;
-	//ArrayList<Nurse> nurses;
-	//Controller_PnlNewNurse conPnlNewNurse;
-	Ctrl_PnlSetDate conPnlSetBirthDate, conPnlSetOnsetDate;
-	//Tbl_NurseModel tblNurseModel;
 	
 	@SuppressWarnings("unchecked")
-	public Ctrl_DlgNurse(Ctrl_PnlNurse ctrlPnlNewNurse) {
+	public Ctrl_DlgNurse() {
 		
 		
 		dialog = new Dlg_Nurse(getCtrlPnlSetOnsetDate().getPanel(), getCtrlPnlSetBirthDate().getPanel());//instantiate the Dialog
@@ -43,26 +44,15 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 		dialog.getTblPersonnel().setDefaultRenderer(Nurse.class, new NurseCellRenderer());
 		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		dialog.getPnlStaff().getComboSex().setModel(sexModel);
-		
-		
-		
+		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
+		updateStaffMemberListener = new UpdateNurseListener();		
 		setListener();
 		
 	}
 	
-	@Override
-	protected void setListener(){
-		super.setListener();
-//		NewNurseListener newNurseListener = new NewNurseListener();
-//		dialog.addNewStaffListener(newNurseListener);
-		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dialog.addRowSelectionListener(tblRowSelectionListener);
-		dialog.setSexComboRenderer(sexComboRenderer);
-	}
 	
-	void removeListener(){
-		
-	}
+	
+	
 	
 		
 //	class NewNurseListener implements ActionListener{
@@ -89,7 +79,11 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	            Nurse nurse = (Nurse) value;
 	            switch (column) {
 				case 0:
-					setText(nurse.getId().toString());
+					if(nurse.getId() != null){
+						setText(nurse.getId().toString());
+					}else{
+						setText("null");
+					}
 					break;
 				case 1:
 					setText(nurse.getSurname());
@@ -105,23 +99,51 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	        }
 	         
 	        
-	        if (isSelected) {
-	            setBackground(table.getSelectionBackground());
-	        } else {
-	        	if(row == 1){//change to the member logged in
-	            	setBackground(Color.YELLOW); //the logged in member is to be shown with yellow back color
-	            }else{ //set the table rows with alternating background colors
-	            	if((row % 2) == 0){
-	            		setBackground(Color.WHITE);
-	            	}else{
-	            		setBackground(Color.LIGHT_GRAY);
-	            	}
-	            }
-	        }
+			 if (isSelected) {
+		            setBackground(table.getSelectionBackground());
+		        } else {
+		        	
+		           //set the table rows with alternating background colors
+		            	if((row % 2) == 0){
+		            		setBackground(Color.WHITE);
+		            	}else{
+		            		setBackground(Color.LIGHT_GRAY);
+		            	}
+		            
+		        }
 	        
 	         
 	        return this;
 	    }
+	}
+	
+	class UpdateNurseListener extends UpdateStaffMemberListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(dataReadyToStore()){
+				
+				//update the database
+				SQL_UPDATE.Nurse((Nurse)staffMemberUpdate);
+				tblPersonnelModel.fireTableDataChanged();
+				removeListener(); //remove all listeners
+				//empty all input fields
+				dialog.getPnlStaff().getTxtSurname().setText("");
+				dialog.getPnlStaff().getTxtFirstname().setText("");
+				dialog.getPnlStaff().getTxtAlias().setText("");
+				dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
+				dialog.getPnlStaff().getComboSex().repaint();
+				getCtrlPnlSetBirthDate().setDate(null);
+				getCtrlPnlSetOnsetDate().setDate(null);
+				
+				
+				setListener();
+				setFieldsDisabled();
+				
+			}
+			
+		}
+		
 	}
 	
 	

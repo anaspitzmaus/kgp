@@ -3,9 +3,9 @@ package com.rose.kgp.personnel;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog.ModalityType;
+
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
@@ -19,12 +19,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.rose.kgp.db.SQL_INSERT;
+
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.db.SQL_UPDATE;
-
-
-
 
 
 public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
@@ -50,34 +47,30 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		titleModel = new TitleModel();
 		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setModel(titleModel);
 		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
-		titleListener = new TitleListener();		
+		titleListener = new TitleListener();
+		updateStaffMemberListener = new UpdatePhysicianListener();
 		setListener();
 	}
 	
 	@Override
-	protected void setFieldsDisabled(){
-		dialog.getPnlStaff().getComboSex().setEnabled(false);
-		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(false);
-		dialog.getPnlStaff().getTxtAlias().setEnabled(false);
-		dialog.getPnlStaff().getTxtFirstname().setEnabled(false);
-		dialog.getPnlStaff().getTxtSurname().setEnabled(false);
-		dialog.getPnlStaff().getTxtId().setEnabled(false);
-		getCtrlPnlSetBirthDate().setPnlEnabled(false);
-		getCtrlPnlSetOnsetDate().setPnlEnabled(false);
+	protected void setFieldsDisabled(){	
+		super.setFieldsDisabled();
+		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(false);	
 	}
+	
+	protected void setFieldsEnabled(){
+		super.setFieldsEnabled();
+		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setEnabled(true);
+	};
 	
 	
 	
 	@Override
 	protected void setListener(){
 		super.setListener();//set the basic listeners
-		//add the extra listeners of the dialog
+		//add the extra listeners of the dialog		
+		((Pnl_Physician)dialog.getPnlStaff()).addTitleListener(titleListener);					
 		
-		((Pnl_Physician)dialog.getPnlStaff()).addTitleListener(titleListener);
-		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
-		dialog.addRowSelectionListener(tblRowSelectionListener);		
-		UpdateStaffMemberListener updateStaffMemberListener = new UpdatePhysicianListener();		
-		dialog.getPnlStaff().addUpdateStaffMemberListener(updateStaffMemberListener);
 		
 	}
 	
@@ -145,15 +138,14 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	        if (isSelected) {
 	            setBackground(table.getSelectionBackground());
 	        } else {
-	        	if(row == 1){//change to the member logged in
-	            	setBackground(Color.YELLOW); //the logged in member is to be shown with yellow back color
-	            }else{ //set the table rows with alternating background colors
+	        	
+	           //set the table rows with alternating background colors
 	            	if((row % 2) == 0){
 	            		setBackground(Color.WHITE);
 	            	}else{
 	            		setBackground(Color.LIGHT_GRAY);
 	            	}
-	            }
+	            
 	        }
 	        
 	         
@@ -165,12 +157,11 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 
 	
 	@Override
-	void removeListener() {
-		dialog.getPnlStaff().removeSurnameListener(surnameListener);
-		dialog.getPnlStaff().removeFirstnameListener(firstnameListener);
-		dialog.getPnlStaff().removeAliasListener(aliasListener);
-		dialog.getPnlStaff().removeSexListener(sexListener);
+	protected void removeListener() {
+		super.removeListener();
+		
 		((Pnl_Physician)dialog.getPnlStaff()).removeTitleListener(titleListener);
+		
 	}
 	
 	class UpdatePhysicianListener extends UpdateStaffMemberListener{
@@ -180,7 +171,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 			
 			if(dataReadyToStore()){
 				
-				//insert into database
+				//update the database
 				SQL_UPDATE.Physician((Physician)staffMemberUpdate);
 				tblPersonnelModel.fireTableDataChanged();
 				removeListener(); //remove all listeners
@@ -194,11 +185,8 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 				((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
 				getCtrlPnlSetBirthDate().setDate(null);
 				getCtrlPnlSetOnsetDate().setDate(null);
-				//set the id of the staff to null
-				//staff.setId(null);
-				//add all listeners to the input fields
-				staffMemberSel = null;
-				staffMemberUpdate = null;
+				
+				
 				setListener();
 				setFieldsDisabled();
 				

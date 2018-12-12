@@ -97,6 +97,10 @@ public abstract class Dlg_Staff extends JDialog {
 		getTblPersonnel().getSelectionModel().addListSelectionListener(l);
 	}
 	
+	protected void removeRowSelectionListener(ListSelectionListener l){
+		getTblPersonnel().getSelectionModel().removeListSelectionListener(l);
+	}
+	
 	protected void addSexListener(ItemListener l) {
 		pnlStaff.getComboSex().addItemListener(l);
 	}
