@@ -44,8 +44,12 @@ public class Ctrl_PnlSetDate {
 	}	
 	
 	public void setDate(LocalDate date){
-		Date seldate = DateMethods.ConvertLocalDateToDate(date);		
-		pnlSetDate.getFtxtCalendar().setValue(seldate); //set the selected date to the formattedTextField
+		if(date instanceof LocalDate) {
+			Date seldate = DateMethods.ConvertLocalDateToDate(date);		
+			pnlSetDate.getFtxtCalendar().setValue(seldate); //set the selected date to the formattedTextField
+		}else{
+			pnlSetDate.getFtxtCalendar().setValue(null);
+		}
 	}
 	
 	public void setPnlEnabled(Boolean en){

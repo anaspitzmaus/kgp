@@ -119,8 +119,7 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().addAliasListener(aliasListener);
 		dialog.getPnlStaff().addFirstnameListener(firstnameListener);
 		dialog.getPnlStaff().addSurnameListener(surnameListener);
-		dialog.getPnlStaff().addSexListener(sexListener);	
-		
+		dialog.getPnlStaff().addSexListener(sexListener);			
 	};
 		
 	

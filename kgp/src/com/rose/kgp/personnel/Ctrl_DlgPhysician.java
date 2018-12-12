@@ -29,6 +29,7 @@ import com.rose.kgp.db.SQL_UPDATE;
 
 public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	private TitleModel titleModel;
+	private TitleListener titleListener;
 	
 	@SuppressWarnings("unchecked")
 	public Ctrl_DlgPhysician() {
@@ -49,7 +50,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		titleModel = new TitleModel();
 		((Pnl_Physician)dialog.getPnlStaff()).getComboTitle().setModel(titleModel);
 		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
-				
+		titleListener = new TitleListener();		
 		setListener();
 	}
 	
@@ -71,6 +72,8 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	protected void setListener(){
 		super.setListener();//set the basic listeners
 		//add the extra listeners of the dialog
+		
+		((Pnl_Physician)dialog.getPnlStaff()).addTitleListener(titleListener);
 		TblRowSelectionListener tblRowSelectionListener = new TblRowSelectionListener();
 		dialog.addRowSelectionListener(tblRowSelectionListener);		
 		UpdateStaffMemberListener updateStaffMemberListener = new UpdatePhysicianListener();		
@@ -163,8 +166,11 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	
 	@Override
 	void removeListener() {
-		// TODO Auto-generated method stub
-		
+		dialog.getPnlStaff().removeSurnameListener(surnameListener);
+		dialog.getPnlStaff().removeFirstnameListener(firstnameListener);
+		dialog.getPnlStaff().removeAliasListener(aliasListener);
+		dialog.getPnlStaff().removeSexListener(sexListener);
+		((Pnl_Physician)dialog.getPnlStaff()).removeTitleListener(titleListener);
 	}
 	
 	class UpdatePhysicianListener extends UpdateStaffMemberListener{
@@ -177,21 +183,24 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 				//insert into database
 				SQL_UPDATE.Physician((Physician)staffMemberUpdate);
 				tblPersonnelModel.fireTableDataChanged();
-					//removeListener(); //remove all listeners
-					//empty all input fields
-//					dialog.getPnlStaff().getTxtSurname().setText("");
-//					dialog.getPnlStaff().getTxtFirstname().setText("");
-//					dialog.getPnlStaff().getTxtAlias().setText("");
-//					dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
-//					dialog.getPnlStaff().getComboSex().repaint();
-//					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().setSelectedIndex(-1);
-//					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
-					//set the id of the staff to null
-					//staff.setId(null);
-					//add all listeners to the input fields
-					//setListener();
-					
-					
+				removeListener(); //remove all listeners
+				//empty all input fields
+				dialog.getPnlStaff().getTxtSurname().setText("");
+				dialog.getPnlStaff().getTxtFirstname().setText("");
+				dialog.getPnlStaff().getTxtAlias().setText("");
+				dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
+				dialog.getPnlStaff().getComboSex().repaint();
+				((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().setSelectedIndex(-1);
+				((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
+				getCtrlPnlSetBirthDate().setDate(null);
+				getCtrlPnlSetOnsetDate().setDate(null);
+				//set the id of the staff to null
+				//staff.setId(null);
+				//add all listeners to the input fields
+				staffMemberSel = null;
+				staffMemberUpdate = null;
+				setListener();
+				setFieldsDisabled();
 				
 			}
 		}		
