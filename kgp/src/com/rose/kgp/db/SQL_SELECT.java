@@ -118,7 +118,7 @@ public class SQL_SELECT {
 		ArrayList<Physician> physicians = new ArrayList<Physician>();
 		try {
 			rs = stmt.executeQuery(
-					"SELECT physician.idstaff AS idstaff, idphysician, surname, firstname, physician.alias AS alias, onset, sex, status, title "
+					"SELECT physician.idstaff AS idstaff, idphysician, surname, firstname, physician.alias AS alias, birth, onset, sex, status, title "
 					+ "FROM physician "
 					+ "INNER JOIN "
 					+ "(Select MAX(idphysician) as LatestID, idstaff "
@@ -137,6 +137,7 @@ public class SQL_SELECT {
 				physician.setStatus(rs.getString("status"));
 				physician.setId(rs.getInt("idstaff"));
 				physician.setSexCode(rs.getInt("sex"));
+				physician.setBirthday(rs.getDate("birth").toLocalDate());
 				physician.setOnset(rs.getDate("onset").toLocalDate());
 				physician.setAlias(rs.getString("alias"));
 				physicians.add(physician);

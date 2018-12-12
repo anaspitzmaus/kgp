@@ -1,6 +1,8 @@
 package com.rose.kgp.db;
 
 
+import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
@@ -38,14 +40,41 @@ public class SQL_UPDATE {
 		
 	}
 
-	public static Integer Physician(Physician physician, LocalDate now) {
+	/**
+	 * update a physicians data
+	 * @param physician
+	 * @param now
+	 * @return
+	 */
+	public static Boolean Physician(Physician physician) {
 		stmt = DB.getStatement();
 		try {
-			stmt.executeUpdate("UPDATE 
+			DB.getConnection().setAutoCommit(false);		
+			stmt.executeUpdate("UPDATE staff SET "
+					+ "firstname = '" + physician.getFirstname() + "', "
+					+ "birth = '" + Date.valueOf(physician.getBirthday()) + "', "
+					+ "sex = '" + physician.getSexCode() + "', "
+					+ "onset = '" + Date.valueOf(physician.getOnset()) + "', "
+					+ "alias = '" + physician.getAlias() + "'"
+					+ "WHERE idstaff = " + physician.getId() + "");
+			
+			stmt.executeUpdate("INSERT INTO physician(idstaff, surname, title, status, alias) "
+					+ "VALUES (" + physician.getId() + ", '" + physician.getSurname() + "', '" + physician.getTitle() + "', '"
+					+ physician.getStatus() + "', '" + physician.getAlias() + "')");
+			return true;
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(),
 					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nInteger Physician(Physician physician, LocalDate now)", "SQL Exception warning",
 				    JOptionPane.WARNING_MESSAGE);
+			return false;
+		} finally {
+			try {
+				DB.getConnection().setAutoCommit(true);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Message: failure while setting autoCommit to true /n Class: SQL_Update physician", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 }

@@ -175,24 +175,22 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 			if(dataReadyToStore()){
 				
 				//insert into database
-				Integer id = SQL_UPDATE.Physician((Physician)staffMemberSel, LocalDate.now());
-					if(id != null){
-						staffMemberSel.setId(id);
-					}
-					
-					removeListener(); //remove all listeners
+				SQL_UPDATE.Physician((Physician)staffMemberUpdate);
+				tblPersonnelModel.fireTableDataChanged();
+					//removeListener(); //remove all listeners
 					//empty all input fields
-					dialog.getPnlStaff().getTxtSurname().setText("");
-					dialog.getPnlStaff().getTxtFirstname().setText("");
-					dialog.getPnlStaff().getTxtAlias().setText("");
-					dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
-					dialog.getPnlStaff().getComboSex().repaint();
-					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().setSelectedIndex(-1);
-					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
+//					dialog.getPnlStaff().getTxtSurname().setText("");
+//					dialog.getPnlStaff().getTxtFirstname().setText("");
+//					dialog.getPnlStaff().getTxtAlias().setText("");
+//					dialog.getPnlStaff().getComboSex().setSelectedIndex(-1);
+//					dialog.getPnlStaff().getComboSex().repaint();
+//					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().setSelectedIndex(-1);
+//					((Pnl_Physician) dialog.getPnlStaff()).getComboTitle().repaint();
 					//set the id of the staff to null
 					//staff.setId(null);
 					//add all listeners to the input fields
-					setListener();
+					//setListener();
+					
 					
 				
 			}

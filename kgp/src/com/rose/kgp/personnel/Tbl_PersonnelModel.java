@@ -19,6 +19,10 @@ abstract class Tbl_PersonnelModel extends AbstractTableModel {
 		columnNames = new ArrayList<String>();
 	}
 	
+	public ArrayList<? extends Staff> getStaffMembers(){
+		return this.staff;
+	}
+	
 	@Override
 	public int getRowCount() {
 		return this.staff.size();
