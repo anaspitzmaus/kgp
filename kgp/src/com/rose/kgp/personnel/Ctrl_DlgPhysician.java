@@ -3,9 +3,9 @@ package com.rose.kgp.personnel;
 
 import java.awt.Color;
 import java.awt.Component;
-
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
-
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
@@ -19,7 +19,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.db.SQL_UPDATE;
 
@@ -27,6 +26,7 @@ import com.rose.kgp.db.SQL_UPDATE;
 public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 	private TitleModel titleModel;
 	private TitleListener titleListener;
+	
 	
 	@SuppressWarnings("unchecked")
 	public Ctrl_DlgPhysician() {
@@ -49,6 +49,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
 		titleListener = new TitleListener();
 		updateStaffMemberListener = new UpdatePhysicianListener();
+		newStaffMemberListener = new NewPhysicianListener();
 		setListener();
 	}
 	
@@ -70,7 +71,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		super.setListener();//set the basic listeners
 		//add the extra listeners of the dialog		
 		((Pnl_Physician)dialog.getPnlStaff()).addTitleListener(titleListener);					
-		
+		dialog.addNewStaffMemberListener(newStaffMemberListener);
 		
 	}
 	
@@ -90,16 +91,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		}		
 	}
 	
-//	class NewPhysicianListener implements ActionListener{
-//
-//		@Override
-//		public void actionPerformed(ActionEvent arg0) {
-//			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
-//			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
-//						
-//		}		
-//	}
-	
+
 	
 	
 	public class PhysicianCellRenderer extends DefaultTableCellRenderer{
@@ -254,7 +246,18 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 				((Physician) staffMemberSel).setTitle((String) comboTitle.getModel().getSelectedItem());
 			}			
 		}		
-	}	
+	}
+	
+	class NewPhysicianListener extends NewStaffMemberListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
+			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
+			
+		}
+		
+	}
 
 	
 	

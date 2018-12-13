@@ -1,6 +1,7 @@
 package com.rose.kgp.personnel;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 
 import com.rose.kgp.ui.Pnl_SetDate;
 
@@ -20,6 +21,8 @@ public class Dlg_Physician extends Dlg_Staff {
 		contentPanel.add(getPnlStaff(), BorderLayout.SOUTH);	
 		btnNewStaff.setText("Arzt anlegen");		
 	}
+	
+	
 	
 	
 	

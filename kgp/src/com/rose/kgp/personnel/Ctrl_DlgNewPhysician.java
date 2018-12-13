@@ -7,9 +7,9 @@ import javax.swing.JDialog;
 
 import com.rose.kgp.ui.Ctrl_PnlSetDate;
 
-class Ctrl_DlgNewPhysician {
+class Ctrl_DlgNewPhysician extends Ctrl_DlgNewStaff{
 	private Dlg_NewPhysician dlgNewPhysician;
-	private Ctrl_PnlSetDate ctrlPnlSetBirthDate, ctrlPnlSetOnsetDate;
+	
 	private Pnl_Physician pnlPhysician;
 	
 	public Ctrl_DlgNewPhysician() 

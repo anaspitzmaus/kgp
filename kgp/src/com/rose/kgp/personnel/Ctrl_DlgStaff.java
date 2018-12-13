@@ -55,7 +55,9 @@ abstract class Ctrl_DlgStaff {
 	protected FirstnameListener firstnameListener;
 	protected AliasListener aliasListener;
 	protected UpdateStaffMemberListener updateStaffMemberListener;
+	protected NewStaffMemberListener newStaffMemberListener;
 	protected TblRowSelectionListener tblRowSelectionListener;
+	
 	
 	
 	
@@ -234,14 +236,9 @@ abstract class Ctrl_DlgStaff {
 		}
 	}
 	
-	abstract class UpdateStaffMemberListener implements ActionListener{
+	abstract class UpdateStaffMemberListener implements ActionListener{		
 		
 		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			
-		}
 		/**
 		 * check if data of new staff member are valid for being stored in database
 		 * a new staff member must not have an id and need to have a valid surname and a valid firstname
@@ -284,6 +281,13 @@ abstract class Ctrl_DlgStaff {
 			
 		}		
 		
+	}
+	
+	abstract class NewStaffMemberListener implements ActionListener{
+		
+		protected Boolean dataReadyToStore(){
+			return true;
+		}
 	}
 	
 	/**
