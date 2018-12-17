@@ -126,7 +126,7 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().addSurnameListener(surnameListener);
 		dialog.getPnlStaff().addSexListener(sexListener);
 		dialog.addRowSelectionListener(tblRowSelectionListener);
-		dialog.getPnlStaff().addUpdateStaffMemberListener(updateStaffMemberListener);
+		dialog.getPnlStaff().addBtnStaffMemberListener(updateStaffMemberListener);
 	};
 		
 	
@@ -139,7 +139,7 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().removeAliasListener(aliasListener);
 		dialog.getPnlStaff().removeSexListener(sexListener);
 		dialog.removeRowSelectionListener(tblRowSelectionListener);
-		dialog.getPnlStaff().removeUpdateStaffMemberListener(updateStaffMemberListener);
+		dialog.getPnlStaff().removeBtnStaffMemberListener(updateStaffMemberListener);
 	};
 	
 	
@@ -432,6 +432,7 @@ abstract class Ctrl_DlgStaff {
 	 */
 	class SurnameListener implements DocumentListener{
 
+		
 		@Override
 		public void changedUpdate(DocumentEvent evt) {
 			staffMemberUpdate.setSurname(getText(evt));			

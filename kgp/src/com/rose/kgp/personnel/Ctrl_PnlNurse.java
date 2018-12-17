@@ -56,7 +56,7 @@ public class Ctrl_PnlNurse extends Ctrl_PnlStaff{
 	 */
 	private void setExtraListener(){				
 				
-		panel.addUpdateStaffMemberListener(setNewNurseListener);
+		panel.addBtnStaffMemberListener(setNewNurseListener);
 	}
 
 	/**

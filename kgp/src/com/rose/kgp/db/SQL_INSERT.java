@@ -158,12 +158,12 @@ public class SQL_INSERT {
 								+ physician.getStatus() + "', '" + physician.getAlias() + "')");
 			
 			
-								
+			physician.setId(id);					
 			return id;
 								
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(new JFrame(),
-				    "Error_Code: " + e.getErrorCode() + "/n"+ e.getMessage() + "/n Class: SQL_INSERT Physician", "SQL Exception warning",
+				    "Error_Code: " + e.getErrorCode() + "/n"+ e.getMessage() + "/n Class: SQL_INSERT Physician(Physician physician, LocalDate onset)", "SQL Exception warning",
 				    JOptionPane.WARNING_MESSAGE);
 			return null;
 		} finally {

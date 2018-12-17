@@ -252,7 +252,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician();
+			Ctrl_DlgNewPhysician ctrlDlgNewPhysician = new Ctrl_DlgNewPhysician((Tbl_PhysicianModel) tblPersonnelModel);
 			ctrlDlgNewPhysician.showDialog(ModalityType.APPLICATION_MODAL);
 			
 		}

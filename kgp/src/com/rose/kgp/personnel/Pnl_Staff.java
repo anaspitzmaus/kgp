@@ -171,11 +171,11 @@ public abstract class Pnl_Staff extends JPanel {
 		txtAlias.getDocument().removeDocumentListener(l);
 	}
 	
-	protected void addUpdateStaffMemberListener(ActionListener l){
+	protected void addBtnStaffMemberListener(ActionListener l){
 		btnStaffMemberUpdate.addActionListener(l);
 	}
 	
-	protected void removeUpdateStaffMemberListener(ActionListener l){
+	protected void removeBtnStaffMemberListener(ActionListener l){
 		btnStaffMemberUpdate.removeActionListener(l);
 	}
 	
