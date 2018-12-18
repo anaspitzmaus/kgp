@@ -71,7 +71,7 @@ public class Ctrl_DlgPhysician extends Ctrl_DlgStaff{
 		super.setListener();//set the basic listeners
 		//add the extra listeners of the dialog		
 		((Pnl_Physician)dialog.getPnlStaff()).addTitleListener(titleListener);					
-		dialog.addNewStaffMemberListener(newStaffMemberListener);
+		
 		
 	}
 	
