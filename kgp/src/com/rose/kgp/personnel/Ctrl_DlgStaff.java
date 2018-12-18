@@ -127,6 +127,7 @@ abstract class Ctrl_DlgStaff {
 		dialog.getPnlStaff().addSexListener(sexListener);
 		dialog.addRowSelectionListener(tblRowSelectionListener);
 		dialog.getPnlStaff().addBtnStaffMemberListener(updateStaffMemberListener);
+		dialog.addNewStaffMemberListener(newStaffMemberListener);
 	};
 		
 	

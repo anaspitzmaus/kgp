@@ -204,7 +204,7 @@ public class SQL_INSERT {
 									+ nurse.getStatus() + "', '" + nurse.getAlias() + "')");
 				
 				
-									
+				nurse.setId(id);					
 				return id;
 									
 			} catch (SQLException e) {

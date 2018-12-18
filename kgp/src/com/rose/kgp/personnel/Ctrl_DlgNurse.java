@@ -3,24 +3,16 @@ package com.rose.kgp.personnel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-
-
-
-
-
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
-
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.db.SQL_UPDATE;
-import com.rose.kgp.ui.Ctrl_PnlSetDate;
+
 
 
 public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
@@ -45,7 +37,8 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 		dialog.getTblPersonnel().setDefaultRenderer(LocalDate.class, new ColumnDateRenderer());
 		dialog.getPnlStaff().getComboSex().setModel(sexModel);
 		dialog.setSexComboRenderer(sexComboRenderer);//need to be set here, as the super class is abstract (the renderer is initialized in the super class)
-		updateStaffMemberListener = new UpdateNurseListener();		
+		updateStaffMemberListener = new UpdateNurseListener();
+		newStaffMemberListener = new NewNurseListener();
 		setListener();
 		
 	}
@@ -54,16 +47,6 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 	
 	
 	
-		
-//	class NewNurseListener implements ActionListener{
-//
-//		@Override
-//		public void actionPerformed(ActionEvent arg0) {
-//			((Ctrl_PnlNurse)ctrlPnlStaff).prepareForNewNurse();	
-//			setModus(Modus.NEW);
-//		}
-//		
-//	}
 	
 		
 	class NurseCellRenderer extends DefaultTableCellRenderer{
@@ -146,6 +129,15 @@ public class Ctrl_DlgNurse extends Ctrl_DlgStaff {
 		
 	}
 	
-	
+	class NewNurseListener extends NewStaffMemberListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Ctrl_DlgNewNurse ctrlDlgNewNurse = new Ctrl_DlgNewNurse((Tbl_NurseModel) tblPersonnelModel);
+			ctrlDlgNewNurse.showDialog(ModalityType.APPLICATION_MODAL);
+			
+		}
+		
+	}
 
 }

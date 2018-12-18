@@ -37,6 +37,7 @@ abstract class Ctrl_DlgNewStaff {
 	protected SexComboRenderer sexComboRenderer;
 	protected SexModel sexModel;
 	protected NewStaffMemberListener newStaffMemberListener;
+	protected Tbl_PersonnelModel tblModel;
 	
 	public Ctrl_DlgNewStaff() {
 		
