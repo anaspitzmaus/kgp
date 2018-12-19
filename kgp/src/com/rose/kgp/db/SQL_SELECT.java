@@ -163,7 +163,7 @@ public class SQL_SELECT {
 		ArrayList<Nurse> nurses = new ArrayList<Nurse>();
 		try {
 			rs = stmt.executeQuery(
-					"SELECT nurse.id_staff AS idstaff, idnurse, surname, firstname, nurse.alias AS alias, onset, sex "
+					"SELECT nurse.id_staff AS idstaff, idnurse, surname, firstname, nurse.alias AS alias, onset, sex, birth "
 							+ "FROM nurse "
 							+ "INNER JOIN "
 							+ "(Select MAX(idnurse) as LatestID, id_staff "
@@ -184,6 +184,7 @@ public class SQL_SELECT {
 				nurse.setSexCode(rs.getInt("sex"));
 				nurse.setOnset(rs.getDate("onset").toLocalDate());
 				nurse.setAlias(rs.getString("alias"));
+				nurse.setBirthday(rs.getDate("birth").toLocalDate());
 				nurses.add(nurse);
 			} 
 			
