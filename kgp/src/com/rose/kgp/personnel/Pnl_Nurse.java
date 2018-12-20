@@ -42,7 +42,7 @@ public class Pnl_Nurse extends Pnl_Staff{
 	protected void addBirthDatePanel(Pnl_SetDate datePanel){		
 		if(!(birthPanel instanceof Pnl_SetDate)){
 			this.birthPanel = datePanel;
-			add(datePanel, "cell 1 5,growx,aligny top");
+			add(datePanel, "cell 1 4,growx,aligny top");
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class Pnl_Nurse extends Pnl_Staff{
 	protected void addOnsetDatePanel(Pnl_SetDate datePanel){
 		if(!(onsetPanel instanceof Pnl_SetDate)){
 			this.onsetPanel = datePanel;
-			add(datePanel, "cell 1 4,growx,aligny top");
+			add(datePanel, "cell 1 5,growx,aligny top");
 		}
 	}
 
