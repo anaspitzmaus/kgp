@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.rose.kgp.examination.AngioPeri;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.PM_Implant;
@@ -241,6 +242,11 @@ public class Controller_PnlTblExamFiles {
 				case PM_Implantation:
 					examSel = new PM_Implant(values);
 					break;
+				case Peripher_Diagnostisch:
+					examSel = new AngioPeri(values);
+					break;
+				default:
+					break;
 				}
 				
 								
@@ -267,6 +273,8 @@ public class Controller_PnlTblExamFiles {
 			switch(examType){
 			case "Koronar^Diagnostisch":
 				return StudyType.Koronar_Diagnostisch;
+			case "Peripher^Diagnostisch":
+				return StudyType.Peripher_Diagnostisch;
 			default:
 				return null;
 			}

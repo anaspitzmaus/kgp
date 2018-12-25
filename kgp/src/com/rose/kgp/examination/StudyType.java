@@ -1,5 +1,5 @@
 package com.rose.kgp.examination;
 
 public enum StudyType {
-	LeftHeartCatheter, PM_Implantation, Koronar_Diagnostisch
+	LeftHeartCatheter, PM_Implantation, Koronar_Diagnostisch, Peripher_Diagnostisch
 }
