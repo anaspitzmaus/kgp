@@ -121,8 +121,8 @@ public class Sensis implements DataOutput{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	        	LocalDate fileDate =
-	        		    Instant.ofEpochMilli(fileEntry.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
+//	        	LocalDate fileDate =
+//	        		    Instant.ofEpochMilli(fileEntry.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
 	        	if(fileEntry.getName().endsWith(extension) && !fileCreationDate.isAfter(endDate) && !fileCreationDate.isBefore(startDate)){
 	        		files.add(fileEntry);
 	        	}
