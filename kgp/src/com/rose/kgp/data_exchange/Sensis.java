@@ -9,18 +9,18 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import com.rose.kgp.db.SQL_SELECT;
-import com.rose.kgp.examination.LeftHeartCatheter;
-import com.rose.kgp.personnel.Patient;
 
 public class Sensis implements DataOutput{
 	Path folderPath;
@@ -107,9 +107,23 @@ public class Sensis implements DataOutput{
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);
 	        } else {
+	        	Path filePath = fileEntry.toPath();
+	        	LocalDate fileCreationDate = null;
+	        	try {
+					BasicFileAttributes attr = Files.readAttributes(filePath, BasicFileAttributes.class);
+					FileTime fileCreationTime = attr.creationTime();
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					String created = df.format(fileCreationTime.toMillis());
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");					
+					//convert String to LocalDate
+					fileCreationDate = LocalDate.parse(created, formatter);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        	LocalDate fileDate =
 	        		    Instant.ofEpochMilli(fileEntry.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
-	        	if(fileEntry.getName().endsWith(extension) && !fileDate.isAfter(endDate) && !fileDate.isBefore(startDate)){
+	        	if(fileEntry.getName().endsWith(extension) && !fileCreationDate.isAfter(endDate) && !fileCreationDate.isBefore(startDate)){
 	        		files.add(fileEntry);
 	        	}
 	           // FilenameUtils.getExtension(fileEntry.getName()); //returns the extension of a file (Apache Commons IO)
