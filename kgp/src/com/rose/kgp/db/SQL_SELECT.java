@@ -331,4 +331,15 @@ public class SQL_SELECT {
 		}
 		return clinicalInstitutions;
 	}
+	
+	public static Boolean IsFileStored(File file) {
+		stmt = DB.getStatement();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT * FROM files");					
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return true;
+	}
 }

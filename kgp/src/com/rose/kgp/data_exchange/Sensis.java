@@ -28,6 +28,9 @@ public class Sensis implements DataOutput{
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
 	HashMap<String, HashMap<String, ArrayList<String>>>values = null;
 	
+	public Path getFolderPath() {
+		return this.folderPath;
+	}
 	/**
 	 * constructor
 	 * @param path needs to be a directory, not a full file name;
@@ -54,6 +57,22 @@ public class Sensis implements DataOutput{
 	        	files.add(fileEntry);
 	        	
 	           // FilenameUtils.getExtension(fileEntry.getName()); //returns the extension of a file (Apache Commons IO)
+	        }
+	    }
+	    return files;
+	}
+	
+	/**
+	 * lists all files of a folder and returns it as an arrayList
+	 * @return
+	 */
+	public ArrayList<File> listFilesForFolder() {
+		ArrayList<File> files = new ArrayList<File>();
+	    for (final File fileEntry : this.folderPath.toFile().listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry);
+	        } else {	        	
+	        	files.add(fileEntry);           
 	        }
 	    }
 	    return files;

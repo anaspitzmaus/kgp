@@ -2,7 +2,6 @@ package com.rose.kgp.examination;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 
