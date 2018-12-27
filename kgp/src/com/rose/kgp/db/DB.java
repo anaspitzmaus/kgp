@@ -115,7 +115,7 @@ public class DB {
 	 * @return instance of the connection
 	 */
 	private static Connection getDriverConnection(){
-		pref = Preferences.userNodeForPackage(new Dlg_DBSettings().getClass()); //get Preferences
+		pref = Preferences.userNodeForPackage(Dlg_DBSettings.class); //get Preferences
 		
 		String host = pref.get("DB_Host", "localhost");
 		String port = pref.get("DB_Port", "");

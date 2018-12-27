@@ -332,14 +332,27 @@ public class SQL_SELECT {
 		return clinicalInstitutions;
 	}
 	
+	/**
+	 * check if a sensis file is stored in database, independent on its path  
+	 * @param file to be checked
+	 * @return true if the file is already stored in database, false if not
+	 */
 	public static Boolean IsFileStored(File file) {
 		stmt = DB.getStatement();
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT * FROM files");					
+					 "SELECT file "
+					 + "FROM sensis_files "
+					 + "WHERE file = '" + file.getName() + "'");	
+			
+			if(rs.isBeforeFirst()) {//if there is a resultSet
+				return true;				
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_SELECT.class.getSimpleName() + "\n\nIsFileStored(File file)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
 		}
-		return true;
+		return false;
 	}
 }
