@@ -73,7 +73,7 @@ public abstract class Person {
 			return Sex.MALE;
 			
 		case 9:
-			return Sex.INDIFFERENT;
+			return Sex.DIVERS;
 		default:
 			return null;
 			
@@ -96,7 +96,7 @@ public abstract class Person {
 		case MALE:
 			this.sex = 2;
 			break;
-		case INDIFFERENT:
+		case DIVERS:
 			this.sex = 9;
 			break;
 		default:

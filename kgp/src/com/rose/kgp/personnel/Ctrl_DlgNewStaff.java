@@ -72,7 +72,7 @@ abstract class Ctrl_DlgNewStaff {
 					case MALE:
 						staffMember.setSexCode(2);
 						break;
-					case INDIFFERENT:
+					case DIVERS:
 						staffMember.setSexCode(0);
 						break;
 					default:
@@ -223,7 +223,7 @@ abstract class Ctrl_DlgNewStaff {
 				case MALE:
 					renderer.setText("Herr");
 					break;
-				case INDIFFERENT:
+				case DIVERS:
 					renderer.setText("Divers");
 					break;
 				case NOT_KNOWN:

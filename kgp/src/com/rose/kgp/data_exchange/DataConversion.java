@@ -191,6 +191,9 @@ public class DataConversion {
 				case "weiblich":
 					patient.setSex(Sex.FEMALE);
 					break;
+				case "divers":
+					patient.setSex(Sex.DIVERS);
+					break;
 				default:
 					patient.setSex(Sex.NOT_KNOWN);
 					break;

@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.prefs.Preferences;
 
+import com.rose.kgp.data_exchange.DataConversion;
 import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
-import com.rose.kgp.db.SQL_INSERT;
+import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.settings.CtrlSetSensisPath;
 
 public class StartCore {
@@ -32,7 +33,8 @@ public class StartCore {
 						//read the file and store the basic data in database schema sensis_files
 						try {
 							HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
-							
+							DataConversion dataConversion = new DataConversion(values);
+							Patient patient = dataConversion.patient();
 							//SQL_INSERT.BasicSensisData()
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
