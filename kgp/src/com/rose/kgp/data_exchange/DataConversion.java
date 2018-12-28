@@ -116,6 +116,7 @@ public class DataConversion {
 	
 	/**
 	 * get the case number out of the hashMap
+	 * a caseNr exists if patient is treated as inpatient or as cardio_integral but not if treated as outpatient
 	 * @return the case number (Integer) or null if not exists
 	 */
 	public Integer caseNr(){
@@ -142,7 +143,7 @@ public class DataConversion {
 			patient.setMidname(patient_hm.get("MIDNAME").get(0));
 			
 			try{
-				patient.setNumber(Integer.parseInt(patient_hm.get("PATID").get(0)));
+				patient.setNumber(Integer.parseInt(patient_hm.get("PATID").get(0))); //PatID as written in the sensis protocol (independent on outpatient or inpatient 
 			}catch(NumberFormatException nfe){
 				//no number format
 			}

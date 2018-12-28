@@ -1,6 +1,6 @@
 package com.rose.kgp.administration;
 
-import com.rose.kgp.personnel.Patient;
+
 
 public class Administration {
 	private TreatmentCase treatmentCase;

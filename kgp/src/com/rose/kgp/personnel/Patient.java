@@ -78,6 +78,7 @@ public class Patient extends Person{
 	}
 
 	/**
+	 * 
 	 * id of the patient - independent if the patient is treated as in or out patient
 	 * @return
 	 */
