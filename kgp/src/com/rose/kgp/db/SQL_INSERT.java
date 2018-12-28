@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.MD5;
+import com.rose.kgp.administration.AccountingType;
+import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Nurse;
@@ -248,6 +250,64 @@ public class SQL_INSERT {
 			JOptionPane.showMessageDialog(new JFrame(),
 				    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT Boolean ClinicalInstitution(Clinical_Institution institution)", "SQL Exception warning",
 				    JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+	}
+
+	/**
+	 * insert a treatmentCase
+	 * @param treatmentCase
+	 */
+	
+	public static void TreatmentCase(TreatmentCase treatmentCase) {
+		//for every accounting type
+		//if patient isn't already stored at DB
+		// insert patient in DB
+		switch(treatmentCase.getAccountingType()) {
+		case stationär:
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {
+				SQL_INSERT.Patient(treatmentCase.getPatient());
+			}
+			break;
+		case integrierte_Versorgung:
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {
+				SQL_INSERT.Patient(treatmentCase.getPatient());
+			}
+			break;
+		case ambulant:
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getOutID()) instanceof Patient)) {
+				SQL_INSERT.Patient(treatmentCase.getPatient());
+			}
+			break;
+		default:
+			break;
+		}
+		
+		//insert caseNr in schema treatmentCase if not already exists... 
+		if(CaseNumber(treatmentCase.getCaseNr())) {
+			//if case number could be inserted
+		};
+		//...and insert the examination
+		  
+		
+	}
+	
+	/**
+	 * insert the number of a treatment case
+	 * @param caseNr
+	 */
+	private static Boolean CaseNumber(Integer caseNr) {
+		stmt = DB.getStatement();
+		try {
+			
+			stmt.executeUpdate("INSERT INTO treatment_case (case_nr) "
+								+ "VALUES (" + caseNr + ")");
+																		
+								
+			return true;
+								
+		} catch (SQLException e) {
+			
 			return false;
 		}
 	}

@@ -62,7 +62,7 @@ public class StartCore {
 			try {
 				HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
 				TreatmentCase treatmentCase = new TreatmentCase(values);					
-				SQL_INSERT.Patient(treatmentCase.getPatient());
+				SQL_INSERT.TreatmentCase(treatmentCase);
 				
 				//SQL_INSERT.BasicSensisData()
 			} catch (IOException e) {
