@@ -272,13 +272,10 @@ public class DataConversion {
 	 */
 	public StudyType studyType(){
 		HashMap<String, ArrayList<String>> studyType_hm = dataValues.get("STUDY");
-		String studyType = studyType_hm.get("STUDESC").get(0);
-		switch (studyType) {
-		case "Koronar^Diagnostisch":
-			return StudyType.Koronar_Diagnostisch;
-		default:
-			return null;
-		}
+		String studyTypeSensis = studyType_hm.get("STUDESC").get(0);
+		StudyType studyType = null;
+		studyType = StudyType.switchStudyTypeByProtocol(studyTypeSensis);
+		return studyType;
 	}
 	
 	

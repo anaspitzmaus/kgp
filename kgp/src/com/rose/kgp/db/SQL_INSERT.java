@@ -86,14 +86,20 @@ public class SQL_INSERT {
 		}
 	}
 	
+	/**
+	 * insert a patient 
+	 * @param patient
+	 * @return
+	 */
 	public static Boolean Patient(Patient patient){
 		stmt = DB.getStatement();
 		try {
 			DB.getConnection().setAutoCommit(false);
-			stmt.executeUpdate("INSERT INTO patient (id_outpatient, id_inpatient, firstname) "
+			stmt.executeUpdate("INSERT INTO patient (id_outpatient, id_inpatient, firstname, birthday) "
 								+ "VALUES (" + patient.getOutID() + ", " //Integer must not be enclosed into parenthesis
-								+ patient.getInID() + ", '"
-								+ patient.getFirstname() + "')");
+								+ patient.getInID() + ", '"//Integer must not be enclosed into parenthesis
+								+ patient.getFirstname() + "', '"
+								+ Date.valueOf(patient.getBirthday()) + "'");
 								
 			stmt.executeUpdate("INSERT INTO patient_extended (id_patient, surname) VALUES (LAST_INSERT_ID(), '" + patient.getSurname() + "')");						
 			return true;
