@@ -18,6 +18,7 @@ import com.rose.kgp.settings.CtrlSetSensisPath;
 public class StartCore {
 
 	static Preferences prefs;
+	Sensis sensis;
 	
 	public static void main(String[] args) {
 		if(DB.createConnection() != null){	
@@ -31,29 +32,42 @@ public class StartCore {
 	
 	private void getSensisFiles() {
 		prefs = Preferences.userNodeForPackage(CtrlSetSensisPath.class);
-		Sensis sensis = new Sensis(prefs.get("Sensis_Path", null));
+		sensis = new Sensis(prefs.get("Sensis_Path", null));
 		if(sensis.getFolderPath() instanceof Path) {
 			ArrayList<File> files = sensis.listFilesForFolder();
 			FilesAndDB filesAndDB = new FilesAndDB();
 			for(File file: files) {
 				if(filesAndDB.IsFileStoredInDB(file)) {
 					//if file is already stored in database
-					//switch the file to another folder
+					//change the directory of that file 
+					changeFileDirectory(file);
 				}else {
 					//if file is not stored in database
+					
 					//read the file and store the basic data in database schema sensis_files
-					try {
-						HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
-						TreatmentCase treatmentCase = new TreatmentCase(values);					
-						SQL_INSERT.Patient(treatmentCase.getPatient());
-						
-						//SQL_INSERT.BasicSensisData()
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					//switch the file to another folder
+					storeFileToDB(file);
+					//change the directory of that file
+					changeFileDirectory(file);
 				}
+			}
+		}
+	}
+	
+	private void changeFileDirectory(File file) {
+		
+	}
+	
+	private void storeFileToDB(File file) {
+		if(sensis instanceof Sensis) {
+			try {
+				HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
+				TreatmentCase treatmentCase = new TreatmentCase(values);					
+				SQL_INSERT.Patient(treatmentCase.getPatient());
+				
+				//SQL_INSERT.BasicSensisData()
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
