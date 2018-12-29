@@ -3,16 +3,16 @@ package com.rose.kgp.core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import com.rose.kgp.administration.TreatmentCase;
-import com.rose.kgp.data_exchange.DataConversion;
 import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.SQL_INSERT;
-import com.rose.kgp.personnel.Patient;
+import com.rose.kgp.examination.Examination;
 import com.rose.kgp.settings.CtrlSetSensisPath;
 
 public class StartCore {
@@ -62,13 +62,21 @@ public class StartCore {
 			try {
 				HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
 				TreatmentCase treatmentCase = new TreatmentCase(values);					
-				SQL_INSERT.TreatmentCase(treatmentCase);
-				
+				Integer treatment_id = SQL_INSERT.TreatmentCase(treatmentCase);//insert the treatment_case (returns the id of the treatment case)
+				if(treatment_id != null){//if treatment case could be inserted 
+					//insert the examination
+					//insertExamination(treatmentCase.getE)
+				}
 				//SQL_INSERT.BasicSensisData()
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (IOException | SQLException e) {
+				//check the exception
+				//if treatment_case already exists (case_number already exists)
+				//insert the examination 
 			}
 		}
+	}
+	
+	private void insertExamination(Examination exam){
+		
 	}
 }

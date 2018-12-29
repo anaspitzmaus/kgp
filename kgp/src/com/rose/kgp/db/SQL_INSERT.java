@@ -259,56 +259,55 @@ public class SQL_INSERT {
 	 * @param treatmentCase
 	 */
 	
-	public static void TreatmentCase(TreatmentCase treatmentCase) {
+	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws SQLException{
 		//for every accounting type
 		//if patient isn't already stored at DB
 		// insert patient in DB
+		Integer treatment_id = null;
+		DB.getConnection().setAutoCommit(false);
 		switch(treatmentCase.getAccountingType()) {
 		case stationär:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {
-				SQL_INSERT.Patient(treatmentCase.getPatient());
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {//check if patient is stored already (check by in_Patient ID for stationary patient)
+				//if patient is not stored already
+				SQL_INSERT.Patient(treatmentCase.getPatient()); //insert the patient
 			}
 			break;
 		case integrierte_Versorgung:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {
-				SQL_INSERT.Patient(treatmentCase.getPatient());
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {//check if patient is stored already (check by in_Patient ID for cardio integral patient)
+				//if patient is not stored already
+				SQL_INSERT.Patient(treatmentCase.getPatient());//insert the patient
 			}
 			break;
 		case ambulant:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getOutID()) instanceof Patient)) {
-				SQL_INSERT.Patient(treatmentCase.getPatient());
+			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getOutID()) instanceof Patient)) {//check if patient is stored already (check by out_Patient ID for ambulant patient)
+				///if patient is not stored already
+				SQL_INSERT.Patient(treatmentCase.getPatient());//insert the patient
 			}
 			break;
 		default:
 			break;
 		}
 		
-		//insert caseNr in schema treatmentCase if not already exists... 
-		if(CaseNumber(treatmentCase.getCaseNr())) {
-			//if case number could be inserted
-		};
-		//...and insert the examination
+		//insert treatmentCase if not already exists... 
+		
+			stmt = DB.getStatement();
+			
+			stmt.executeUpdate("INSERT INTO treatment_case (case_nr, id_patient) "
+									+ "VALUES (" + treatmentCase.getCaseNr() + ", "
+									+ treatmentCase.getPatient().getId() + ")");	
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			rs.next();
+			treatment_id = rs.getInt("ID");
+			DB.getConnection().setAutoCommit(true);
+			return treatment_id;
+			
+				
+			
+		
+		
 		  
 		
 	}
 	
-	/**
-	 * insert the number of a treatment case
-	 * @param caseNr
-	 */
-	private static Boolean CaseNumber(Integer caseNr) {
-		stmt = DB.getStatement();
-		try {
-			
-			stmt.executeUpdate("INSERT INTO treatment_case (case_nr) "
-								+ "VALUES (" + caseNr + ")");
-																		
-								
-			return true;
-								
-		} catch (SQLException e) {
-			
-			return false;
-		}
-	}
+	
 }
