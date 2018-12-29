@@ -9,10 +9,12 @@ import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import com.rose.kgp.administration.TreatmentCase;
+import com.rose.kgp.data_exchange.DataConversion;
 import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.examination.Examination;
+import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.settings.CtrlSetSensisPath;
 
 public class StartCore {
@@ -45,7 +47,34 @@ public class StartCore {
 					//if file is not stored in database
 					
 					//read the file and store the basic data in database schema sensis_files
-					storeFileToDB(file);
+					HashMap<String, HashMap<String, ArrayList<String>>> studyValues = null;
+					try {
+						studyValues = sensis.readExamFile(file.getName());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					TreatmentCase treatmentCase = new TreatmentCase(studyValues);
+					try {
+						if(treatmentCase.getPatient().getInID() != null | treatmentCase.getPatient().getOutID() != null){
+							//if patient has either an inID or an outID
+							treatmentCase.getPatient().storePatientToDB(); //store patient to DB
+						}
+					} catch (SQLException e) {
+						//check sqlException
+						System.out.println(e.getErrorCode());
+						if(e.getErrorCode() == 1062){//check duplicate entry error
+							//if duplicate entry (patient already exists in schema patient
+							//insert treatmentCase to database
+						}
+							 
+					}
+					
+//					TreatmentCase treatmentCase = new TreatmentCase(studyValues);
+//					storeTreatmentCaseToDB(treatmentCase);
+//					Examination examination = 
+//					storeExaminationToDB();
 					//change the directory of that file
 					changeFileDirectory(file);
 				}
@@ -57,18 +86,17 @@ public class StartCore {
 		
 	}
 	
-	private void storeFileToDB(File file) {
+	private void storeTreatmentCaseToDB(TreatmentCase treatmentCase) {
 		if(sensis instanceof Sensis) {
 			try {
-				HashMap<String, HashMap<String, ArrayList<String>>> values = sensis.readExamFile(file.getName());
-				TreatmentCase treatmentCase = new TreatmentCase(values);					
+									
 				Integer treatment_id = SQL_INSERT.TreatmentCase(treatmentCase);//insert the treatment_case (returns the id of the treatment case)
 				if(treatment_id != null){//if treatment case could be inserted 
 					//insert the examination
 					//insertExamination(treatmentCase.getE)
 				}
 				//SQL_INSERT.BasicSensisData()
-			} catch (IOException | SQLException e) {
+			} catch (SQLException e) {
 				//check the exception
 				//if treatment_case already exists (case_number already exists)
 				//insert the examination 
@@ -76,7 +104,9 @@ public class StartCore {
 		}
 	}
 	
-	private void insertExamination(Examination exam){
+	private void storeExaminationToDB(Examination exam){
 		
 	}
+	
+	
 }

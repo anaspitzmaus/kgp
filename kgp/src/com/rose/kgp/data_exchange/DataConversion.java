@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.personnel.Nurse;
@@ -126,10 +127,10 @@ public class DataConversion {
 			return caseNumber;
 		}catch(NumberFormatException e){
 			return null;
-		}
-		
+		}		
 	}
 	
+		
 	/**
 	 * finds the data of the patient (Patient) out of the hashMap
 	 * @return the Patient, null if there where no patient data found

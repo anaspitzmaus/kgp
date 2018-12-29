@@ -333,17 +333,17 @@ public class SQL_SELECT {
 	}
 	
 	/**
-	 * check if a sensis file is stored in database, independent on its path  
+	 * check if a sensis file is stored in schema examination, independent on its path  
 	 * @param file to be checked
-	 * @return true if the file is already stored in database, false if not
+	 * @return true if the file is already stored in schema examination, false if not
 	 */
 	public static Boolean IsFileStored(File file) {
 		stmt = DB.getStatement();
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT file "
-					 + "FROM sensis_files "
-					 + "WHERE file = '" + file.getName() + "'");	
+					 "SELECT filename "
+					 + "FROM examination "
+					 + "WHERE filename = '" + file.getName() + "'");	
 			
 			if(rs.isBeforeFirst()) {//if there is a resultSet
 				return true;				

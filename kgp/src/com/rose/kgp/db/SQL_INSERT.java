@@ -93,34 +93,28 @@ public class SQL_INSERT {
 	 * @param patient
 	 * @return
 	 */
-	public static Boolean Patient(Patient patient){
+	public static Integer Patient(Patient patient) throws SQLException{
 		stmt = DB.getStatement();
-		try {
+		Integer lastInsertID = null;
+		
 			DB.getConnection().setAutoCommit(false);
 			stmt.executeUpdate("INSERT INTO patient (id_outpatient, id_inpatient, firstname, birthday) "
 								+ "VALUES (" + patient.getOutID() + ", " //Integer must not be enclosed into parenthesis
 								+ patient.getInID() + ", '"//Integer must not be enclosed into parenthesis
 								+ patient.getFirstname() + "', '"
-								+ Date.valueOf(patient.getBirthday()) + "'");
+								+ Date.valueOf(patient.getBirthday()) + "')");
 								
 			stmt.executeUpdate("INSERT INTO patient_extended (id_patient, surname) VALUES (LAST_INSERT_ID(), '" + patient.getSurname() + "')");						
-			return true;
-								
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(new JFrame(),
-				    e.getMessage(), "SQL Exception warning",
-				    JOptionPane.WARNING_MESSAGE);
-			return false;
-		} finally {
-			try {
-				DB.getConnection().setAutoCommit(true);
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(new JFrame(),
-					    "Message: failure while setting autoCommit to true /n Class: SQL_INSERT patient", "SQL Exception warning",
-					    JOptionPane.WARNING_MESSAGE);
-			}
-		}
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			rs.next();
+			lastInsertID = rs.getInt("ID");
+			patient.setId(lastInsertID); //set the inserted id as id of the patient
+							
+			DB.getConnection().setAutoCommit(true);
+			return lastInsertID;		
 	}
+	
+	
 	
 	public static Boolean Patient_Changes(Patient patient){
 		stmt = DB.getStatement();

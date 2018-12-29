@@ -1,8 +1,10 @@
 package com.rose.kgp.personnel;
 
-import java.time.LocalDate;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.disease.Diagnosis;
 
 public class Patient extends Person{
@@ -116,6 +118,17 @@ public class Patient extends Person{
 
 	public void setBSA(Double bsa) {
 		this.bsa = bsa;
+	}
+	
+	/**
+	 * calls the method to store the patient to the database
+	 * @return
+	 */
+	public Integer storePatientToDB() throws SQLException{
+		
+			return  SQL_INSERT.Patient(this);			
+		
+		
 	}
 	
 	
