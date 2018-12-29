@@ -79,7 +79,10 @@ public class TreatmentCase {
 //	}
 
 	/**
-	 * declares a patient as inPatient or outPatient depending on the id
+	 * declares a patient as inPatient or outPatient depending on the case number and the number
+	 * if a case number exists, the patient can be treated as in patient (number corresponds to in patient id) 
+	 * or as integrated patient (number corresponds to out patient id)
+	 * if there is no case number, patient is treated as out patient and the number corresponds to out patient id)
 	 * @param id
 	 */
 	public void setPatient_In_Or_Out(Integer caseNr){
@@ -94,7 +97,7 @@ public class TreatmentCase {
 			}else if(this.getPatient().getNumber() < 100000){
 				//declare as CardioIntegral
 				this.accountingType = AccountingType.integrierte_Versorgung;
-				this.inPatientID = this.getPatient().getNumber(); //set the inPatient id
+				this.outPatientID = this.getPatient().getNumber(); //set the outPatient id
 				this.getPatient().setOutID(this.getPatient().getNumber());//caution!! outPatient id
 			}
 		}else if(this.getPatient().getNumber() < 100000){
