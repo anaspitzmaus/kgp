@@ -22,14 +22,14 @@ import com.rose.kgp.personnel.Sex;
  * into the variables of the examination class or derived classes
  * @author Administrator
  */
-public class DataConversion {
+public class Study {
 	HashMap<String, HashMap<String, ArrayList<String>>> dataValues;//an hashMap that contains the study data
 	
 	/**
 	 * standard constructor
 	 * @param values the hashMap that contains the study data
 	 */
-	public DataConversion(HashMap<String, HashMap<String, ArrayList<String>>> values) {
+	public Study(HashMap<String, HashMap<String, ArrayList<String>>> values) {
 		dataValues  = values;
 	}
 

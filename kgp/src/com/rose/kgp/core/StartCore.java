@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import com.rose.kgp.administration.TreatmentCase;
-import com.rose.kgp.data_exchange.DataConversion;
+import com.rose.kgp.data_exchange.Study;
 import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.examination.Examination;
+import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.settings.CtrlSetSensisPath;
 
@@ -67,10 +68,10 @@ public class StartCore {
 						if(e.getErrorCode() == 1062){//check duplicate entry error
 							//if duplicate entry (patient already exists in schema patient
 							//insert treatmentCase to database
-						}
-							 
+						}							 
 					}
-					
+					Study study = new Study(studyValues);
+					StudyType studyType = study.studyType();
 //					TreatmentCase treatmentCase = new TreatmentCase(studyValues);
 //					storeTreatmentCaseToDB(treatmentCase);
 //					Examination examination = 

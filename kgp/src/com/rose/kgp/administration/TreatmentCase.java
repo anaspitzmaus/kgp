@@ -3,7 +3,7 @@ package com.rose.kgp.administration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.rose.kgp.data_exchange.DataConversion;
+import com.rose.kgp.data_exchange.Study;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Patient;
 
@@ -15,7 +15,7 @@ public class TreatmentCase {
 	private Integer inPatientID, outPatientID;
 	//private Integer patientID;//as a patient can have different IDs depending on whether he is treated as in- or outPatient (cardioIntegral is kind of inPatient)
 	private ArrayList<Examination> examinations;
-	private DataConversion dataConversion;
+	private Study dataConversion;
 
 	
 	public Patient getPatient() {
@@ -51,7 +51,7 @@ public class TreatmentCase {
 	 * @param patient
 	 */
 	public TreatmentCase(HashMap<String, HashMap<String, ArrayList<String>>> values){
-		dataConversion = new DataConversion(values);
+		dataConversion = new Study(values);
 		this.patient = dataConversion.patient();
 		this.caseNr = dataConversion.caseNr();
 		setPatient_In_Or_Out(this.caseNr);

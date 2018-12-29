@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.rose.kgp.administration.AccountingType;
 import com.rose.kgp.administration.TreatmentCase;
-import com.rose.kgp.data_exchange.DataConversion;
+import com.rose.kgp.data_exchange.Study;
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -26,7 +26,7 @@ public abstract class Examination {
 	protected LocalDate date;
 	protected Integer refNo;
 	private Physician examiner;
-	protected DataConversion dataConversion;
+	protected Study dataConversion;
 	private TreatmentCase treatmentCase;
 	private HashMap<String, HashMap<String, ArrayList<String>>> rawData;
 	
@@ -161,7 +161,7 @@ public abstract class Examination {
 	 */
 	public Examination(HashMap<String, HashMap<String, ArrayList<String>>> values){
 		this.rawData = values;
-		this.dataConversion = new DataConversion(this.rawData);
+		this.dataConversion = new Study(this.rawData);
 		this.treatmentCase = new TreatmentCase(this.rawData);//new instance of a treatment case
 		setStudyData();
 	}
