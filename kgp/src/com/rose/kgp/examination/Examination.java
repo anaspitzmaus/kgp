@@ -26,7 +26,7 @@ public abstract class Examination {
 	protected LocalDate date;
 	protected Integer refNo;
 	private Physician examiner;
-	protected Study dataConversion;
+	protected Study study;
 	private TreatmentCase treatmentCase;
 	private HashMap<String, HashMap<String, ArrayList<String>>> rawData;
 	
@@ -133,12 +133,11 @@ public abstract class Examination {
 	public TreatmentCase getTreatmentCase() {
 		return treatmentCase;
 	}
-
-	public void setTreatmentCase(TreatmentCase treatmentCase) {
-		this.treatmentCase = treatmentCase;
-		this.treatmentCase.getExaminations().add(this); //add this examination to the treatmentCase
-	}
 	
+	public void setTreatmentCase(TreatmentCase treatmentCase){
+		this.treatmentCase = treatmentCase;
+	}
+		
 	/**
 	 * get the raw data of this study
 	 * @return an hashMap (HashMap<String, HashMap<String, ArrayList<String>>>) containing the raw data of this study
@@ -151,18 +150,16 @@ public abstract class Examination {
 	 * standard constructor
 	 */
 	public Examination(){
-		physicians_assist = new ArrayList<Physician>();
-		
+		physicians_assist = new ArrayList<Physician>();		
 	}
 	
 	/**
-	 * constructor for an examination with data transferred by a dataProtocol
+	 * constructor for an examination with data transferred by a dataProtocol i.e. by Sensis (Siemens)
 	 * @param values
 	 */
 	public Examination(HashMap<String, HashMap<String, ArrayList<String>>> values){
 		this.rawData = values;
-		this.dataConversion = new Study(this.rawData);
-		this.treatmentCase = new TreatmentCase(this.rawData);//new instance of a treatment case
+		this.study = new Study(this.rawData);
 		setStudyData();
 	}
 	
@@ -171,11 +168,11 @@ public abstract class Examination {
 	 */
 	protected void setStudyData(){
 		//this.setPatient(treatmentCase.getPatient());
-		this.setExaminer(dataConversion.examiner());
-		this.setDate(dataConversion.examDate());
-		this.setStartTime(dataConversion.startTime());
-		this.setEndTime(dataConversion.endTime());
-		this.setStudyType(dataConversion.studyType());
+		this.setExaminer(study.examiner());
+		this.setDate(study.examDate());
+		this.setStartTime(study.startTime());
+		this.setEndTime(study.endTime());
+		this.setStudyType(study.studyType());
 	}
 	
 	

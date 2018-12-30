@@ -13,7 +13,9 @@ import com.rose.kgp.data_exchange.Study;
 import com.rose.kgp.data_exchange.Sensis;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.SQL_INSERT;
+import com.rose.kgp.examination.AngioPeri;
 import com.rose.kgp.examination.Examination;
+import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.settings.CtrlSetSensisPath;
@@ -70,8 +72,29 @@ public class StartCore {
 							//insert treatmentCase to database
 						}							 
 					}
+					
+					storeTreatmentCaseToDB(treatmentCase);//store the treatmentCase to the database
+					
 					Study study = new Study(studyValues);
 					StudyType studyType = study.studyType();
+					Examination examination = null;;
+					switch (studyType){
+						case Koronar_Diagnostisch:
+							examination = new LeftHeartCatheter(studyValues);
+							break;
+						case Peripher_Diagnostisch:
+							examination = new AngioPeri(studyValues);
+							break;
+						default:
+							break;							
+					}
+					if(examination instanceof Examination){
+						examination.setTreatmentCase(treatmentCase);//set the treatmentCase to the examination
+						treatmentCase.getExaminations().add(examination);//add the examination to the treatmentCase
+						
+					}
+					
+					
 //					TreatmentCase treatmentCase = new TreatmentCase(studyValues);
 //					storeTreatmentCaseToDB(treatmentCase);
 //					Examination examination = 
@@ -88,7 +111,7 @@ public class StartCore {
 	}
 	
 	private void storeTreatmentCaseToDB(TreatmentCase treatmentCase) {
-		if(sensis instanceof Sensis) {
+		
 			try {
 									
 				Integer treatment_id = SQL_INSERT.TreatmentCase(treatmentCase);//insert the treatment_case (returns the id of the treatment case)
@@ -103,7 +126,7 @@ public class StartCore {
 				//insert the examination 
 			}
 		}
-	}
+	
 	
 	private void storeExaminationToDB(Examination exam){
 		

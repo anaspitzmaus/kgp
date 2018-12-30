@@ -15,7 +15,7 @@ public class TreatmentCase {
 	private Integer inPatientID, outPatientID;
 	//private Integer patientID;//as a patient can have different IDs depending on whether he is treated as in- or outPatient (cardioIntegral is kind of inPatient)
 	private ArrayList<Examination> examinations;
-	private Study dataConversion;
+	private Study study;
 
 	
 	public Patient getPatient() {
@@ -47,13 +47,14 @@ public class TreatmentCase {
 	}
 
 	/**
-	 * standard constructor
-	 * @param patient
+	 * standard constructor, extracts the patient, the case number and sets the accounting type of the patient (i.e. in or out patient)
+	 * @param values (an hashMap with the study values)
+	 * 
 	 */
 	public TreatmentCase(HashMap<String, HashMap<String, ArrayList<String>>> values){
-		dataConversion = new Study(values);
-		this.patient = dataConversion.patient();
-		this.caseNr = dataConversion.caseNr();
+		study = new Study(values);
+		this.patient = study.patient();
+		this.caseNr = study.caseNr();
 		setPatient_In_Or_Out(this.caseNr);
 		examinations = new ArrayList<Examination>();
 	}

@@ -13,15 +13,16 @@ public class LeftHeartCatheter extends Catheter_Intervention{
 	protected HashMap<InterventionalTaskNurse, Nurse> nurses;
 	final static StudyType examType = StudyType.LeftHeartCatheter;
 
+	
 	public LeftHeartCatheter(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
 		super(studyValues);
 		
 		this.nurses = new HashMap<InterventionalTaskNurse, Nurse>();
-		this.nurses.put(InterventionalTaskNurse.Assistenz_Steril, dataConversion.nurseSterile());
-		this.nurses.put(InterventionalTaskNurse.Assistenz_Unsteril, dataConversion.nurseUnsterile());
-		this.nurses.put(InterventionalTaskNurse.Registrierung, dataConversion.nurseRegistration());
+		this.nurses.put(InterventionalTaskNurse.Assistenz_Steril, study.nurseSterile());
+		this.nurses.put(InterventionalTaskNurse.Assistenz_Unsteril, study.nurseUnsterile());
+		this.nurses.put(InterventionalTaskNurse.Registrierung, study.nurseRegistration());
 		this.examiners = new HashMap<InterventionalTaskPhysician, Physician>();
-		this.examiners.put(InterventionalTaskPhysician.SecondExaminer, dataConversion.examinerAssistant());
+		this.examiners.put(InterventionalTaskPhysician.SecondExaminer, study.examinerAssistant());
 		// TODO Auto-generated constructor stub
 	}
 

@@ -49,7 +49,11 @@ public abstract class Catheter_Intervention extends Examination{
 		this.nurseRegistration = nurseRegistration;
 	}
 
-
+	
+	/**
+	 * constructor for an examination with data transferred by a dataProtocol i.e. by Sensis (Siemens)
+	 * @param values (hashMap)
+	 */
 	public Catheter_Intervention(HashMap<String, HashMap<String, ArrayList<String>>> values) {
 		super(values);
 		super.setStudyData();//set the basic study data of this examination
@@ -61,10 +65,10 @@ public abstract class Catheter_Intervention extends Examination{
 	 */
 	@Override
 	protected void setStudyData(){
-		this.setSecondExaminer(dataConversion.examinerAssistant());
-		this.setNurseSterile(dataConversion.nurseSterile());
-		this.setNurseUnsterile(dataConversion.nurseUnsterile());
-		this.setNurseRegistration(dataConversion.nurseRegistration());
+		this.setSecondExaminer(study.examinerAssistant());
+		this.setNurseSterile(study.nurseSterile());
+		this.setNurseUnsterile(study.nurseUnsterile());
+		this.setNurseRegistration(study.nurseRegistration());
 	}
 	
 	
