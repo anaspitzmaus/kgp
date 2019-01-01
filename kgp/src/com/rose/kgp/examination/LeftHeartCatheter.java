@@ -25,6 +25,10 @@ public class LeftHeartCatheter extends Catheter_Intervention{
 		this.examiners.put(InterventionalTaskPhysician.SecondExaminer, study.examinerAssistant());
 		// TODO Auto-generated constructor stub
 	}
+	
+	public LeftHeartCatheter(){
+		super();
+	}
 
 	
 	public void setStaff() {

@@ -60,6 +60,11 @@ public abstract class Catheter_Intervention extends Examination{
 		setStudyData();//set the specific study data of this examination
 	}
 	
+	public Catheter_Intervention() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	/**
 	 * set the specific study data of this catheter intervention
 	 */

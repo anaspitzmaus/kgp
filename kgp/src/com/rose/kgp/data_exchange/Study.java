@@ -1,5 +1,6 @@
 package com.rose.kgp.data_exchange;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,6 +12,9 @@ import java.util.HashMap;
 
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.examination.AngioPeri;
+import com.rose.kgp.examination.Examination;
+import com.rose.kgp.examination.LeftHeartCatheter;
 import com.rose.kgp.examination.StudyType;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
@@ -24,13 +28,17 @@ import com.rose.kgp.personnel.Sex;
  */
 public class Study {
 	HashMap<String, HashMap<String, ArrayList<String>>> dataValues;//an hashMap that contains the study data
-	
+	Sensis sensis;
 	/**
 	 * standard constructor
 	 * @param values the hashMap that contains the study data
 	 */
 	public Study(HashMap<String, HashMap<String, ArrayList<String>>> values) {
 		dataValues  = values;
+	}
+	
+	public Study(){
+		
 	}
 
 	/**
@@ -130,12 +138,49 @@ public class Study {
 		}		
 	}
 	
+	/**
+	 * create a treatmentCase out of the studyProtocol
+	 * the patient is set as in- or out- patient here
+	 * @param patient, the patient that corresponds to the treatmentCase
+	 * @return the treatmentCase, or null if treatmentCase could nor be created
+	 */
+	
+	public TreatmentCase getTreatmentCase(Patient patient) {
+		TreatmentCase treatmentCase = null;
+		Integer caseNr = caseNr();
+		if(caseNr != null && patient instanceof Patient){
+			treatmentCase = new TreatmentCase(caseNr, patient);			
+		}		
+		return treatmentCase;
+	}
+	
+	/**
+	 * read the protocol and create an examination depending on the studyType
+	 * @return the examination or null if the studyype could not be verified
+	 */
+	public Examination getExamination() {
+		Examination examination = null;
+		//read the examinationData
+		switch(studyType()){//set the kind of examination dependent on the studyType
+		case Koronar_Diagnostisch:
+			examination = new LeftHeartCatheter();
+			break;
+		case Peripher_Diagnostisch:
+			examination = new AngioPeri();
+			break;
+		default:
+			break;
+		}
+		return examination;
+		
+	}
+	
 		
 	/**
 	 * finds the data of the patient (Patient) out of the hashMap
 	 * @return the Patient, null if there where no patient data found
 	 */
-	public Patient patient(){
+	public Patient getPatient(){
 		
 		HashMap<String, ArrayList<String>> patient_hm = dataValues.get("PATIENT");
 		HashMap<String, ArrayList<String>> patientData_hm = dataValues.get("PD");

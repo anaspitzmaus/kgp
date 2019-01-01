@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Allocator;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.personnel.Nurse;
@@ -274,6 +275,30 @@ public class SQL_SELECT {
 	}
 	
 	/**
+	 * select the id of a patient by its out-patient id or its in-patient id
+	 * @param patient
+	 * @return the id of the patient or null if the patient could not be selected
+	 */
+	public static Integer PatientId (Patient patient) {
+		stmt = DB.getStatement();
+		Integer patient_id = null;
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT idpatient "
+					+ "FROM patient "
+					+ "WHERE patient.id_inpatient = " + patient.getInID() + " "
+					+ "OR patient.id_outpatient = " + patient.getOutID() + "");
+			if(rs.isBeforeFirst()){
+				rs.next();
+				patient_id = rs.getInt("idpatient");
+			}
+		} catch (SQLException e) {
+			//nothing to do
+		}
+		return patient_id;
+	}
+	
+	/**
 	 * get an arrayList of all active allocators
 	 * @param onset date (LocalDate) to check if allocator is still active
 	 * @return an arrayList of the selected allocators
@@ -354,5 +379,29 @@ public class SQL_SELECT {
 				    JOptionPane.WARNING_MESSAGE);
 		}
 		return false;
+	}
+
+	/**
+	 * select the id of a given treatment case by its case number
+	 * @param treatmentCase
+	 * @return the id as Integer
+	 */
+	public static Integer TreatmentCaseId(TreatmentCase treatmentCase) {
+		stmt = DB.getStatement();
+		Integer treatment_id = null;
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT id_treatment_case AS id"
+					+ "FROM treatment_case "
+					+ "WHERE case_nr = " + treatmentCase.getCaseNr() + "");
+					
+			if(rs.isBeforeFirst()){
+				rs.next();
+				treatment_id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+			//nothing to do
+		}
+		return treatment_id;
 	}
 }

@@ -1,9 +1,12 @@
 package com.rose.kgp.administration;
 
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.rose.kgp.data_exchange.Study;
+import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Patient;
 
@@ -16,6 +19,7 @@ public class TreatmentCase {
 	//private Integer patientID;//as a patient can have different IDs depending on whether he is treated as in- or outPatient (cardioIntegral is kind of inPatient)
 	private ArrayList<Examination> examinations;
 	private Study study;
+	private Integer id; //id as stored in database
 
 	
 	public Patient getPatient() {
@@ -45,6 +49,14 @@ public class TreatmentCase {
 	public ArrayList<Examination> getExaminations() {
 		return examinations;
 	}
+	
+	public Integer getId() {		
+		return this.id;
+	}
+	
+	public void setId(Integer id){
+		this.id = id;
+	}
 
 	/**
 	 * standard constructor, extracts the patient, the case number and sets the accounting type of the patient (i.e. in or out patient)
@@ -53,7 +65,7 @@ public class TreatmentCase {
 	 */
 	public TreatmentCase(HashMap<String, HashMap<String, ArrayList<String>>> values){
 		study = new Study(values);
-		this.patient = study.patient();
+		this.patient = study.getPatient();
 		this.caseNr = study.caseNr();
 		setPatient_In_Or_Out(this.caseNr);
 		examinations = new ArrayList<Examination>();
@@ -67,17 +79,12 @@ public class TreatmentCase {
 	}
 	
 	
-//	/**
-//	 * do not be confounded by the patient ID
-//	 * @return
-//	 */
-//	public Integer getPatientID() {
-//		return patientID;
-//	}
-//
-//	public void setPatientID(Integer patientID) {
-//		this.patientID = patientID;
-//	}
+	public TreatmentCase(Integer caseNr, Patient patient) {
+		examinations = new ArrayList<Examination>();
+		this.patient = patient;
+		this.caseNr = caseNr;	
+		setPatient_In_Or_Out(this.caseNr);
+	}
 
 	/**
 	 * declares a patient as inPatient or outPatient depending on the case number and the number
@@ -87,9 +94,7 @@ public class TreatmentCase {
 	 * @param id
 	 */
 	public void setPatient_In_Or_Out(Integer caseNr){
-		if(caseNr instanceof Integer && caseNr > 0){//if there is a caseNr (can be inPatient or CardioIntegral)
-			
-			
+		if(caseNr instanceof Integer && caseNr > 0){//if there is a caseNr (can be inPatient or CardioIntegral)			
 			if(this.getPatient().getNumber() > 100000){ //inPatient
 				//declare as inPatient
 				this.accountingType = AccountingType.stationär;
@@ -107,5 +112,15 @@ public class TreatmentCase {
 			this.outPatientID = this.getPatient().getNumber(); //set the outPatient id
 			this.getPatient().setOutID(this.getPatient().getNumber());
 		}
-	}	
+	}
+
+	/**
+	 * calls the method to insert a treatmentCase to the database
+	 * @throws SQLException
+	 */
+	public void storeToDB() throws SQLException {
+		SQL_INSERT.TreatmentCase(this);		
+	}
+
+	
 }

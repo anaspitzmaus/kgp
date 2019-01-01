@@ -10,6 +10,10 @@ public class AngioPeri extends Catheter_Intervention{
 		// TODO Auto-generated constructor stub
 	}
 
+	public AngioPeri() {
+		super();
+	}
+
 	@Override
 	public void setStaff() {
 		// TODO Auto-generated method stub

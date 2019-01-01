@@ -27,18 +27,27 @@ public class Sensis implements DataOutput{
 	final static Charset ENCODING_ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
 	HashMap<String, HashMap<String, ArrayList<String>>>values = null;
+	ArrayList<File> files;
 	
 	public Path getFolderPath() {
 		return this.folderPath;
+	}
+	
+	public ArrayList<File> getFiles(){
+		return this.files;
 	}
 	/**
 	 * constructor
 	 * @param path needs to be a directory, not a full file name;
 	 */
 	public Sensis(String path) {		
-		this.folderPath = Paths.get(path);	
-		
+		this.folderPath = Paths.get(path);			
 		listFilesForFolder(this.folderPath.toFile(), ".HIS");
+	}
+	
+	public Sensis(Path path){
+		this.folderPath = path; 
+		listFilesForFolder(path.toFile(), ".HIS");
 	}
 	
 	
@@ -49,7 +58,7 @@ public class Sensis implements DataOutput{
 	 * @return an arrayList with the files of the folder
 	 */
 	public ArrayList<File> listFilesForFolder(final File folder) {
-		ArrayList<File> files = new ArrayList<File>();
+		files = new ArrayList<File>();
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);
@@ -67,7 +76,7 @@ public class Sensis implements DataOutput{
 	 * @return
 	 */
 	public ArrayList<File> listFilesForFolder() {
-		ArrayList<File> files = new ArrayList<File>();
+		files = new ArrayList<File>();
 	    for (final File fileEntry : this.folderPath.toFile().listFiles()) {
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);
@@ -100,7 +109,7 @@ public class Sensis implements DataOutput{
 	 * @return an arrayList with the files of the folder
 	 */
 	public ArrayList<File> listFilesForFolder(final File folder, String extension) {
-		ArrayList<File> files = new ArrayList<File>();
+		files = new ArrayList<File>();
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
 	            listFilesForFolder(fileEntry);

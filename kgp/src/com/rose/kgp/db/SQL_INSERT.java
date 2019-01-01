@@ -250,56 +250,31 @@ public class SQL_INSERT {
 
 	/**
 	 * insert a treatmentCase
+	 * a treatmentCase is inserted at database only if the ttreatmentCase contains a patient and the patient has an id
 	 * @param treatmentCase
 	 */
 	
 	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws SQLException{
-		//for every accounting type
-		//if patient isn't already stored at DB
-		// insert patient in DB
+		
 		Integer treatment_id = null;
-		DB.getConnection().setAutoCommit(false);
-		switch(treatmentCase.getAccountingType()) {
-		case stationär:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {//check if patient is stored already (check by in_Patient ID for stationary patient)
-				//if patient is not stored already
-				SQL_INSERT.Patient(treatmentCase.getPatient()); //insert the patient
-			}
-			break;
-		case integrierte_Versorgung:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getInID()) instanceof Patient)) {//check if patient is stored already (check by in_Patient ID for cardio integral patient)
-				//if patient is not stored already
-				SQL_INSERT.Patient(treatmentCase.getPatient());//insert the patient
-			}
-			break;
-		case ambulant:
-			if(!(SQL_SELECT.InPatient(treatmentCase.getPatient().getOutID()) instanceof Patient)) {//check if patient is stored already (check by out_Patient ID for ambulant patient)
-				///if patient is not stored already
-				SQL_INSERT.Patient(treatmentCase.getPatient());//insert the patient
-			}
-			break;
-		default:
-			break;
-		}
 		
-		//insert treatmentCase if not already exists... 
+		//insert treatmentCase
 		
+		if(treatmentCase.getPatient() instanceof Patient && treatmentCase.getPatient().getId() != null){//check, if treatmentCase contains a patient
 			stmt = DB.getStatement();
 			
-			stmt.executeUpdate("INSERT INTO treatment_case (case_nr, id_patient) "
+			stmt.executeUpdate("INSERT INTO treatment_case (case_nr, id_patient, id_billing_type) "
 									+ "VALUES (" + treatmentCase.getCaseNr() + ", "
-									+ treatmentCase.getPatient().getId() + ")");	
+									+ treatmentCase.getPatient().getId() + ", "
+									+ "(SELECT idbilling_type FROM billing_type WHERE notation = '" + treatmentCase.getAccountingType().name() + "'))");	
 			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
-			rs.next();
-			treatment_id = rs.getInt("ID");
-			DB.getConnection().setAutoCommit(true);
-			return treatment_id;
-			
-				
-			
-		
-		
-		  
+			if(rs.isBeforeFirst()){
+				rs.next();
+				treatment_id = rs.getInt("ID");
+			}
+			//DB.getConnection().setAutoCommit(true);
+	}
+			return treatment_id;	  
 		
 	}
 	
