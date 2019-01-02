@@ -8,13 +8,20 @@ import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.rose.kgp.administration.TreatmentCase;
+import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.examination.Examination;
+import com.rose.kgp.personnel.Patient;
 
 
 public class SensisStudy extends Study{
 	Sensis sensis;
 	File file;
+	TreatmentCase treatmentCase;
 	
 	final static Charset ENCODING_ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
@@ -32,6 +39,7 @@ public class SensisStudy extends Study{
 		String[] fields = null;
 		String [] group = null;
 		this.file = file;
+		dataValues.clear();
 		
 		try (BufferedReader reader = Files.newBufferedReader(this.file.toPath(), ENCODING_UTF_16)){
 		      String line = null;
@@ -76,7 +84,80 @@ public class SensisStudy extends Study{
 		    }
 	}
 
+/**
+ * creates a treatmentCase out of the study data	
+ * the treatmentCase includes the patient and the examination as given in the study protocol
+ * The treatmentCase is created only if a corresponding patient exists
+ * @return the treatmentCase or null if the treatmentCase could not be created
+ */
+public void  createStudy() {
+	treatmentCase = null;
+	Examination examination = null;
+	Patient patient = getPatient();
+	if(patient instanceof Patient){ //
+		treatmentCase = getTreatmentCase(patient);
+		if(treatmentCase instanceof TreatmentCase) {
+			examination = getExamination();
+			if(examination instanceof Examination) {
+				treatmentCase.getExaminations().add(examination);
+			}
+		}
+	}
 	
+}
+
+public void storeToDB() {
+	if(treatmentCase instanceof TreatmentCase) {
+		if(insertPatient()) {
+			if(insertTreatmentCase()) {
+				insertExamination();
+			}
+		}
+		
+		try {
+			treatmentCase.storeToDB();
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1062){
+				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
+			}
+		}
+		
+		
+			
+	}
+}
+
+private void insertExamination() {
+	// TODO Auto-generated method stub
+	
+}
+
+private Boolean insertTreatmentCase() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+/**
+ * insert the patient to the database
+ * @return true if patient could be inserted to database, otherwise false
+ */
+private Boolean insertPatient() {	
+	try {
+		treatmentCase.getPatient().storePatientToDB();
+		return true;
+	} catch (SQLException e) {
+		if(e.getErrorCode() == 1062){
+			treatmentCase.getPatient().setId(SQL_SELECT.PatientId(treatmentCase.getPatient()));	
+			if(treatmentCase.getPatient().getId() != null) {
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+}
 
 	
 	

@@ -90,6 +90,7 @@ public class SQL_INSERT {
 	
 	/**
 	 * insert a patient 
+	 * the primary key id of the patient is set to the patient
 	 * @param patient
 	 * @return
 	 */

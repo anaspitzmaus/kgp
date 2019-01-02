@@ -82,8 +82,13 @@ public class StartCore {
 					SensisStudy sensisStudy = new SensisStudy(sensisFolderPath);
 					for(File sensisFile: sensisStudy.getSensis().getFiles()){
 						TreatmentCase treatmentCase = null;
+							
 						try {
 							sensisStudy.readSensisFile(sensisFile);
+							sensisStudy.createStudy();							
+							sensisStudy.storeToDB();
+							
+							
 							Patient patient = sensisStudy.getPatient();
 							if(patient instanceof Patient){
 								treatmentCase = sensisStudy.getTreatmentCase(patient);
