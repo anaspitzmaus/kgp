@@ -135,9 +135,9 @@ private Boolean insertTreatmentCase() {
 		try {
 			treatmentCase.storeToDB();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println(e);
-			if(e.getErrorCode() == 1062) {					
+			if(((SQLException)e).getErrorCode() == 1062) {					
 				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
 				if(treatmentCase.getId() != null) {
 					return true;

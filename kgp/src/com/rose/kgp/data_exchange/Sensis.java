@@ -112,7 +112,7 @@ public class Sensis implements DataOutput{
 		files = new ArrayList<File>();
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
+	            //listFilesForFolder(fileEntry);
 	        } else {
 	        	if(fileEntry.getName().endsWith(extension)){
 	        		files.add(fileEntry);

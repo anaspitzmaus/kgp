@@ -37,6 +37,7 @@ public class SQL_INSERT {
 		String hashPW = MD5.getMD5("master");	
 		
 		try{
+			DB.getConnection().setAutoCommit(true);
 			rs = stmt.executeQuery("SELECT * "
 					+ "FROM staff "
 					+ "WHERE admin = '" + 1 + "' "
@@ -71,6 +72,7 @@ public class SQL_INSERT {
 	public static Boolean Examination(Examination exam){
 		stmt = DB.getStatement();
 		try {
+			DB.getConnection().setAutoCommit(true);
 			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_physician, id_patient, id_billing_type, filename, startDateTime, endDateTime) "
 								+ "VALUES ("
 									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
@@ -83,7 +85,7 @@ public class SQL_INSERT {
 			return true;
 								
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			
 			return false;
 		}
 	}
@@ -119,8 +121,9 @@ public class SQL_INSERT {
 	
 	public static Boolean Patient_Changes(Patient patient){
 		stmt = DB.getStatement();
+		
 		try {
-			
+			DB.getConnection().setAutoCommit(true);
 			stmt.executeUpdate("INSERT INTO patient_extended (id_patient, surname) "
 								+ "VALUES (" + patient.getId() + ", '" + patient.getSurname() +	"')");								
 								
@@ -229,7 +232,7 @@ public class SQL_INSERT {
 	public static Boolean ClinicalInstitution(Clinical_Institution institution) {
 		stmt = DB.getStatement();
 		try {
-			
+			DB.getConnection().setAutoCommit(true);
 			stmt.executeUpdate("INSERT INTO clinical_institution (notation, onset, short_notation, street, postal_code, city, allocator) "
 								+ "VALUES ('" + institution.getNotation() + "', "
 										+ "'" + Date.valueOf(LocalDate.now()) +	"', "
@@ -255,10 +258,10 @@ public class SQL_INSERT {
 	 * @param treatmentCase
 	 */
 	
-	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws SQLException{
+	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws Exception{
 		
 		Integer treatment_id = null;
-		
+		DB.getConnection().setAutoCommit(true);
 		//insert treatmentCase
 		
 		if(treatmentCase.getPatient() instanceof Patient && treatmentCase.getPatient().getId() != null){//check, if treatmentCase contains a patient
