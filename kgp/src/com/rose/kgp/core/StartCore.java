@@ -79,12 +79,14 @@ public class StartCore {
 //					
 //					storeTreatmentCaseToDB(treatmentCase);//store the treatmentCase to the database
 					Path sensisFolderPath = Paths.get(prefs.get("Sensis_Path", null));
-					SensisStudy sensisStudy = new SensisStudy(sensisFolderPath);
-					for(File sensisFile: sensisStudy.getSensis().getFiles()){
+					
+					Sensis sensis = new Sensis(sensisFolderPath);
+					for(File sensisFile: sensis.getFiles()){
+						SensisStudy sensisStudy = new SensisStudy(sensisFile);
 						TreatmentCase treatmentCase = null;
 							
 						try {
-							sensisStudy.readSensisFile(sensisFile);
+							sensisStudy.readFile();
 							sensisStudy.createStudy();							
 							sensisStudy.storeToDB();
 							

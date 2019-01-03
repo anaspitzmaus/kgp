@@ -26,19 +26,17 @@ public class SensisStudy extends Study{
 	final static Charset ENCODING_ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
 	
-	public Sensis getSensis(){
-		return this.sensis;
-	}
 	
-	public SensisStudy(Path sensisFilesPath){
-		sensis = new Sensis(sensisFilesPath);	
+	
+	public SensisStudy(File file){
+		this.file = file;
 		dataValues = new HashMap<String, HashMap<String, ArrayList<String>>>();
 	}
 	
-	public void readSensisFile(File file) throws IOException{
+	public void readFile() throws IOException{
 		String[] fields = null;
 		String [] group = null;
-		this.file = file;
+		
 		dataValues.clear();
 		
 		try (BufferedReader reader = Files.newBufferedReader(this.file.toPath(), ENCODING_UTF_16)){
@@ -133,7 +131,16 @@ private void insertExamination() {
 }
 
 private Boolean insertTreatmentCase() {
-	// TODO Auto-generated method stub
+	if(treatmentCase instanceof TreatmentCase) {
+		try {
+			treatmentCase.storeToDB();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 	return false;
 }
 
