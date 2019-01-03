@@ -391,7 +391,7 @@ public class SQL_SELECT {
 		Integer treatment_id = null;
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT id_treatment_case AS id"
+					 "SELECT id_treatment_case AS id "
 					+ "FROM treatment_case "
 					+ "WHERE case_nr = " + treatmentCase.getCaseNr() + "");
 					
@@ -400,7 +400,7 @@ public class SQL_SELECT {
 				treatment_id = rs.getInt("id");
 			}
 		} catch (SQLException e) {
-			//nothing to do
+			System.out.println(e);
 		}
 		return treatment_id;
 	}

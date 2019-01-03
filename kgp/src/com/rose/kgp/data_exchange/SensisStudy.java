@@ -112,13 +112,13 @@ public void storeToDB() {
 			}
 		}
 		
-		try {
-			treatmentCase.storeToDB();
-		} catch (SQLException e) {
-			if(e.getErrorCode() == 1062){
-				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
-			}
-		}
+//		try {
+//			treatmentCase.storeToDB();
+//		} catch (SQLException e) {
+//			if(e.getErrorCode() == 1062){
+//				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
+//			}
+//		}
 		
 		
 			
@@ -136,8 +136,16 @@ private Boolean insertTreatmentCase() {
 			treatmentCase.storeToDB();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
+			if(e.getErrorCode() == 1062) {					
+				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
+				if(treatmentCase.getId() != null) {
+					return true;
+				}else {
+					return false;
+				}
+				
+			}
 			return false;
 		}
 	}

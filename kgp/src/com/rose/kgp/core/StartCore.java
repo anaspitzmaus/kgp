@@ -91,21 +91,21 @@ public class StartCore {
 							sensisStudy.storeToDB();
 							
 							
-							Patient patient = sensisStudy.getPatient();
-							if(patient instanceof Patient){
-								treatmentCase = sensisStudy.getTreatmentCase(patient);
-								try {
-									patient.storePatientToDB();
-									storeTreatmentCaseToDB(treatmentCase);
-								} catch (SQLException e) {
-									if(e.getErrorCode() == 1062){
-										patient.setId(SQL_SELECT.PatientId(patient));										
-										storeTreatmentCaseToDB(treatmentCase);
-									}else{
-										
-									}
-								}
-							}
+//							Patient patient = sensisStudy.getPatient();
+//							if(patient instanceof Patient){
+//								treatmentCase = sensisStudy.getTreatmentCase(patient);
+//								try {
+//									patient.storePatientToDB();
+//									storeTreatmentCaseToDB(treatmentCase);
+//								} catch (SQLException e) {
+//									if(e.getErrorCode() == 1062){
+//										patient.setId(SQL_SELECT.PatientId(patient));										
+//										storeTreatmentCaseToDB(treatmentCase);
+//									}else{
+//										
+//									}
+//								}
+//							}
 							
 							
 							
@@ -151,18 +151,7 @@ public class StartCore {
 		
 	}
 	
-	private Integer storeTreatmentCaseToDB(TreatmentCase treatmentCase) {
-		if(treatmentCase instanceof TreatmentCase){
-			try {
-				treatmentCase.storeToDB();
-			}catch (SQLException e){
-				if(e.getErrorCode() == 1062){
-					treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
-				}
-			}
-		}
-		return treatmentCase.getId();
-	}
+	
 	
 	
 	private void storeExaminationToDB(Examination exam){
