@@ -156,7 +156,7 @@ public class Study {
 	
 	/**
 	 * read the protocol and create an examination depending on the studyType
-	 * @return the examination or null if the studyype could not be verified
+	 * @return the examination or null if the studyType could not be verified
 	 */
 	public Examination getExamination() {
 		Examination examination = null;

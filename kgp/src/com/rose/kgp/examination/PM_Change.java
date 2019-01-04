@@ -16,7 +16,8 @@ public class PM_Change extends PM_Intervention{
 	}
 
 	@Override
-	public void storeExamToDB() {
+	public Boolean storeExamToDB(Integer treatmentCaseId) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

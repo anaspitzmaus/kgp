@@ -83,7 +83,7 @@ public class StartCore {
 					Sensis sensis = new Sensis(sensisFolderPath);
 					for(File sensisFile: sensis.getFiles()){
 						SensisStudy sensisStudy = new SensisStudy(sensisFile);
-						TreatmentCase treatmentCase = null;
+						
 							
 						try {
 							sensisStudy.readFile();

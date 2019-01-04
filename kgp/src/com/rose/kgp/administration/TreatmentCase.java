@@ -118,7 +118,7 @@ public class TreatmentCase {
 	 * calls the method to insert a treatmentCase to the database
 	 * @throws SQLException
 	 */
-	public void storeToDB() throws Exception {
+	public void storeToDB() throws SQLException {
 		SQL_INSERT.TreatmentCase(this);		
 	}
 

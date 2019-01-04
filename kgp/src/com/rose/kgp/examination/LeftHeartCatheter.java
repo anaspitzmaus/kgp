@@ -1,22 +1,21 @@
 package com.rose.kgp.examination;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.rose.kgp.db.SQL_SELECT;
+
+import com.rose.kgp.data_exchange.SensisStudy;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
-import com.rose.kgp.personnel.Useful;
 
 public class LeftHeartCatheter extends Catheter_Intervention{
 	protected HashMap<InterventionalTaskPhysician, Physician> examiners;
 	protected HashMap<InterventionalTaskNurse, Nurse> nurses;
-	final static StudyType examType = StudyType.LeftHeartCatheter;
+	
 
 	
 	public LeftHeartCatheter(HashMap<String, HashMap<String, ArrayList<String>>> studyValues) {
 		super(studyValues);
-		
+		this.studyType = StudyType.LeftHeartCatheter;
 		this.nurses = new HashMap<InterventionalTaskNurse, Nurse>();
 		this.nurses.put(InterventionalTaskNurse.Assistenz_Steril, study.nurseSterile());
 		this.nurses.put(InterventionalTaskNurse.Assistenz_Unsteril, study.nurseUnsterile());
@@ -26,8 +25,9 @@ public class LeftHeartCatheter extends Catheter_Intervention{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public LeftHeartCatheter(){
+	public LeftHeartCatheter(){		
 		super();
+		this.studyType = StudyType.LeftHeartCatheter;
 	}
 
 	
@@ -45,6 +45,12 @@ public class LeftHeartCatheter extends Catheter_Intervention{
 //				}			
 //			}			
 //		}		
+	}
+
+	@Override
+	public void addExamData(HashMap<String, HashMap<String, ArrayList<String>>> studyData) {
+		
+		
 	}
 	
 	

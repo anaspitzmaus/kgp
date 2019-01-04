@@ -16,7 +16,14 @@ public class Laevo extends Catheter_Intervention{
 	}
 
 	@Override
-	public void storeExamToDB() {
+	public Boolean storeExamToDB(Integer treatmentCaseId) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addExamData(HashMap<String, HashMap<String, ArrayList<String>>> studyData) {
 		// TODO Auto-generated method stub
 		
 	}

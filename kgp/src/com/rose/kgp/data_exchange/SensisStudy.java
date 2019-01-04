@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.rose.kgp.administration.TreatmentCase;
+import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.db.SQL_SELECT;
+import com.rose.kgp.examination.Catheter_Intervention;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.personnel.Patient;
 
@@ -22,6 +24,7 @@ public class SensisStudy extends Study{
 	Sensis sensis;
 	File file;
 	TreatmentCase treatmentCase;
+	Examination examination;
 	
 	final static Charset ENCODING_ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
@@ -90,26 +93,44 @@ public class SensisStudy extends Study{
  */
 public void  createStudy() {
 	treatmentCase = null;
-	Examination examination = null;
+	examination = null;
 	Patient patient = getPatient();
 	if(patient instanceof Patient){ //
 		treatmentCase = getTreatmentCase(patient);
 		if(treatmentCase instanceof TreatmentCase) {
 			examination = getExamination();
-			if(examination instanceof Examination) {
+			if(examination instanceof Catheter_Intervention) {
+				((Catheter_Intervention)examination).setNurseRegistration(this.nurseRegistration());
+				((Catheter_Intervention)examination).setNurseSterile(this.nurseSterile());
+				((Catheter_Intervention)examination).setNurseUnsterile(this.nurseUnsterile());
+				((Catheter_Intervention)examination).setExaminer(this.examiner());
+				((Catheter_Intervention)examination).setSecondExaminer(this.examinerAssistant());
+				((Catheter_Intervention)examination).setDataFile(file);
+				((Catheter_Intervention)examination).setDate(this.examDate());
+				((Catheter_Intervention)examination).setStartTime(this.startTime());
+				((Catheter_Intervention)examination).setEndTime(this.endTime());
+//				if(examination instanceof SensisExam){
+//					((SensisExam)examination).addExamData(dataValues);
+//					
+//				}
 				treatmentCase.getExaminations().add(examination);
 			}
 		}
 	}
-	
 }
 
 public void storeToDB() {
 	if(treatmentCase instanceof TreatmentCase) {
 		if(insertPatient()) {
 			if(insertTreatmentCase()) {
-				insertExamination();
+				if(!insertExamination()){
+					insertCorruptStudy();
+				};
+			}else{
+				insertCorruptStudy();
 			}
+		}else{
+			insertCorruptStudy();
 		}
 		
 //		try {
@@ -118,15 +139,21 @@ public void storeToDB() {
 //			if(e.getErrorCode() == 1062){
 //				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
 //			}
-//		}
-		
-		
-			
+//		}		
 	}
 }
 
-private void insertExamination() {
-	// TODO Auto-generated method stub
+private void insertCorruptStudy() {
+	SQL_INSERT.corruptSensisStudy(file);
+	
+}
+
+private Boolean insertExamination() {
+	if(examination instanceof Examination){
+		return (examination.storeExamToDB(treatmentCase.getId()));
+	}else{
+		return false;
+	}
 	
 }
 
@@ -135,9 +162,9 @@ private Boolean insertTreatmentCase() {
 		try {
 			treatmentCase.storeToDB();
 			return true;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println(e);
-			if(((SQLException)e).getErrorCode() == 1062) {					
+			if(e.getErrorCode() == 1062) {					
 				treatmentCase.setId(SQL_SELECT.TreatmentCaseId(treatmentCase));
 				if(treatmentCase.getId() != null) {
 					return true;

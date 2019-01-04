@@ -20,4 +20,10 @@ public class AngioPeri extends Catheter_Intervention{
 		
 	}
 
+	@Override
+	public void addExamData(HashMap<String, HashMap<String, ArrayList<String>>> studyData) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

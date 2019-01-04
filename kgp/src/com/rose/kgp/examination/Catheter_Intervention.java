@@ -2,10 +2,12 @@ package com.rose.kgp.examination;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.rose.kgp.data_exchange.SensisExam;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 
-public abstract class Catheter_Intervention extends Examination{
+public abstract class Catheter_Intervention extends Examination implements SensisExam{
 
 	protected Physician secondExaminer;
 	protected Nurse nurseSterile, nurseUnsterile, nurseRegistration;

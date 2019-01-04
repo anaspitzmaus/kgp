@@ -184,9 +184,8 @@ public abstract class Examination {
 	
 
 	
-	public void storeExamToDB(){
-		System.out.println("Hallo");
-		SQL_INSERT.Examination(this);
+	public Boolean storeExamToDB(Integer treatmentCaseId){
+		return(SQL_INSERT.Examination(this, treatmentCaseId));
 	}
 
 	

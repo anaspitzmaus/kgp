@@ -1,16 +1,18 @@
 package com.rose.kgp.db;
 
+import java.io.File;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.MD5;
-import com.rose.kgp.administration.AccountingType;
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.examination.Examination;
@@ -69,25 +71,45 @@ public class SQL_INSERT {
 		
 	}
 	
-	public static Boolean Examination(Examination exam){
+	/**
+	 * insert an examination 
+	 * @param exam instance of an examination
+	 * @param treatmentCaseId the id of the corresponding treatment case
+	 * @return true, if examination could be inserted, otherwise false
+	 */
+	public static Boolean Examination(Examination exam, Integer treatmentCaseId){
 		stmt = DB.getStatement();
-		try {
-			DB.getConnection().setAutoCommit(true);
-			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_physician, id_patient, id_billing_type, filename, startDateTime, endDateTime) "
-								+ "VALUES ("
-									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
-									+ "'" + exam.getPhysician().getId() + "', "
-									+ "'" + exam.getPatient().getId() + "', "
-									+ "(SELECT idbilling_type FROM billing_type WHERE notation = '" + exam.getAccountingType().name() + "'), "
-									+ "'" + exam.getDataFile().getPath() + "', "
-									+ "'" + java.sql.Timestamp.valueOf(exam.getStart()) + "', " 
-									+ "'" + java.sql.Timestamp.valueOf(exam.getEnd()) + "')");
-			return true;
-								
-		} catch (SQLException e) {
-			
-			return false;
-		}
+		
+		 Calendar calendarStart = Calendar.getInstance();
+		 Calendar calendarEnd = Calendar.getInstance();
+	      calendarStart.clear();
+	      calendarEnd.clear();
+	      //assuming year/month/date information is not important
+	      calendarStart.set(0, 0, 0, exam.getStart().getHour(), exam.getStart().getMinute(), exam.getStart().getSecond());
+	      calendarEnd.set(0, 0, 0, exam.getEnd().getHour(), exam.getEnd().getMinute(), exam.getEnd().getSecond());
+	      java.sql.Timestamp timestampStart = new java.sql.Timestamp(calendarStart.getTimeInMillis());
+	      java.sql.Timestamp timestampEnd = new java.sql.Timestamp(calendarEnd.getTimeInMillis());
+	      if(exam.getExaminer() instanceof Physician && exam.getDataFile() instanceof File && exam.getStart() instanceof LocalDateTime && exam.getEnd() instanceof LocalDateTime){
+	    	  try {
+	  			DB.getConnection().setAutoCommit(true);
+	  			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_physician, id_treatmentCase, filename, startDateTime, endDateTime) "
+	  								+ "VALUES ("
+	  									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
+	  									+ "'" + exam.getExaminer().getId() + "', "
+	  									+ "" + treatmentCaseId + ", "
+	  									+ "'" + exam.getDataFile().getPath() + "', "
+	  									+ "'" + timestampStart + "', " 
+	  									+ "'" + timestampEnd + "')");
+	  			return true;
+	  								
+	  		} catch (SQLException e) {
+	  			
+	  			return false;
+	  		} 
+	      }else{
+	    	  return false;
+	      }
+		
 	}
 	
 	/**
@@ -258,7 +280,7 @@ public class SQL_INSERT {
 	 * @param treatmentCase
 	 */
 	
-	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws Exception{
+	public static Integer TreatmentCase(TreatmentCase treatmentCase) throws SQLException{
 		
 		Integer treatment_id = null;
 		DB.getConnection().setAutoCommit(true);
@@ -280,6 +302,23 @@ public class SQL_INSERT {
 	}
 			return treatment_id;	  
 		
+	}
+
+	/**
+	 * insert the file of incomplete or corrupt sensis studies
+	 * @param file the file of the study
+	 */
+	public static void corruptSensisStudy(File file) {
+		
+		stmt = DB.getStatement();
+		try {
+			DB.getConnection().setAutoCommit(true);
+			stmt.executeUpdate("INSERT INTO corruptstudy (file) "
+								+ "VALUES ('" + file.getName() + "')");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
 	}
 	
 	
