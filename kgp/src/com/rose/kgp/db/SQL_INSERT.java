@@ -97,13 +97,15 @@ public class SQL_INSERT {
 	  									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
 	  									+ "'" + exam.getExaminer().getId() + "', "
 	  									+ "" + treatmentCaseId + ", "
-	  									+ "'" + exam.getDataFile().getPath() + "', "
+	  									+ "'" + exam.getDataFile().getName() + "', "
 	  									+ "'" + timestampStart + "', " 
 	  									+ "'" + timestampEnd + "')");
 	  			return true;
 	  								
 	  		} catch (SQLException e) {
-	  			
+	  			if(e.getErrorCode() == 1062){
+	  				return true;
+	  			}
 	  			return false;
 	  		} 
 	      }else{
