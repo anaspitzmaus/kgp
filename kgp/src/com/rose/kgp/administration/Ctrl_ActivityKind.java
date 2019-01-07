@@ -386,7 +386,7 @@ public class Ctrl_ActivityKind implements Observer{
 			case PM_Implantation:
 				break;
 			case Koronar_Diagnostisch:
-				examSel = new LeftHeartCatheter(examSel.getRawData());
+				examSel = new LeftHeartCatheter();
 				break;
 			default:
 				break;

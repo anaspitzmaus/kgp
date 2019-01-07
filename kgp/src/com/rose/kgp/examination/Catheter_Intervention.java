@@ -7,7 +7,7 @@ import com.rose.kgp.data_exchange.SensisExam;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 
-public abstract class Catheter_Intervention extends Examination implements SensisExam{
+public abstract class Catheter_Intervention extends Examination {
 
 	protected Physician secondExaminer;
 	protected Nurse nurseSterile, nurseUnsterile, nurseRegistration;
@@ -67,16 +67,7 @@ public abstract class Catheter_Intervention extends Examination implements Sensi
 	}
 
 
-	/**
-	 * set the specific study data of this catheter intervention
-	 */
-	@Override
-	protected void setStudyData(){
-		this.setSecondExaminer(study.examinerAssistant());
-		this.setNurseSterile(study.nurseSterile());
-		this.setNurseUnsterile(study.nurseUnsterile());
-		this.setNurseRegistration(study.nurseRegistration());
-	}
+	
 	
 	
 

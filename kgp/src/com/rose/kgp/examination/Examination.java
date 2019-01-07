@@ -142,9 +142,9 @@ public abstract class Examination {
 	 * get the raw data of this study
 	 * @return an hashMap (HashMap<String, HashMap<String, ArrayList<String>>>) containing the raw data of this study
 	 */
-	public HashMap<String, HashMap<String, ArrayList<String>>> getRawData(){
-		return this.rawData;
-	}
+//	public HashMap<String, HashMap<String, ArrayList<String>>> getRawData(){
+//		return this.rawData;
+//	}
 
 	/**
 	 * standard constructor

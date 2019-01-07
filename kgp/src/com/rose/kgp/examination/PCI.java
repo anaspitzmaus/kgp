@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.rose.kgp.material.Stent;
 
-public class PCI extends Catheter_Intervention{
+public class PCI extends LeftHeartCatheter{
 
 	protected ArrayList<Stent> stents;
 	
@@ -28,11 +28,7 @@ public class PCI extends Catheter_Intervention{
 		
 	}
 
-	@Override
-	public void addExamData(HashMap<String, HashMap<String, ArrayList<String>>> studyData) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 	
