@@ -181,10 +181,14 @@ public class Study {
 	 * @return the Patient, null if there where no patient data found
 	 */
 	public Patient getPatient(){
-		
+		Patient patient = null;
 		HashMap<String, ArrayList<String>> patient_hm = dataValues.get("PATIENT");
 		HashMap<String, ArrayList<String>> patientData_hm = dataValues.get("PD");
-		Patient patient = new Patient(patient_hm.get("LASTNAME").get(0), patient_hm.get("FIRNAME").get(0));
+		try {
+			patient = new Patient(patient_hm.get("LASTNAME").get(0), patient_hm.get("FIRNAME").get(0));
+		}catch(NullPointerException e) {
+			System.out.println(((SensisStudy)this).file.getName());
+		}
 		if(patient instanceof Patient){
 			patient.setMidname(patient_hm.get("MIDNAME").get(0));
 			

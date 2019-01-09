@@ -1,12 +1,11 @@
 package com.rose.kgp.examination;
 
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.rose.kgp.data_exchange.SensisExam;
 import com.rose.kgp.data_exchange.SensisStudy;
-import com.rose.kgp.db.SQL_SELECT;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 
