@@ -109,8 +109,12 @@ public class StartCore {
 							
 							
 							
-							
-							Examination examination = sensisStudy.getExamination();
+//							if(sensisStudy.getFile().getName().equals("0041276370_3214_3457.HIS")) {
+//								System.out.println("");
+//							}else {
+//								System.out.println("");
+//							}
+//							Examination examination = sensisStudy.getExamination();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

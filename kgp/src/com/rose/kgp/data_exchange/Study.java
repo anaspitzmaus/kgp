@@ -28,7 +28,7 @@ import com.rose.kgp.personnel.Sex;
  */
 public class Study {
 	HashMap<String, HashMap<String, ArrayList<String>>> dataValues;//an hashMap that contains the study data
-	Sensis sensis;
+	
 	/**
 	 * standard constructor
 	 * @param values the hashMap that contains the study data

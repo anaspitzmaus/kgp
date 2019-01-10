@@ -92,9 +92,10 @@ public class SQL_INSERT {
 	      if(exam.getExaminer() instanceof Physician && exam.getDataFile() instanceof File && exam.getStart() instanceof LocalDateTime && exam.getEnd() instanceof LocalDateTime){
 	    	  try {
 	  			DB.getConnection().setAutoCommit(true);
-	  			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_physician, id_treatmentCase, filename, startDateTime, endDateTime) "
+	  			stmt.executeUpdate("INSERT INTO examination (id_examtype, id_patient, id_physician, id_treatmentCase, filename, startDateTime, endDateTime) "
 	  								+ "VALUES ("
 	  									+ "(SELECT idexamination_type FROM examination_type WHERE notation = '" + exam.getStudyType().name() + "'), "
+	  									+ "'" + exam.getPatient().getId() + "', "
 	  									+ "'" + exam.getExaminer().getId() + "', "
 	  									+ "" + treatmentCaseId + ", "
 	  									+ "'" + exam.getDataFile().getName() + "', "

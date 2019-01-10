@@ -29,6 +29,9 @@ public class SensisStudy extends Study{
 	final static Charset ENCODING_ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	final static Charset ENCODING_UTF_16 = StandardCharsets.UTF_16;
 	
+	public File getFile() {
+		return this.file;
+	}
 	
 	
 	public SensisStudy(File file){
@@ -99,6 +102,7 @@ public void  createStudy() {
 		treatmentCase = getTreatmentCase(patient);
 		if(treatmentCase instanceof TreatmentCase) {
 			examination = getExamination();
+			examination.setPatient(patient);
 			if(examination instanceof Catheter_Intervention) {
 				((Catheter_Intervention)examination).setNurseRegistration(this.nurseRegistration());
 				((Catheter_Intervention)examination).setNurseSterile(this.nurseSterile());
@@ -172,8 +176,10 @@ private Boolean insertTreatmentCase() {
 					return false;
 				}
 				
+			}else {				
+				return false;
 			}
-			return false;
+			
 		}
 	}
 	return false;
