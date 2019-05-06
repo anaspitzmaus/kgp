@@ -12,9 +12,16 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
+import com.rose.kgp.personnel.Physician;
+
 import javax.swing.JButton;
 
 public class PnlBillingCallService extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6958883817683567493L;
 	private JTextField txtNr;
 	private JTextField txtYear;
 	private JTextField txtMonth;
@@ -81,7 +88,7 @@ public class PnlBillingCallService extends JPanel {
 		lblPhysician.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(lblPhysician, "cell 0 0,alignx left");
 		
-		JComboBox comboPhysician = new JComboBox();
+		JComboBox<Physician> comboPhysician = new JComboBox<Physician>();
 		comboPhysician.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(comboPhysician, "cell 1 0");
 		
