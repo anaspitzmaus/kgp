@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
 import java.awt.Font;
+import java.time.LocalDate;
+
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
@@ -14,6 +16,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import com.rose.kgp.personnel.Physician;
+import com.rose.kgp.ui.Pnl_SetDate;
 
 import javax.swing.JButton;
 
@@ -29,7 +32,17 @@ public class PnlBillingCallService extends JPanel {
 	private JTextField txtSalaryCoroAll;
 	private JTextField txtSalaryPerPCI;
 	private JTextField txtSalaryPCIAll;
+	private JComboBox<Physician> comboPhysician;
+	private JFormattedTextField ftxtDate;
+	private Pnl_SetDate pnlSetDate;
 
+	protected JComboBox<Physician> getComboPhysician(){
+		return comboPhysician;
+	}
+	
+	protected Pnl_SetDate getPnlSetDate() {
+		return pnlSetDate;
+	}
 	/**
 	 * Create the panel.
 	 */
@@ -48,10 +61,12 @@ public class PnlBillingCallService extends JPanel {
 		lblDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MenuBarHead.add(lblDate);
 		
-		JFormattedTextField ftxtDate = new JFormattedTextField();
-		ftxtDate.setColumns(5);
-		ftxtDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MenuBarHead.add(ftxtDate);
+		pnlSetDate = new Pnl_SetDate();
+		
+//		JFormattedTextField ftxtDate = new JFormattedTextField();
+//		ftxtDate.setColumns(5);
+//		ftxtDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MenuBarHead.add(pnlSetDate);
 		
 		JLabel lblNr = new JLabel("Nummer:");
 		lblNr.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -88,7 +103,7 @@ public class PnlBillingCallService extends JPanel {
 		lblPhysician.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(lblPhysician, "cell 0 0,alignx left");
 		
-		JComboBox<Physician> comboPhysician = new JComboBox<Physician>();
+		comboPhysician = new JComboBox<Physician>();
 		comboPhysician.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(comboPhysician, "cell 1 0");
 		

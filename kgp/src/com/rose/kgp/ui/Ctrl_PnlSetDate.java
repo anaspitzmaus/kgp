@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.text.DefaultFormatterFactory;
+
 import com.rose.kgp.useful.DateMethods;
 
 
@@ -21,6 +23,15 @@ public class Ctrl_PnlSetDate {
 		pnlSetDate.addCalendarListener(new CalendarListener(minDate));
 		dateChangeListener = new DateChangeListener();
 		pnlSetDate.addDateChangeListener(dateChangeListener);//listener for changing the date
+		dateSet = ld;
+	}
+	
+	public Ctrl_PnlSetDate(Pnl_SetDate pnlSetDate, LocalDate ld, LocalDate minDate){
+		this.pnlSetDate = pnlSetDate;
+		this.minDate = minDate;
+		this.pnlSetDate.addCalendarListener(new CalendarListener(this.minDate));
+		dateChangeListener = new DateChangeListener();
+		this.pnlSetDate.addDateChangeListener(dateChangeListener);//listener for changing the date
 		dateSet = ld;
 	}
 	
@@ -50,6 +61,11 @@ public class Ctrl_PnlSetDate {
 		}else{
 			pnlSetDate.getFtxtCalendar().setValue(null);
 		}
+	}
+	
+	public void setFactory(DefaultFormatterFactory factory, LocalDate ld) {
+		pnlSetDate.getFtxtCalendar().setFormatterFactory(factory);
+		pnlSetDate.getFtxtCalendar().setValue(ld);
 	}
 	
 	public void setPnlEnabled(Boolean en){
