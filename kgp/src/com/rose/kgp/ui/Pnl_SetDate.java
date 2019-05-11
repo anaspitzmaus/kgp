@@ -97,10 +97,12 @@ public class Pnl_SetDate extends JPanel {
 		lblDate = new JLabel("Start:");
 		lblDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		add(lblDate);
-		
+		ftxtCalendar = new JFormattedTextField();
 		ftxtCalendar.setColumns(10);
 		ftxtCalendar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		add(ftxtCalendar);
+		
+		
 		
 		ImageIcon icon = new ImageIcon(this.getClass().getResource("/images/calendar_green_01.png"));
 		icon.getImage();

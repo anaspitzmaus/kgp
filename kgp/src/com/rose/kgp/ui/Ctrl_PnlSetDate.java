@@ -4,10 +4,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
 import com.rose.kgp.useful.DateMethods;
@@ -26,13 +29,21 @@ public class Ctrl_PnlSetDate {
 		dateSet = ld;
 	}
 	
-	public Ctrl_PnlSetDate(Pnl_SetDate pnlSetDate, LocalDate ld, LocalDate minDate){
+	public Ctrl_PnlSetDate(Pnl_SetDate pnlSetDate, String dateFormat, LocalDate ld, LocalDate minDate){
+		DateFormat displayFormat = new SimpleDateFormat(dateFormat);
+		DateFormatter displayFormatter = new DateFormatter(displayFormat);
+		DateFormat editFormat = new SimpleDateFormat(dateFormat.replace('.', '/'));
+		DateFormatter editFormatter = new DateFormatter(editFormat);
+		DefaultFormatterFactory factory = new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);	
+		
 		this.pnlSetDate = pnlSetDate;
+		pnlSetDate.getFtxtCalendar().setFormatterFactory(factory); 
 		this.minDate = minDate;
 		this.pnlSetDate.addCalendarListener(new CalendarListener(this.minDate));
 		dateChangeListener = new DateChangeListener();
 		this.pnlSetDate.addDateChangeListener(dateChangeListener);//listener for changing the date
 		dateSet = ld;
+		setDate(dateSet);
 	}
 	
 //	public Controller_PnlSetDate(DefaultFormatterFactory factory){
@@ -63,9 +74,9 @@ public class Ctrl_PnlSetDate {
 		}
 	}
 	
-	public void setFactory(DefaultFormatterFactory factory, LocalDate ld) {
+	public void setFactory(DefaultFormatterFactory factory) {
 		pnlSetDate.getFtxtCalendar().setFormatterFactory(factory);
-		pnlSetDate.getFtxtCalendar().setValue(ld);
+		
 	}
 	
 	public void setPnlEnabled(Boolean en){

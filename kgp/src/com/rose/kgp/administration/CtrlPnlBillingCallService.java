@@ -1,10 +1,13 @@
 package com.rose.kgp.administration;
 
 import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 
 import com.rose.kgp.db.DB;
@@ -30,7 +37,15 @@ public class CtrlPnlBillingCallService {
 	PnlBillingCallService pnlBillingCallService;
 	PhysicianComboModel physicianComboModel;
 	PhysicianRenderer physicianRenderer;
+	PhysicianItemListener physicianItemListener;
+	SalaryPerCoroListener salaryPerCoroListener;
+	SalaryPerPCIListener salaryPerPCIListener; 
+	CoroCountListener coroCountListener;
+	PCICountListener pciCountListener;
 	Ctrl_PnlSetDate ctrlPnlSetDate;
+	Physician physicianSel;
+	Integer salaryPerCoro = 0, salaryPerPCI = 0;
+	Integer coroCount = 0, pciCount = 0;
 	
 	public static void main(String[] args) {
 		new CtrlPnlBillingCallService(true);
@@ -48,9 +63,9 @@ public class CtrlPnlBillingCallService {
 				pnlBillingCallService = new PnlBillingCallService();
 				setModels();
 				setRenderer();
-				pnlBillingCallService.getComboPhysician().setModel(physicianComboModel);
-				pnlBillingCallService.getComboPhysician().setRenderer(physicianRenderer);
-				ctrlPnlSetDate = new Ctrl_PnlSetDate(pnlBillingCallService.getPnlSetDate(), LocalDate.now(), LocalDate.now().minusDays(10)); 
+				setListener();				
+				ctrlPnlSetDate = new Ctrl_PnlSetDate(pnlBillingCallService.getPnlSetDate(), "dd.MM.yyyy", LocalDate.now(), LocalDate.now().minusDays(10)); 
+				ctrlPnlSetDate.getPanel().setLabelDateText("");
 				JDialog dialog = new JDialog(); 
 				dialog.setVisible(true);	
 				dialog.setContentPane(pnlBillingCallService);
@@ -59,13 +74,30 @@ public class CtrlPnlBillingCallService {
 		}
 	}
 	
+	
+	
 	private void setModels() {
 		physicianComboModel = new PhysicianComboModel(physicians);
-		
+		pnlBillingCallService.getComboPhysician().setModel(physicianComboModel);
 	}
 	
 	private void setRenderer() {
 		physicianRenderer = new PhysicianRenderer();
+		pnlBillingCallService.getComboPhysician().setRenderer(physicianRenderer);
+	}
+	
+	private void setListener(){
+		physicianItemListener = new PhysicianItemListener();
+		pnlBillingCallService.getComboPhysician().addItemListener(physicianItemListener);
+		salaryPerCoroListener = new SalaryPerCoroListener();
+		pnlBillingCallService.getTxtSalaryPerCoro().getDocument().addDocumentListener(salaryPerCoroListener);
+		salaryPerPCIListener = new SalaryPerPCIListener();
+		pnlBillingCallService.getTxtSalaryPerPCI().getDocument().addDocumentListener(salaryPerPCIListener);
+		coroCountListener = new CoroCountListener();
+		pnlBillingCallService.getSpinCoroCount().addChangeListener(coroCountListener);
+		pciCountListener = new PCICountListener();
+		pnlBillingCallService.getSpinPCICount().addChangeListener(pciCountListener);
+		
 	}
 	
 	
@@ -211,9 +243,89 @@ public class CtrlPnlBillingCallService {
 				renderer.setText("");
 			}
 			return renderer;
+		}	
+	}
+	
+	class PhysicianItemListener implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+			JComboBox<Physician> physicians = (JComboBox<Physician>) event.getSource();
+			physicianSel = (Physician) physicians.getSelectedItem();
+		}		
+	}
+	
+	class SalaryPerCoroListener implements DocumentListener{
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {			
+			setText();
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			setText();
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			setText();
 		}
 		
+		private void setText(){
+			try{
+				salaryPerCoro = Integer.parseInt(pnlBillingCallService.getTxtSalaryPerCoro().getText());
+			}catch(NumberFormatException e){
+				salaryPerCoro = 0;
+			}			
+		}
 		
+	}
+	
+	class SalaryPerPCIListener implements DocumentListener{
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {			
+			setText();
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			setText();
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			setText();
+		}
+		
+		private void setText(){
+			try{
+				salaryPerPCI = Integer.parseInt(pnlBillingCallService.getTxtSalaryPerPCI().getText());
+			}catch(NumberFormatException e){
+				salaryPerPCI = 0;
+			}			
+		}		
+	}
+	
+	class CoroCountListener implements ChangeListener{
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			coroCount = (Integer) pnlBillingCallService.getSpinCoroCount().getValue();
+			pnlBillingCallService.getTxtCoroSalary().setText((coroCount * salaryPerCoro) + "");
+		}
+		
+	}
+	
+	class PCICountListener implements ChangeListener{
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			pciCount = (Integer) pnlBillingCallService.getSpinPCICount().getValue();
+			
+			pnlBillingCallService.getTxtPCISalary().setText((pciCount * salaryPerPCI) + "");
+		}
 		
 	}
 }

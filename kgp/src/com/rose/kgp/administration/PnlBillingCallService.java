@@ -35,6 +35,7 @@ public class PnlBillingCallService extends JPanel {
 	private JComboBox<Physician> comboPhysician;
 	private JFormattedTextField ftxtDate;
 	private Pnl_SetDate pnlSetDate;
+	private JSpinner spinCoroCount, spinPCICount;
 
 	protected JComboBox<Physician> getComboPhysician(){
 		return comboPhysician;
@@ -42,6 +43,30 @@ public class PnlBillingCallService extends JPanel {
 	
 	protected Pnl_SetDate getPnlSetDate() {
 		return pnlSetDate;
+	}
+	
+	protected JTextField getTxtSalaryPerCoro(){
+		return txtSalaryPerCoro;
+	}
+	
+	protected JTextField getTxtSalaryPerPCI(){
+		return txtSalaryPerPCI;
+	}
+	
+	protected JSpinner getSpinCoroCount(){
+		return spinCoroCount;
+	}
+	
+	protected JSpinner getSpinPCICount(){
+		return spinPCICount;
+	}
+	
+	protected JTextField getTxtCoroSalary(){
+		return txtSalaryCoroAll;
+	}
+	
+	protected JTextField getTxtPCISalary(){
+		return txtSalaryPCIAll;
 	}
 	/**
 	 * Create the panel.
@@ -62,10 +87,6 @@ public class PnlBillingCallService extends JPanel {
 		MenuBarHead.add(lblDate);
 		
 		pnlSetDate = new Pnl_SetDate();
-		
-//		JFormattedTextField ftxtDate = new JFormattedTextField();
-//		ftxtDate.setColumns(5);
-//		ftxtDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MenuBarHead.add(pnlSetDate);
 		
 		JLabel lblNr = new JLabel("Nummer:");
@@ -111,16 +132,16 @@ public class PnlBillingCallService extends JPanel {
 		lblCoroCount.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(lblCoroCount, "cell 0 1");
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(0, 0, 30, 1));
-		spinner.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		PnlCenter.add(spinner, "flowx,cell 1 1");
+		spinCoroCount = new JSpinner();
+		spinCoroCount.setModel(new SpinnerNumberModel(0, 0, 30, 1));
+		spinCoroCount.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		PnlCenter.add(spinCoroCount, "flowx,cell 1 1");
 		
 		JLabel lblPCICount = new JLabel("Anzahl PCI:");
 		lblPCICount.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(lblPCICount, "cell 0 2,alignx left");
 		
-		JSpinner spinPCICount = new JSpinner();
+		spinPCICount = new JSpinner();
 		spinPCICount.setModel(new SpinnerNumberModel(0, 0, 30, 1));
 		spinPCICount.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(spinPCICount, "flowx,cell 1 2");
@@ -166,5 +187,7 @@ public class PnlBillingCallService extends JPanel {
 		PnlCenter.add(btnBillCreate, "cell 1 4,alignx right,aligny top");
 
 	}
+
+	
 
 }
