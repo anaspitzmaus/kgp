@@ -22,6 +22,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
 
+
+
+
+import com.itextpdf.text.pdf.PdfPTableEvent;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.Dlg_DBSettings;
 import com.rose.kgp.db.SQL_INSERT;
@@ -46,6 +50,7 @@ public class CtrlPnlBillingCallService {
 	Physician physicianSel;
 	Integer salaryPerCoro = 0, salaryPerPCI = 0;
 	Integer coroCount = 0, pciCount = 0;
+	private PdfPTableEvent tableBackground;
 	
 	public static void main(String[] args) {
 		new CtrlPnlBillingCallService(true);
