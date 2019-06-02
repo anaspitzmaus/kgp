@@ -1,16 +1,26 @@
 package com.rose.kgp.administration;
 
 import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JFormattedTextField;
+
 import java.awt.Font;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.util.LinkedList;
 
 import javax.swing.JTextField;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -25,18 +35,35 @@ public class PnlBillingCallService extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 6958883817683567493L;
-	private JTextField txtNr;
-	private JTextField txtYear;
-	private JTextField txtMonth;
+	private JTextField txtBillNr;
 	private JTextField txtSalaryPerCoro;
 	private JTextField txtSalaryCoroAll;
 	private JTextField txtSalaryPerPCI;
 	private JTextField txtSalaryPCIAll;
 	private JComboBox<Physician> comboPhysician;
-	private JFormattedTextField ftxtDate;
+	//private JFormattedTextField ftxtDate;
 	private Pnl_SetDate pnlSetDate;
 	private JSpinner spinCoroCount, spinPCICount;
+	private JButton btnBillCreate;
+	private JComboBox<Month> cbxMonth;
+	private JComboBox<Year> cbxYear;
 
+	protected JTextField getTxtBillNumber(){
+		return txtBillNr;
+	}
+	
+	protected JComboBox<Year> getComboYear(){
+		return cbxYear;
+	}
+	
+	protected JComboBox<Month> getComboMonth(){
+		return cbxMonth;
+	}
+	
+	protected JButton getBtnBillCreate(){
+		return btnBillCreate;
+	}
+	
 	protected JComboBox<Physician> getComboPhysician(){
 		return comboPhysician;
 	}
@@ -93,28 +120,26 @@ public class PnlBillingCallService extends JPanel {
 		lblNr.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MenuBarHead.add(lblNr);
 		
-		txtNr = new JTextField();
-		txtNr.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MenuBarHead.add(txtNr);
-		txtNr.setColumns(3);
+		txtBillNr = new JTextField();
+		txtBillNr.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MenuBarHead.add(txtBillNr);
+		txtBillNr.setColumns(3);
 		
 		JLabel lblSepYear = new JLabel("/");
 		lblSepYear.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MenuBarHead.add(lblSepYear);
 		
-		txtYear = new JTextField();
-		txtYear.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MenuBarHead.add(txtYear);
-		txtYear.setColumns(3);
+		cbxYear = new JComboBox<Year>();
+		cbxYear.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MenuBarHead.add(cbxYear);
 		
 		JLabel lblMonth = new JLabel("Monat:");
 		lblMonth.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MenuBarHead.add(lblMonth);
 		
-		txtMonth = new JTextField();
-		txtMonth.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MenuBarHead.add(txtMonth);
-		txtMonth.setColumns(5);
+		cbxMonth = new JComboBox<Month>();
+		cbxMonth.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MenuBarHead.add(cbxMonth);
 		
 		JPanel PnlCenter = new JPanel();
 		add(PnlCenter, BorderLayout.CENTER);
@@ -182,11 +207,13 @@ public class PnlBillingCallService extends JPanel {
 		txtSalaryPCIAll.setColumns(5);
 		PnlCenter.add(txtSalaryPCIAll, "cell 1 2");
 		
-		JButton btnBillCreate = new JButton("Rechnung erstellen");
+		btnBillCreate = new JButton("Rechnung erstellen");
 		btnBillCreate.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		PnlCenter.add(btnBillCreate, "cell 1 4,alignx right,aligny top");
 
 	}
+	
+	
 
 	
 
