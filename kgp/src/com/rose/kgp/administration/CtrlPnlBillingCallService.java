@@ -559,21 +559,35 @@ public class CtrlPnlBillingCallService {
 	        Text lt = new Text("Leistungszeit: ");
 	        Text ltData = new Text(monthSel.name() + " " + yearSel);
 	        
-	        Paragraph pMonth = new Paragraph().add(lt).add(new Tab()).add(new Tab()).add(ltData);
+	        Paragraph pMonth = new Paragraph().add(lt).add(new Tab()).add(new Tab()).add(ltData).setFixedLeading(5);
 	        document.add(pMonth);
 	        
 	        Text billNr = new Text("Rechnungsnummer: ");
 	        Text txtbillNrData = new Text(billNrData + "/" + yearSel);
 	        
-	        Paragraph pBillNr = new Paragraph().add(billNr).add(new Tab()).add(txtbillNrData);
+	        Paragraph pBillNr = new Paragraph().add(billNr).add(new Tab()).add(txtbillNrData).setFixedLeading(5);
 	        document.add(pBillNr);
 	        
 	        Text txtBillDate = new Text("Rechnungsdatum: ");
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 	        Text txtBillDateData = new Text(formatter.format(ctrlPnlSetDate.getDate()));
 	        
-	        Paragraph pBillDate = new Paragraph().add(txtBillDate).add(new Tab()).add(txtBillDateData);
+	        Paragraph pBillDate = new Paragraph().add(txtBillDate).add(new Tab()).add(txtBillDateData).setFixedLeading(5);
 	        document.add(pBillDate);
+	        
+	        Text txtAL = new Text("Abzurechnende Leistungen").setFont(bold);
+	        Paragraph pTxtAL = new Paragraph().add(txtAL).setFixedLeading(12);
+	        document.add(pTxtAL);
+	        
+	        Text txtCallService = new Text("(1) Vergütung des Bereitschaftsdienstes");
+	        Paragraph ptxtCallService = new Paragraph().add(txtCallService);
+	        document.add(ptxtCallService);
+	        
+	        Text txtServiceFlat = new Text("Rufbereitschaftspauschale:");
+	        Text txtServiceFlatData = new Text("639,11 €");
+	        Paragraph pTxtServiceFlatData = new Paragraph().add(new Tab()).add(txtServiceFlat).add(new Tab()).add(new Tab()).add(txtServiceFlatData);
+	        document.add(pTxtServiceFlatData);
+	        
 	        //Close document
 	        pdf.close();
 			
