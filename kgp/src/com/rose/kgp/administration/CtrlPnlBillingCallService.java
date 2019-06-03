@@ -1,7 +1,6 @@
 package com.rose.kgp.administration;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -9,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
@@ -35,19 +35,20 @@ import javax.swing.event.ListDataListener;
 
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.color.Color;
-import com.itextpdf.kernel.color.DeviceCmyk;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Tab;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.rose.kgp.db.DB;
 import com.rose.kgp.db.Dlg_DBSettings;
@@ -579,14 +580,46 @@ public class CtrlPnlBillingCallService {
 	        Paragraph pTxtAL = new Paragraph().add(txtAL).setFixedLeading(12);
 	        document.add(pTxtAL);
 	        
-	        Text txtCallService = new Text("(1) Vergütung des Bereitschaftsdienstes");
-	        Paragraph ptxtCallService = new Paragraph().add(txtCallService);
-	        document.add(ptxtCallService);
+	        //the table
+	        Table table = new Table(4);
+	        //columnHeader
+	        Cell cellColHead_1 = new Cell().add(new Paragraph("Anzahl").setFont(bold));
+	        Cell cellColHead_2 = new Cell().add(new Paragraph("Leistung").setFont(bold));
+	        Cell cellColHead_3 = new Cell().add(new Paragraph("Preis pro Leistung").setFont(bold));
+	        Cell cellColHead_4 = new Cell().add(new Paragraph("Summe").setFont(bold));
+	        table.addCell(cellColHead_1).addCell(cellColHead_2).addCell(cellColHead_3).addCell(cellColHead_4);
 	        
-	        Text txtServiceFlat = new Text("Rufbereitschaftspauschale:");
-	        Text txtServiceFlatData = new Text("639,11 €");
-	        Paragraph pTxtServiceFlatData = new Paragraph().add(new Tab()).add(txtServiceFlat).add(new Tab()).add(new Tab()).add(txtServiceFlatData);
-	        document.add(pTxtServiceFlatData);
+	        Double flat = 639.11;
+	        Double coroFlat = 384.37;
+	        Double coroSum = coroCount * coroFlat;
+	        Double pciFlat = 440.32;
+	        Double pciSum = pciCount * pciFlat;
+	        Double coroPciSum = coroSum + pciSum;
+	        Double allSum = coroPciSum + flat;
+	        table.addCell("1").addCell("Rufbereitschafts-pauschale").addCell(new DecimalFormat("##.##").format(flat)).addCell(new DecimalFormat("##.##").format(flat));
+	        table.addCell(Integer.toString(coroCount)).addCell("Koronarangiographie").addCell(new DecimalFormat("##.##").format(coroFlat)).addCell(new DecimalFormat("##.##").format(coroCount * coroFlat) + "€");
+	        table.addCell(Integer.toString(pciCount)).addCell("Koronarangiographie mit PCI").addCell(new DecimalFormat("##.##").format(pciFlat)).addCell(new DecimalFormat("##.##").format(pciCount * pciFlat) + "€");
+	        
+	        Cell cellSum_1 = new Cell().add(new Paragraph("Gesamtbetrag").setFont(bold));
+	        Cell cellSum_2 = new Cell().add(new Paragraph(new DecimalFormat("##.##").format(allSum)).setFont(bold));
+	        table.addCell("").addCell(cellSum_1).addCell("").addCell(cellSum_2);
+	        document.add(table);
+	        
+	        Text txtFine = new Text("Ich darf Sie höflichst um Anweisung des oben angeführten Gesamtbetrages "
+	        		+ "binnen 14 Tagen ab Rechnungsdatum auf mein unten angegebenes Konto ersuchen.");
+	        Paragraph pTxtFine = new Paragraph().add(txtFine);
+	        document.add(pTxtFine);
+	        
+	        Text txtBank = new Text("Deutsche Bank Chemnitz");
+	        Text txtIBAN = new Text("DE1234567890");
+	        Text txtBIC = new Text("DEUTDEDBCHE");
+	        
+	        Paragraph pAccountData = new Paragraph().add(txtBank).add(new Tab()).add(new Tab()).add(txtIBAN).add(new Tab()).add(new Tab()).add(txtBIC);
+	        document.add(pAccountData);
+	        
+	        
+	        document.close();
+	        
 	        
 	        //Close document
 	        pdf.close();
