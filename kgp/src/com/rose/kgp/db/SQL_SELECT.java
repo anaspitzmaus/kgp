@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.rose.kgp.administration.BankData;
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Allocator;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
+import com.rose.kgp.personnel.Staff;
 
 
 
@@ -403,5 +405,35 @@ public class SQL_SELECT {
 			System.out.println(e);
 		}
 		return treatment_id;
+	}
+	
+	/**
+	 * select the banking account data of a staff member
+	 * @param staff
+	 * @return the bankData
+	 */
+	public static BankData BankAccount(Staff staff){
+		stmt = DB.getStatement();
+		BankData bankData = null;
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT iban, bic, institute "
+					+ "FROM bank_data "
+					+ "INNER JOIN staff "
+					+ "ON bank_data.id_staff = staff.idstaff "
+					+ "WHERE staff.idstaff = " + staff.getId() + "");
+					
+			if(rs.isBeforeFirst()){
+				bankData = new BankData(staff);
+				rs.next();
+				bankData.setIban(rs.getString("iban"));
+				bankData.setBic(rs.getString("bic"));
+				bankData.setInstitute(rs.getString("institute"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return bankData;
+		
 	}
 }

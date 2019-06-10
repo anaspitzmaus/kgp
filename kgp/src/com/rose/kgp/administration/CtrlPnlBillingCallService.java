@@ -292,6 +292,11 @@ public class CtrlPnlBillingCallService {
 		public void itemStateChanged(ItemEvent event) {
 			JComboBox<Physician> physicians = (JComboBox<Physician>) event.getSource();
 			physicianSel = (Physician) physicians.getSelectedItem();
+			BankData bankData = SQL_SELECT.BankAccount(physicianSel);
+			physicianSel.setBankData(bankData);
+			pnlBillingCallService.getTxtIBAN().setText(bankData.getIban());
+			pnlBillingCallService.getTxtBIC().setText(bankData.getBic());
+			pnlBillingCallService.getTxtBank().setText(bankData.getInstitute());
 		}		
 	}
 	
@@ -442,8 +447,9 @@ public class CtrlPnlBillingCallService {
 		public MonthComboModel() {
 			month = new ArrayList<Month>();
 			for (int i = 1; i<=12; i++){				
-				month.add(Month.of(i));
+				month.add(Month.of(i));			
 			}
+			
 		}
 		/**
 		 * 
@@ -554,30 +560,30 @@ public class CtrlPnlBillingCallService {
 			}
 	        Text liq = new Text("Liquidation Bereitschaftsdienst:").setFont(bold);
 	        Text physician = new Text(" " + physicianSel.getTitle() + " " + physicianSel.getFirstname() + " " + physicianSel.getSurname()).setFont(bold); 
-	        Paragraph pLiq = new Paragraph().add(liq).add(physician);
+	        Paragraph pLiq = new Paragraph().add("\n").add(liq).add(physician);
 	        document.add(pLiq);
 	        
 	        Text lt = new Text("Leistungszeit: ");
-	        Text ltData = new Text(monthSel.name() + " " + yearSel);
+	        Text ltData = new Text(monthSel.getValue() + "/" + yearSel);
 	        
-	        Paragraph pMonth = new Paragraph().add(lt).add(new Tab()).add(new Tab()).add(ltData).setFixedLeading(5);
+	        Paragraph pMonth = new Paragraph().add("\n\n").add(lt).add(new Tab()).add(ltData).setFixedLeading(5).setFont(font);
 	        document.add(pMonth);
 	        
 	        Text billNr = new Text("Rechnungsnummer: ");
 	        Text txtbillNrData = new Text(billNrData + "/" + yearSel);
 	        
-	        Paragraph pBillNr = new Paragraph().add(billNr).add(new Tab()).add(txtbillNrData).setFixedLeading(5);
+	        Paragraph pBillNr = new Paragraph().add(billNr).add(new Tab()).add(txtbillNrData).setFixedLeading(5).setFont(font);
 	        document.add(pBillNr);
 	        
 	        Text txtBillDate = new Text("Rechnungsdatum: ");
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 	        Text txtBillDateData = new Text(formatter.format(ctrlPnlSetDate.getDate()));
 	        
-	        Paragraph pBillDate = new Paragraph().add(txtBillDate).add(new Tab()).add(txtBillDateData).setFixedLeading(5);
+	        Paragraph pBillDate = new Paragraph().add(txtBillDate).add(new Tab()).add(txtBillDateData).setFixedLeading(5).setFont(font).add("\n");
 	        document.add(pBillDate);
 	        
 	        Text txtAL = new Text("Abzurechnende Leistungen").setFont(bold);
-	        Paragraph pTxtAL = new Paragraph().add(txtAL).setFixedLeading(12);
+	        Paragraph pTxtAL = new Paragraph().add("\n").add(txtAL).setFixedLeading(12).setFont(font);
 	        document.add(pTxtAL);
 	        
 	        //the table
@@ -589,6 +595,7 @@ public class CtrlPnlBillingCallService {
 	        Cell cellColHead_4 = new Cell().add(new Paragraph("Summe").setFont(bold));
 	        table.addCell(cellColHead_1).addCell(cellColHead_2).addCell(cellColHead_3).addCell(cellColHead_4);
 	        
+	        //cells
 	        Double flat = 639.11;
 	        Double coroFlat = 384.37;
 	        Double coroSum = coroCount * coroFlat;
@@ -596,26 +603,31 @@ public class CtrlPnlBillingCallService {
 	        Double pciSum = pciCount * pciFlat;
 	        Double coroPciSum = coroSum + pciSum;
 	        Double allSum = coroPciSum + flat;
-	        table.addCell("1").addCell("Rufbereitschafts-pauschale").addCell(new DecimalFormat("##.##").format(flat)).addCell(new DecimalFormat("##.##").format(flat));
-	        table.addCell(Integer.toString(coroCount)).addCell("Koronarangiographie").addCell(new DecimalFormat("##.##").format(coroFlat)).addCell(new DecimalFormat("##.##").format(coroCount * coroFlat) + "€");
-	        table.addCell(Integer.toString(pciCount)).addCell("Koronarangiographie mit PCI").addCell(new DecimalFormat("##.##").format(pciFlat)).addCell(new DecimalFormat("##.##").format(pciCount * pciFlat) + "€");
+	        table.addCell("1").addCell("Rufbereitschafts-pauschale").addCell(new DecimalFormat("##.##").format(flat)+ "€").addCell(new DecimalFormat("##.##").format(flat)+ "€").setFont(font);
+	        table.addCell(Integer.toString(coroCount)).addCell("Koronarangiographie").addCell(new DecimalFormat("##.##").format(coroFlat)+ "€").addCell(new DecimalFormat("##.##").format(coroCount * coroFlat) + "€").setFont(font);
+	        table.addCell(Integer.toString(pciCount)).addCell("Koronarangiographie mit PCI").addCell(new DecimalFormat("##.##").format(pciFlat)+ "€").addCell(new DecimalFormat("##.##").format(pciCount * pciFlat) + "€").setFont(font);
 	        
 	        Cell cellSum_1 = new Cell().add(new Paragraph("Gesamtbetrag").setFont(bold));
-	        Cell cellSum_2 = new Cell().add(new Paragraph(new DecimalFormat("##.##").format(allSum)).setFont(bold));
+	        Cell cellSum_2 = new Cell().add(new Paragraph(new DecimalFormat("##.##").format(allSum)+ "€").setFont(bold));
 	        table.addCell("").addCell(cellSum_1).addCell("").addCell(cellSum_2);
 	        document.add(table);
 	        
 	        Text txtFine = new Text("Ich darf Sie höflichst um Anweisung des oben angeführten Gesamtbetrages "
 	        		+ "binnen 14 Tagen ab Rechnungsdatum auf mein unten angegebenes Konto ersuchen.");
-	        Paragraph pTxtFine = new Paragraph().add(txtFine);
+	        Paragraph pTxtFine = new Paragraph("\n").add(txtFine).setFont(font);
 	        document.add(pTxtFine);
 	        
-	        Text txtBank = new Text("Deutsche Bank Chemnitz");
-	        Text txtIBAN = new Text("DE1234567890");
-	        Text txtBIC = new Text("DEUTDEDBCHE");
+	        Text txtBank = new Text("Bank: " + physicianSel.getBankData().getInstitute());
+	        Text txtIBAN = new Text("IBAN: " + physicianSel.getBankData().getIban());
+	        Text txtBIC = new Text("BIC: " + physicianSel.getBankData().getBic());
 	        
-	        Paragraph pAccountData = new Paragraph().add(txtBank).add(new Tab()).add(new Tab()).add(txtIBAN).add(new Tab()).add(new Tab()).add(txtBIC);
-	        document.add(pAccountData);
+	        Paragraph pAccountData = new Paragraph("\n").add(txtBank).setFont(font);
+	        Paragraph pIBAN = new Paragraph(txtIBAN).setFont(font);
+	        Paragraph pBIC = new Paragraph(txtBIC).setFont(font);
+	        document.add(pAccountData).add(pIBAN).add(pBIC);
+	        
+	        Paragraph pName = new Paragraph("\n" + physicianSel.getTitle() + " " + physicianSel.getFirstname() + " " + physicianSel.getSurname()).setFont(font);
+	        document.add(pName);
 	        
 	        
 	        document.close();

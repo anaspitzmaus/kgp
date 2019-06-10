@@ -2,6 +2,8 @@ package com.rose.kgp.personnel;
 
 import java.time.LocalDate;
 
+import com.rose.kgp.administration.BankData;
+
 public class Staff extends Person{
 
 	protected String password;
@@ -10,6 +12,16 @@ public class Staff extends Person{
 	protected String alias;
 	protected Integer id;
 	protected String status;
+	protected BankData bankData;
+	
+	
+	public BankData getBankData(){
+		return this.bankData;
+	}
+	
+	public void setBankData(BankData bankData){
+		this.bankData = bankData;
+	}
 	
 	public String getStatus() {
 		return status;
