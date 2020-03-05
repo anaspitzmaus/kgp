@@ -24,20 +24,17 @@ public class PnlMMLV extends JPanel {
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		add(pnlMenu, BorderLayout.NORTH);
 		
-		JMenuBar menuBar = new JMenuBar();
-		pnlMenu.add(menuBar);
-		
 		JLabel lblLV = new JLabel("LV");
 		lblLV.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		menuBar.add(lblLV);
+		pnlMenu.add(lblLV);
 		
 		JPanel pnlValues = new JPanel();
 		add(pnlValues, BorderLayout.CENTER);
-		pnlValues.setLayout(new MigLayout("", "[][][]", "[]"));
+		pnlValues.setLayout(new MigLayout("", "[][][]", "[][]"));
 		
 		JLabel lblIVSd = new JLabel("IVSd:");
 		lblIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(lblIVSd, "flowx,cell 0 0,alignx trailing");
+		pnlValues.add(lblIVSd, "flowx,cell 0 0,alignx left");
 		
 		JFormattedTextField formattedTextField = new JFormattedTextField();
 		formattedTextField.setColumns(10);
@@ -47,6 +44,19 @@ public class PnlMMLV extends JPanel {
 		JLabel lblIVSdUnit = new JLabel("mm");
 		lblIVSdUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblIVSdUnit, "cell 2 0");
+		
+		JLabel lblLVIDd = new JLabel("LVIDd:");
+		lblLVIDd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVIDd, "cell 0 1,alignx left");
+		
+		JFormattedTextField ftxtLVIDd = new JFormattedTextField();
+		ftxtLVIDd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtLVIDd.setColumns(10);
+		pnlValues.add(ftxtLVIDd, "cell 1 1");
+		
+		JLabel lblLVIDdUnit = new JLabel("mm");
+		lblLVIDdUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVIDdUnit, "cell 2 1");
 
 	}
 
