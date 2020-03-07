@@ -2,16 +2,18 @@ package com.rose.kgp.echo;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
-import javax.swing.SwingConstants;
+
 
 public class PnlMMAoLA extends JPanel {
+
+	
+	private static final long serialVersionUID = 2648573428366932353L;
 
 	/**
 	 * Create the panel.

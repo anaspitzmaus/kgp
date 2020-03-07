@@ -4,13 +4,15 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
 import java.awt.Color;
 
 public class PnlMMLV extends JPanel {
+
+	
+	private static final long serialVersionUID = -4287633535547590374L;
 
 	/**
 	 * Create the panel.
