@@ -32,7 +32,7 @@ public class PnlMMLV extends JPanel {
 		
 		JPanel pnlValues = new JPanel();
 		add(pnlValues, BorderLayout.CENTER);
-		pnlValues.setLayout(new MigLayout("", "[][][]", "[][]"));
+		pnlValues.setLayout(new MigLayout("", "[][][]", "[][][][][][]"));
 		
 		JLabel lblIVSd = new JLabel("IVSd:");
 		lblIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -59,6 +59,58 @@ public class PnlMMLV extends JPanel {
 		JLabel lblLVIDdUnit = new JLabel("mm");
 		lblLVIDdUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVIDdUnit, "cell 2 1");
+		
+		JLabel lblLVPWd = new JLabel("LVPWd:");
+		lblLVPWd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVPWd, "cell 0 2,alignx left");
+		
+		JFormattedTextField ftxtLVPWd = new JFormattedTextField();
+		ftxtLVPWd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtLVPWd.setColumns(10);
+		pnlValues.add(ftxtLVPWd, "cell 1 2,alignx left");
+		
+		JLabel lblLVPWdUnit = new JLabel("mm");
+		lblLVPWdUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVPWdUnit, "cell 2 2");
+		
+		JLabel lblIVSs = new JLabel("IVSs:");
+		lblIVSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblIVSs, "cell 0 3,alignx left");
+		
+		JFormattedTextField ftxtIVSs = new JFormattedTextField();
+		ftxtIVSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtIVSs.setColumns(10);
+		pnlValues.add(ftxtIVSs, "cell 1 3,alignx left");
+		
+		JLabel lblIVSsUnit = new JLabel("mm");
+		lblIVSsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblIVSsUnit, "cell 2 3");
+		
+		JLabel lblLVIDs = new JLabel("LVIDs:");
+		lblLVIDs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVIDs, "cell 0 4,alignx left");
+		
+		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
+		formattedTextField_1.setColumns(10);
+		formattedTextField_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(formattedTextField_1, "cell 1 4,alignx left");
+		
+		JLabel lblLVIDsUnit = new JLabel("mm");
+		lblLVIDsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVIDsUnit, "cell 2 4");
+		
+		JLabel lblLVPWs = new JLabel("LVPWs:");
+		lblLVPWs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVPWs, "cell 0 5,alignx left");
+		
+		JFormattedTextField ftxtLVPWs = new JFormattedTextField();
+		ftxtLVPWs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtLVPWs.setColumns(10);
+		pnlValues.add(ftxtLVPWs, "cell 1 5,alignx left,aligny top");
+		
+		JLabel lblLVPWsUnit = new JLabel("mm");
+		lblLVPWsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVPWsUnit, "cell 2 5");
 
 	}
 

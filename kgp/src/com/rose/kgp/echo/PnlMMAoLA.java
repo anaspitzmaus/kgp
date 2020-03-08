@@ -4,10 +4,15 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
+
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 
 public class PnlMMAoLA extends JPanel {
@@ -22,20 +27,28 @@ public class PnlMMAoLA extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlMenu = new JPanel();
+		pnlMenu.setBackground(new Color(189, 183, 107));
 		FlowLayout flowLayout = (FlowLayout) pnlMenu.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		add(pnlMenu, BorderLayout.NORTH);
+		
+		
 		
 		JLabel lblAoLA = new JLabel("Ao/LA");
 		lblAoLA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMenu.add(lblAoLA);
 		
-		JMenuBar menuBar = new JMenuBar();
-		pnlMenu.add(menuBar);
+		
 		
 		JPanel pnlValues = new JPanel();
-		add(pnlValues, BorderLayout.CENTER);
 		pnlValues.setLayout(new MigLayout("", "[][][]", "[][][]"));
+		
+		JScrollPane jsp = new JScrollPane(pnlValues);
+		jsp.setPreferredSize(new Dimension(300,600));
+	    jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		add(jsp, BorderLayout.CENTER);
+		
 		
 		JLabel lblAoRoot = new JLabel("Aortic Root:");
 		lblAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -59,17 +72,25 @@ public class PnlMMAoLA extends JPanel {
 		ftxtAoAsc.setColumns(10);
 		pnlValues.add(ftxtAoAsc, "cell 1 1,growx");
 		
-		JLabel label = new JLabel("mm");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(label, "cell 2 1");
+		JLabel lblAoAscUnit = new JLabel("mm");
+		lblAoAscUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblAoAscUnit, "cell 2 1");
 		
 		JLabel lblLA = new JLabel("LA:");
 		lblLA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(lblLA, "cell 0 2,alignx trailing");
+		pnlValues.add(lblLA, "cell 0 2,alignx left");
 		
 		JFormattedTextField ftxtLA = new JFormattedTextField();
 		ftxtLA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtLA, "cell 1 2,growx");
+		
+		JLabel lblLAUnit = new JLabel("mm");
+		lblLAUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLAUnit, "cell 2 2");
+		
+		
+		
+		
 
 	}
 

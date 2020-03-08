@@ -1,6 +1,7 @@
 package com.rose.kgp.echo;
 
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+import java.awt.GridLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 
 public class FrmEcho extends JFrame {
 
@@ -42,13 +46,28 @@ public class FrmEcho extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[424px]", "[251px]"));
+		contentPane.setLayout(new BorderLayout());
+		
+		JPanel pnlValues = new JPanel();
+		pnlValues.setLayout(new GridLayout(0,2));
+		
+		JPanel pnlRe = new JPanel();
+		pnlRe.setLayout(new GridLayout(0,1));
 		
 		PnlMMAoLA pnlMMAoLA = new PnlMMAoLA();
-		contentPane.add(pnlMMAoLA, "cell 0 0,grow");
-		
+		pnlValues.add(pnlMMAoLA);
+
 		PnlMMLV pnlMMLV = new PnlMMLV();
-		contentPane.add(pnlMMLV, "cell 0 1,grow");
+		pnlValues.add(pnlMMLV);
+		
+		PnlResult pnlResult = new PnlResult();
+		pnlRe.add(pnlResult);
+		
+		contentPane.add(pnlValues, BorderLayout.NORTH);
+		contentPane.add(new JSeparator(), BorderLayout.CENTER);
+		contentPane.add(pnlRe, BorderLayout.SOUTH);
+		
+		this.pack();
 		
 		
 	}
