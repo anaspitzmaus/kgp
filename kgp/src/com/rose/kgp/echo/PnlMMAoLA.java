@@ -44,7 +44,7 @@ public class PnlMMAoLA extends JPanel {
 		pnlValues.setLayout(new MigLayout("", "[][][]", "[][][]"));
 		
 		JScrollPane jsp = new JScrollPane(pnlValues);
-		jsp.setPreferredSize(new Dimension(300,600));
+		jsp.setPreferredSize(new Dimension(300,300));
 	    jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	    jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		add(jsp, BorderLayout.CENTER);

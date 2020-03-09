@@ -1,6 +1,9 @@
 package com.rose.kgp.echo;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
@@ -8,6 +11,7 @@ import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
 import java.awt.Color;
+import java.awt.Dimension;
 
 public class PnlMMLV extends JPanel {
 
@@ -31,17 +35,22 @@ public class PnlMMLV extends JPanel {
 		pnlMenu.add(lblLV);
 		
 		JPanel pnlValues = new JPanel();
-		add(pnlValues, BorderLayout.CENTER);
 		pnlValues.setLayout(new MigLayout("", "[][][]", "[][][][][][]"));
+		
+		JScrollPane jsp = new JScrollPane(pnlValues);
+		jsp.setPreferredSize(new Dimension(300,300));
+	    jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		add(jsp, BorderLayout.CENTER);
 		
 		JLabel lblIVSd = new JLabel("IVSd:");
 		lblIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblIVSd, "flowx,cell 0 0,alignx left");
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setColumns(10);
-		formattedTextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(formattedTextField, "cell 1 0");
+		JFormattedTextField ftxtIVSd = new JFormattedTextField();
+		ftxtIVSd.setColumns(10);
+		ftxtIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtIVSd, "cell 1 0");
 		
 		JLabel lblIVSdUnit = new JLabel("mm");
 		lblIVSdUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -90,10 +99,10 @@ public class PnlMMLV extends JPanel {
 		lblLVIDs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVIDs, "cell 0 4,alignx left");
 		
-		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setColumns(10);
-		formattedTextField_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(formattedTextField_1, "cell 1 4,alignx left");
+		JFormattedTextField ftxtLVIDs = new JFormattedTextField();
+		ftxtLVIDs.setColumns(10);
+		ftxtLVIDs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtLVIDs, "cell 1 4,alignx left");
 		
 		JLabel lblLVIDsUnit = new JLabel("mm");
 		lblLVIDsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
