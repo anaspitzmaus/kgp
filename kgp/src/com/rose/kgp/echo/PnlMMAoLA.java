@@ -6,6 +6,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
 import java.awt.Color;
@@ -19,7 +20,7 @@ public class PnlMMAoLA extends JPanel {
 
 	
 	private static final long serialVersionUID = 2648573428366932353L;
-
+	private NumberFormat integerFormat;
 	/**
 	 * Create the panel.
 	 */
@@ -54,7 +55,10 @@ public class PnlMMAoLA extends JPanel {
 		lblAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblAoRoot, "cell 0 0,alignx left");
 		
-		JFormattedTextField ftxtAoRoot = new JFormattedTextField();
+		integerFormat = NumberFormat.getIntegerInstance();
+		integerFormat.setMaximumIntegerDigits(2);
+		
+		JFormattedTextField ftxtAoRoot = new JFormattedTextField(integerFormat);
 		ftxtAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtAoRoot.setColumns(10);
 		pnlValues.add(ftxtAoRoot, "cell 1 0,growx");
