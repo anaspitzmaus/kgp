@@ -6,6 +6,8 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
@@ -61,6 +63,15 @@ public class PnlMMAoLA extends JPanel {
 		JFormattedTextField ftxtAoRoot = new JFormattedTextField(integerFormat);
 		ftxtAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtAoRoot.setColumns(10);
+		ftxtAoRoot.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				int aoRoot = (int) ftxtAoRoot.getValue();
+				
+			}
+		});
+		
 		pnlValues.add(ftxtAoRoot, "cell 1 0,growx");
 		
 		JLabel lblAoRootUnit = new JLabel("mm");
