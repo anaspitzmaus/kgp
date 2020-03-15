@@ -23,6 +23,17 @@ public class PnlMMAoLA extends JPanel {
 	
 	private static final long serialVersionUID = 2648573428366932353L;
 	private NumberFormat integerFormat;
+	JFormattedTextField ftxtAoRoot;
+	
+	/*
+	 * setter und getter
+	 */
+	
+	protected JFormattedTextField getftxtAoRoot() {
+		return ftxtAoRoot;
+	}
+	
+	
 	/**
 	 * Create the panel.
 	 */
@@ -60,17 +71,10 @@ public class PnlMMAoLA extends JPanel {
 		integerFormat = NumberFormat.getIntegerInstance();
 		integerFormat.setMaximumIntegerDigits(2);
 		
-		JFormattedTextField ftxtAoRoot = new JFormattedTextField(integerFormat);
+		ftxtAoRoot = new JFormattedTextField(integerFormat);
 		ftxtAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtAoRoot.setColumns(10);
-		ftxtAoRoot.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				int aoRoot = (int) ftxtAoRoot.getValue();
-				
-			}
-		});
+		
 		
 		pnlValues.add(ftxtAoRoot, "cell 1 0,growx");
 		
