@@ -4,7 +4,7 @@ public class CtrlPnlMMLV {
 	protected PnlMMLV pnlMMLV;
 	
 	//getter
-	protected PnlMMLV getPnlMMLV(){
+	protected PnlMMLV getPanel(){
 		return pnlMMLV;
 	}
 	

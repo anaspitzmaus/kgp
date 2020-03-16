@@ -7,12 +7,17 @@ public class CtrlPnlMMAoLA {
 
 	PnlMMAoLA pnlMMAoLA;
 	IntegerListener integerListener;
+	Integer aoRoot;
 	/*
 	 * setter and getter
 	 */
 	protected PnlMMAoLA getPanel() {
 		return pnlMMAoLA;
-	}	
+	}
+	
+	protected Integer getDiamAoRoot() {
+		return aoRoot;
+	}
 	
 	
 	
@@ -28,7 +33,7 @@ public class CtrlPnlMMAoLA {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			try {
-				int aoRoot = ((Long)pnlMMAoLA.getftxtAoRoot().getValue()).intValue();
+				aoRoot = ((Long)pnlMMAoLA.getftxtAoRoot().getValue()).intValue();
 				if(aoRoot < 20 | aoRoot > 80) {
 					pnlMMAoLA.getftxtAoRoot().setValue(null);
 				}

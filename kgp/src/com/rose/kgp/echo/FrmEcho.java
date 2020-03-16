@@ -20,11 +20,19 @@ public class FrmEcho extends JFrame {
 	
 	
 	private JPanel contentPane;
+	JPanel pnlValues;
+	/**
+	 * setter and getter
+	 */
+	
+	protected JPanel getPnlValues() {
+		return this.pnlValues;
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public FrmEcho() {
+	public FrmEcho(PnlMMAoLA pnlMMAoLA, PnlMMLV pnlMMLV) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -32,15 +40,10 @@ public class FrmEcho extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
 		
-		JPanel pnlValues = new JPanel();
-		pnlValues.setLayout(new GridLayout(0,2));
+		pnlValues = new JPanel();
+		pnlValues.setLayout(new GridLayout(0,2));	
 		
-		
-		
-		PnlMMAoLA pnlMMAoLA = new PnlMMAoLA();
 		pnlValues.add(pnlMMAoLA);
-
-		PnlMMLV pnlMMLV = new PnlMMLV();
 		pnlValues.add(pnlMMLV);
 		
 		PnlResult pnlResult = new PnlResult();

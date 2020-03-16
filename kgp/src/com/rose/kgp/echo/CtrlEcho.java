@@ -1,23 +1,23 @@
 package com.rose.kgp.echo;
 
-import java.awt.EventQueue;
-
 public class CtrlEcho {
 
-	static FrmEcho frmEcho;
+	FrmEcho frmEcho;
+	CtrlPnlMMAoLA ctrlPnlMMAoLA;
+	CtrlPnlMMLV ctrlPnlMMLV;
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frmEcho = new FrmEcho();
-					frmEcho.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
+	public CtrlEcho() {
+		buildFrame();
+	}
+	
+	
+	protected void buildFrame() {
+		
+		ctrlPnlMMAoLA = new CtrlPnlMMAoLA();
+		ctrlPnlMMLV = new CtrlPnlMMLV();
+		frmEcho = new FrmEcho(ctrlPnlMMAoLA.getPanel(), ctrlPnlMMLV.getPanel());
+		
+		frmEcho.setVisible(true);
 	}
 
 }
