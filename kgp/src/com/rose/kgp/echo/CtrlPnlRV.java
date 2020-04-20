@@ -13,6 +13,7 @@ public class CtrlPnlRV {
 	RVMidDiamListener rvMidDiamListener;
 	RVLongDiamListener rvLongDiamListener;
 	RVOT_PLAX_Listener rvotPlaxListener;
+	TAPSEListener tapseListener;
 	
 	protected PnlRV getPanel() {
 		return this.pnlRV;
@@ -29,11 +30,13 @@ public class CtrlPnlRV {
 		rvMidDiamListener = new RVMidDiamListener();
 		rvLongDiamListener = new RVLongDiamListener();
 		rvotPlaxListener = new RVOT_PLAX_Listener();
+		tapseListener = new TAPSEListener();
 		
 		pnlRV.addRVBasalDiamListener(rvBaseDiamListener);
 		pnlRV.addRVMidDiamListener(rvMidDiamListener);
 		pnlRV.addRVLongDiamListener(rvLongDiamListener);
 		pnlRV.addRVOT_PLAX_Listener(rvotPlaxListener);
+		pnlRV.addTAPSEListener(tapseListener);
 	}
 	
 	class RVBaseDiamListener implements PropertyChangeListener {
@@ -115,6 +118,27 @@ public class CtrlPnlRV {
 			//set the value to the enddiastolic RVOT diameter variable
 			if(dVal instanceof Double) {
 				heart.getDiastolicState().getRightVentricle().setWidth(dVal);
+			}	
+			
+		}		
+	}
+	
+	class TAPSEListener implements PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Long lVal;
+			Double dVal;
+			//cast input value to Double
+			try {				
+				lVal = (Long) pnlRV.getTAPSEValue();
+				dVal = lVal.doubleValue();				
+			} catch (NullPointerException | ClassCastException e) {
+				dVal = (Double) pnlRV.getTAPSEValue();			
+			}
+			//set the value to the TAPSE variable
+			if(dVal instanceof Double) {
+				//heart.getDiastolicState().getRightVentricle().setWidth(dVal);
 			}	
 			
 		}		

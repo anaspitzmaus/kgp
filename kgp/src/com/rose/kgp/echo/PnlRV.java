@@ -25,6 +25,7 @@ public class PnlRV extends JPanel {
 	private JFormattedTextField ftxtRVLongDiam;
 	private JFormattedTextField ftxtRVOT_PLAX;	
 	private DecimalFormat doubleFormat;
+	private JFormattedTextField ftxtTAPSE;
 
 	protected Object getRVBasalDiamValue() {
 		return ftxtRVBasalDiam.getValue();
@@ -40,6 +41,10 @@ public class PnlRV extends JPanel {
 	
 	protected Object getRVOT_PLAXValue() {
 		return ftxtRVOT_PLAX.getValue();
+	}
+	
+	protected Object getTAPSEValue() {
+		return ftxtTAPSE.getValue();
 	}
 	/**
 	 * Create the panel.
@@ -58,7 +63,7 @@ public class PnlRV extends JPanel {
 		pnlMenu.add(lblRV);
 		
 		JPanel pnlValues = new JPanel();
-		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
+		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
 		
 		JScrollPane jsp = new JScrollPane(pnlValues);
 		jsp.setPreferredSize(new Dimension(300,300));
@@ -121,6 +126,19 @@ public class PnlRV extends JPanel {
 		JLabel lblRVOT_PLAX_Unit = new JLabel("mm");
 		lblRVOT_PLAX_Unit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblRVOT_PLAX_Unit, "cell 2 3");
+		
+		JLabel lblTAPSE = new JLabel("TAPSE:");
+		lblTAPSE.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblTAPSE, "cell 0 4,alignx left");
+		
+		ftxtTAPSE = new JFormattedTextField(doubleFormat);
+		ftxtTAPSE.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtTAPSE.setColumns(10);
+		pnlValues.add(ftxtTAPSE, "cell 1 4,alignx left");
+		
+		JLabel lblTAPSEUnit = new JLabel("mm");
+		lblTAPSEUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblTAPSEUnit, "cell 2 4");
 
 	}
 	
@@ -138,6 +156,10 @@ public class PnlRV extends JPanel {
 	
 	public void addRVOT_PLAX_Listener(PropertyChangeListener l) {
 		ftxtRVOT_PLAX.addPropertyChangeListener(l);
+	}
+	
+	public void addTAPSEListener(PropertyChangeListener l) {
+		ftxtTAPSE.addPropertyChangeListener(l);
 	}
 
 }
