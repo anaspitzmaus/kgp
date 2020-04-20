@@ -1,23 +1,73 @@
 package com.rose.kgp.echo;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.text.DecimalFormat;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.FlowLayout;
-import javax.swing.JFormattedTextField;
-import java.awt.Color;
-import java.awt.Dimension;
+import javax.swing.JTextField;
 
 public class PnlMMLV extends JPanel {
 
 	
 	private static final long serialVersionUID = -4287633535547590374L;
 
+	JFormattedTextField ftxtIVSd;
+	JFormattedTextField ftxtLVIDd;
+	JFormattedTextField ftxtLVPWd;
+	JFormattedTextField ftxtIVSs;
+	JFormattedTextField ftxtLVIDs;
+	JFormattedTextField ftxtLVPWs;
+	DecimalFormat doubleFormat;
+	private JFormattedTextField ftxtEF;
+	private JFormattedTextField ftxtLVMass;
+	private JFormattedTextField ftxtLVMassBSA;
+	
+	//getter and setter
+	protected JFormattedTextField getFtxtIVSd() {
+		return ftxtIVSd;
+	}
+
+
+	protected JFormattedTextField getFtxtLVIDd() {
+		return ftxtLVIDd;
+	}
+
+
+	protected JFormattedTextField getFtxtLVPWd() {
+		return ftxtLVPWd;
+	}
+
+
+	protected JFormattedTextField getFtxtIVSs() {
+		return ftxtIVSs;
+	}
+
+
+	protected JFormattedTextField getFtxtLVIDs() {
+		return ftxtLVIDs;
+	}
+
+
+	protected JFormattedTextField getFtxtLVPWs() {
+		return ftxtLVPWs;
+	}
+	
+	protected JFormattedTextField getFtxtLVMass() {
+		return ftxtLVMass;
+	}
+
+
+	
 	/**
 	 * Create the panel.
 	 */
@@ -35,7 +85,7 @@ public class PnlMMLV extends JPanel {
 		pnlMenu.add(lblLV);
 		
 		JPanel pnlValues = new JPanel();
-		pnlValues.setLayout(new MigLayout("", "[][][]", "[][][][][][]"));
+		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][][][]"));
 		
 		JScrollPane jsp = new JScrollPane(pnlValues);
 		jsp.setPreferredSize(new Dimension(300,300));
@@ -47,7 +97,11 @@ public class PnlMMLV extends JPanel {
 		lblIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblIVSd, "flowx,cell 0 0,alignx left");
 		
-		JFormattedTextField ftxtIVSd = new JFormattedTextField();
+		doubleFormat = new DecimalFormat();
+		doubleFormat.setMaximumFractionDigits(1);
+		doubleFormat.setMinimumFractionDigits(1);
+		
+		ftxtIVSd = new JFormattedTextField(doubleFormat);
 		ftxtIVSd.setColumns(10);
 		ftxtIVSd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtIVSd, "cell 1 0");
@@ -60,7 +114,7 @@ public class PnlMMLV extends JPanel {
 		lblLVIDd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVIDd, "cell 0 1,alignx left");
 		
-		JFormattedTextField ftxtLVIDd = new JFormattedTextField();
+		ftxtLVIDd = new JFormattedTextField(doubleFormat);
 		ftxtLVIDd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtLVIDd.setColumns(10);
 		pnlValues.add(ftxtLVIDd, "cell 1 1");
@@ -73,7 +127,7 @@ public class PnlMMLV extends JPanel {
 		lblLVPWd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVPWd, "cell 0 2,alignx left");
 		
-		JFormattedTextField ftxtLVPWd = new JFormattedTextField();
+		ftxtLVPWd = new JFormattedTextField(doubleFormat);
 		ftxtLVPWd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtLVPWd.setColumns(10);
 		pnlValues.add(ftxtLVPWd, "cell 1 2,alignx left");
@@ -86,7 +140,7 @@ public class PnlMMLV extends JPanel {
 		lblIVSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblIVSs, "cell 0 3,alignx left");
 		
-		JFormattedTextField ftxtIVSs = new JFormattedTextField();
+		ftxtIVSs = new JFormattedTextField(doubleFormat);
 		ftxtIVSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtIVSs.setColumns(10);
 		pnlValues.add(ftxtIVSs, "cell 1 3,alignx left");
@@ -99,7 +153,7 @@ public class PnlMMLV extends JPanel {
 		lblLVIDs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVIDs, "cell 0 4,alignx left");
 		
-		JFormattedTextField ftxtLVIDs = new JFormattedTextField();
+		ftxtLVIDs = new JFormattedTextField(doubleFormat);
 		ftxtLVIDs.setColumns(10);
 		ftxtLVIDs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtLVIDs, "cell 1 4,alignx left");
@@ -112,7 +166,7 @@ public class PnlMMLV extends JPanel {
 		lblLVPWs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVPWs, "cell 0 5,alignx left");
 		
-		JFormattedTextField ftxtLVPWs = new JFormattedTextField();
+		ftxtLVPWs = new JFormattedTextField(doubleFormat);
 		ftxtLVPWs.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtLVPWs.setColumns(10);
 		pnlValues.add(ftxtLVPWs, "cell 1 5,alignx left,aligny top");
@@ -120,6 +174,54 @@ public class PnlMMLV extends JPanel {
 		JLabel lblLVPWsUnit = new JLabel("mm");
 		lblLVPWsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVPWsUnit, "cell 2 5");
+		
+		JLabel lblEF = new JLabel("EF:");
+		lblEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblEF, "cell 0 6,alignx left");
+		
+		ftxtEF = new JFormattedTextField();
+		ftxtEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtEF, "cell 1 6,alignx left");
+		ftxtEF.setColumns(10);
+		
+		JLabel lblEFUnit = new JLabel("%");
+		lblEFUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblEFUnit, "cell 2 6,alignx right");
+		
+		JLabel lblLVMass = new JLabel("LV Masse:");
+		lblLVMass.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVMass, "cell 0 7,alignx left");
+		
+		ftxtLVMass = new JFormattedTextField(doubleFormat);
+		ftxtLVMass.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtLVMass, "cell 1 7,alignx left");
+		ftxtLVMass.setColumns(10);
+		
+		JLabel LVMassUnit = new JLabel("g");
+		LVMassUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(LVMassUnit, "cell 2 7,alignx right");
+		
+		JLabel lblLVMass_BSA = new JLabel("LV Masse/BSA:");
+		lblLVMass_BSA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVMass_BSA, "cell 0 8,alignx trailing");
+		
+		ftxtLVMassBSA = new JFormattedTextField();
+		ftxtLVMassBSA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtLVMassBSA, "cell 1 8,alignx left");
+		ftxtLVMassBSA.setColumns(10);
+		
+		JLabel lblLVMassBSAUnit = new JLabel("g/m\u00B2");
+		lblLVMassBSAUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVMassBSAUnit, "cell 2 8,alignx right");
+		
+		JLabel lblRWT = new JLabel("RWT:");
+		lblRWT.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblRWT, "cell 0 9,alignx left");
+		
+		JFormattedTextField ftxtRWT = new JFormattedTextField();
+		ftxtRWT.setColumns(10);
+		ftxtRWT.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtRWT, "cell 1 9,alignx left");
 
 	}
 

@@ -4,16 +4,13 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-
 import java.awt.Font;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.awt.FlowLayout;
 import javax.swing.JFormattedTextField;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -22,17 +19,26 @@ public class PnlMMAoLA extends JPanel {
 
 	
 	private static final long serialVersionUID = 2648573428366932353L;
-	private NumberFormat integerFormat;
+	private NumberFormat doubleFormat;
 	JFormattedTextField ftxtAoRoot;
+	JFormattedTextField ftxtLA;
+	JFormattedTextField ftxtAoAsc;
 	
 	/*
-	 * setter und getter
+	 * setter and getter
 	 */
 	
 	protected JFormattedTextField getftxtAoRoot() {
 		return ftxtAoRoot;
 	}
 	
+	protected JFormattedTextField getftxtLA() {
+		return ftxtLA;
+	}
+	
+	protected JFormattedTextField getftxtAoAsc() {
+		return this.ftxtAoAsc;
+	}
 	
 	/**
 	 * Create the panel.
@@ -68,10 +74,11 @@ public class PnlMMAoLA extends JPanel {
 		lblAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblAoRoot, "cell 0 0,alignx left");
 		
-		integerFormat = NumberFormat.getIntegerInstance();
-		integerFormat.setMaximumIntegerDigits(2);
+		doubleFormat = new DecimalFormat();
+		doubleFormat.setMaximumFractionDigits(1);
+		doubleFormat.setMinimumFractionDigits(1);
 		
-		ftxtAoRoot = new JFormattedTextField(integerFormat);
+		ftxtAoRoot = new JFormattedTextField(doubleFormat);
 		ftxtAoRoot.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtAoRoot.setColumns(10);
 		
@@ -86,7 +93,7 @@ public class PnlMMAoLA extends JPanel {
 		lblAoAsc.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblAoAsc, "cell 0 1,alignx left");
 		
-		JFormattedTextField ftxtAoAsc = new JFormattedTextField();
+		ftxtAoAsc = new JFormattedTextField(doubleFormat);
 		ftxtAoAsc.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		ftxtAoAsc.setColumns(10);
 		pnlValues.add(ftxtAoAsc, "cell 1 1,growx");
@@ -99,7 +106,7 @@ public class PnlMMAoLA extends JPanel {
 		lblLA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLA, "cell 0 2,alignx left");
 		
-		JFormattedTextField ftxtLA = new JFormattedTextField();
+		ftxtLA = new JFormattedTextField(doubleFormat);
 		ftxtLA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtLA, "cell 1 2,growx");
 		

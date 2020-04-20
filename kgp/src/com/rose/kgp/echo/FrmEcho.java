@@ -12,6 +12,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 
 import javax.swing.JSeparator;
+import javax.swing.JMenuBar;
+import javax.swing.JButton;
+import java.awt.Font;
 
 public class FrmEcho extends JFrame {
 
@@ -21,6 +24,8 @@ public class FrmEcho extends JFrame {
 	
 	private JPanel contentPane;
 	JPanel pnlValues;
+	private JMenuBar menuBar;
+	private JButton btnSettings;
 	/**
 	 * setter and getter
 	 */
@@ -32,9 +37,13 @@ public class FrmEcho extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FrmEcho(PnlMMAoLA pnlMMAoLA, PnlMMLV pnlMMLV) {
+	public FrmEcho(PnlMMAoLA pnlMMAoLA, PnlMMLV pnlMMLV, MenuBar menuBar) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 626, 418);
+		
+		setJMenuBar(menuBar);
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
