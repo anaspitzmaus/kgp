@@ -23,7 +23,7 @@ public class SettingsTableModels extends AbstractTableModel {
 	
 	public SettingsTableModels() {
 		valuesRef = new HashMap<String, ArrayList<Double>>();
-		prefs = Preferences.userRoot().node(CtrlPnlMMLV.class.getName());
+		prefs = Preferences.userRoot().node(RefValues.class.getName());
 		columnNames = new ArrayList<String>();
 		columnNames.add("Messwert");
 		columnNames.add("Normal");

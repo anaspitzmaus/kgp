@@ -2,13 +2,12 @@ package com.rose.kgp.echo;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.prefs.Preferences;
-
 import com.rose.heart.construct.Normal_Heart;
+import com.rose.heart.structures.DIAMKIND;
 import com.rose.heart.structures.Wall.Part;
 
 public class CtrlPnlMMLV {
-	Preferences prefs;
+	
 	Normal_Heart heart;
 	protected PnlMMLV pnlMMLV;
 	IVSsysListener ivsSysListener;
@@ -25,47 +24,7 @@ public class CtrlPnlMMLV {
 	
 	//constructor
 	public CtrlPnlMMLV(Normal_Heart heart) {
-		prefs = Preferences.userRoot().node(this.getClass().getName());
 		
-		String IVSdMNormal = "IVSdMNormal";
-		String IVSdMMild = "IVSdMMild";
-		String IVSdMModerate = "IVSdMModerate";
-		String IVSdMSevere = "IVSdMSevere";
-		
-		prefs.putDouble(IVSdMNormal, 6.0);
-		prefs.putDouble(IVSdMMild, 10.5);
-		prefs.putDouble(IVSdMModerate, 13.5);
-		prefs.putDouble(IVSdMSevere, 16.5);
-		
-		String LVPWdMNormal = "LVPWdMNormal";
-		String LVPWdMMild = "LVPWdMMild";
-		String LVPWdMModerate = "LVPWdMModerate";
-		String LVPWdMSevere = "LVPWdMSevere";
-		
-		prefs.putDouble(LVPWdMNormal, 6.0);
-		prefs.putDouble(LVPWdMMild, 10.5);
-		prefs.putDouble(LVPWdMModerate, 13.5);
-		prefs.putDouble(LVPWdMSevere, 16.5);
-		
-		String IVSdFNormal = "IVSdFNormal";
-		String IVSdFMild = "IVSdFMild";
-		String IVSdFModerate = "IVSdFModerate";
-		String IVSdFSevere = "IVSdFSevere";
-		
-		prefs.putDouble(IVSdFNormal, 6.0);
-		prefs.putDouble(IVSdFMild, 10.5);
-		prefs.putDouble(IVSdFModerate, 13.5);
-		prefs.putDouble(IVSdFSevere, 16.5);
-		
-		String LVPWdFNormal = "LVPWdFNormal";
-		String LVPWdFMild = "LVPWdFMild";
-		String LVPWdFModerate = "LVPWdFModerate";
-		String LVPWdFSevere = "LVPWdFSevere";
-		
-		prefs.putDouble(LVPWdFNormal, 6.0);
-		prefs.putDouble(LVPWdFMild, 10.5);
-		prefs.putDouble(LVPWdFModerate, 13.5);
-		prefs.putDouble(LVPWdFSevere, 16.5);
 		
 		
 		this.heart = heart;
@@ -218,7 +177,8 @@ public class CtrlPnlMMLV {
 			}
 			//set the value to the LVIDSys variable
 			if(dVal instanceof Double) {
-				heart.getSystolicState().getLeftVentricle().setWidth(dVal);			
+				EchoMeasurement measurement = new EchoMeasurement(ProbeLocation.PLAX, Modus.M_MODE, DIAMKIND.WIDTH);
+				heart.getSystolicState().getLeftVentricle().getMeasurements().add(measurement);			
 			}	
 			
 		}		

@@ -2,6 +2,7 @@ package com.rose.kgp.echo;
 
 
 import com.rose.heart.construct.Normal_Heart;
+import com.rose.kgp.personnel.Patient;
 
 
 public class CtrlEcho {
@@ -12,8 +13,20 @@ public class CtrlEcho {
 	CtrlPnlRV ctrlPnlRV;
 	CtrlMenuBar ctrlMenuBar;
 	Normal_Heart heart, heartSys, heartDia;
+	Patient patient;
+	Text text;
 	
 	
+	public Patient getPatient() {
+		return patient;
+	}
+
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+
 	public CtrlEcho() {
 		
 		

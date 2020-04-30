@@ -4,6 +4,7 @@ package com.rose.kgp.personnel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.rose.heart.Heart;
 import com.rose.kgp.db.SQL_INSERT;
 import com.rose.kgp.disease.Diagnosis;
 
@@ -21,8 +22,17 @@ public class Patient extends Person{
 	protected Integer age;
 	protected Integer dbID, outID, inID;	
 	ArrayList<Diagnosis> diagnoses;
+	protected Heart heart;
 	
 	
+	public Heart getHeart() {
+		return heart;
+	}
+
+	public void setHeart(Heart heart) {
+		this.heart = heart;
+	}
+
 	public Integer getOutID() {
 		return outID;
 	}

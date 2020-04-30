@@ -31,6 +31,9 @@ public class PnlMMLV extends JPanel {
 	private JFormattedTextField ftxtEF;
 	private JFormattedTextField ftxtLVMass;
 	private JFormattedTextField ftxtLVMassBSA;
+	JFormattedTextField ftxtRWT;
+	JFormattedTextField ftxtVolDia;
+	JFormattedTextField ftxtVolSys;
 	
 	//getter and setter
 	protected JFormattedTextField getFtxtIVSd() {
@@ -65,15 +68,29 @@ public class PnlMMLV extends JPanel {
 	protected JFormattedTextField getFtxtLVMass() {
 		return ftxtLVMass;
 	}
-
-
 	
+		
+	protected JFormattedTextField getFtxtRWT() {
+		return ftxtRWT;
+	}
+
+
+	protected JFormattedTextField getFtxtVolDia() {
+		return ftxtVolDia;
+	}
+
+
+	protected JFormattedTextField getFtxtVolSys() {
+		return ftxtVolSys;
+	}
+
+
 	/**
 	 * Create the panel.
 	 */
 	public PnlMMLV() {
 		setLayout(new BorderLayout(0, 0));
-		
+		setPreferredSize(new Dimension(440, 480));
 		JPanel pnlMenu = new JPanel();
 		pnlMenu.setBackground(new Color(189, 183, 107));
 		FlowLayout flowLayout = (FlowLayout) pnlMenu.getLayout();
@@ -85,7 +102,7 @@ public class PnlMMLV extends JPanel {
 		pnlMenu.add(lblLV);
 		
 		JPanel pnlValues = new JPanel();
-		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][][][]"));
+		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][][][][][]"));
 		
 		JScrollPane jsp = new JScrollPane(pnlValues);
 		jsp.setPreferredSize(new Dimension(300,300));
@@ -218,10 +235,34 @@ public class PnlMMLV extends JPanel {
 		lblRWT.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblRWT, "cell 0 9,alignx left");
 		
-		JFormattedTextField ftxtRWT = new JFormattedTextField();
+		ftxtRWT = new JFormattedTextField();
 		ftxtRWT.setColumns(10);
 		ftxtRWT.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtRWT, "cell 1 9,alignx left");
+		
+		JLabel lblVold = new JLabel("Volume_d:");
+		lblVold.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblVold, "cell 0 10,alignx left");
+		
+		ftxtVolDia = new JFormattedTextField();
+		ftxtVolDia.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtVolDia.setColumns(10);
+		pnlValues.add(ftxtVolDia, "cell 1 10,alignx left");
+		
+		JLabel lblVolDUnit = new JLabel("ml");
+		lblVolDUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblVolDUnit, "cell 2 10,alignx right");
+		
+		JLabel lblVolSys = new JLabel("Volume_sys:");
+		lblVolSys.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblVolSys, "cell 0 11,alignx left");
+		
+		ftxtVolSys = new JFormattedTextField();
+		ftxtVolSys.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ftxtVolSys.setColumns(10);
+		pnlValues.add(ftxtVolSys, "cell 1 11,alignx left");
+		
+		
 
 	}
 
