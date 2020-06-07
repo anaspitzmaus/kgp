@@ -10,14 +10,16 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.JButton;
 
 public class PnlResult extends JPanel {
 
 	
 	private static final long serialVersionUID = 6761246251438756576L;
-
+	JButton btnCreateTxt;
 	/**
 	 * Create the panel.
 	 */
@@ -48,7 +50,15 @@ public class PnlResult extends JPanel {
 		JLabel lblResult = new JLabel("Befund:");
 		lblResult.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlNorth.add(lblResult);
-
+		
+		btnCreateTxt = new JButton("Erstellen");
+		btnCreateTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlNorth.add(btnCreateTxt);		
+		
+	}
+	
+	protected void addBtnCreateListener(ActionListener l) {
+		btnCreateTxt.addActionListener(l);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 
 import javax.swing.JFormattedTextField;
@@ -15,6 +16,7 @@ import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JTextField;
+import javax.swing.JList;
 
 public class PnlMMLV extends JPanel {
 
@@ -27,13 +29,16 @@ public class PnlMMLV extends JPanel {
 	JFormattedTextField ftxtIVSs;
 	JFormattedTextField ftxtLVIDs;
 	JFormattedTextField ftxtLVPWs;
-	DecimalFormat doubleFormat;
+	DecimalFormat doubleFormat, integerFormat;
 	private JFormattedTextField ftxtEF;
 	private JFormattedTextField ftxtLVMass;
 	private JFormattedTextField ftxtLVMassBSA;
 	JFormattedTextField ftxtRWT;
 	JFormattedTextField ftxtVolDia;
 	JFormattedTextField ftxtVolSys;
+	JFormattedTextField ftxtLVEFSimpson;
+	JFormattedTextField ftxtVolDiaSimpson;
+	JList<Study> listStudies;
 	
 	//getter and setter
 	protected JFormattedTextField getFtxtIVSd() {
@@ -79,9 +84,22 @@ public class PnlMMLV extends JPanel {
 		return ftxtVolDia;
 	}
 
-
 	protected JFormattedTextField getFtxtVolSys() {
 		return ftxtVolSys;
+	}	
+
+
+	protected JFormattedTextField getFtxtEFTeich() {
+		return ftxtEF;
+	}
+
+
+	protected JFormattedTextField getFtxtLVEFSimpson() {
+		return ftxtLVEFSimpson;
+	}
+	
+	protected JList getStudyList() {
+		return listStudies;
 	}
 
 
@@ -102,7 +120,7 @@ public class PnlMMLV extends JPanel {
 		pnlMenu.add(lblLV);
 		
 		JPanel pnlValues = new JPanel();
-		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][][][][][]"));
+		pnlValues.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][][][][][][][grow]"));
 		
 		JScrollPane jsp = new JScrollPane(pnlValues);
 		jsp.setPreferredSize(new Dimension(300,300));
@@ -117,6 +135,12 @@ public class PnlMMLV extends JPanel {
 		doubleFormat = new DecimalFormat();
 		doubleFormat.setMaximumFractionDigits(1);
 		doubleFormat.setMinimumFractionDigits(1);
+		
+		integerFormat = new DecimalFormat();
+		integerFormat.setMaximumFractionDigits(0);
+		integerFormat.setMinimumFractionDigits(0);
+		integerFormat.setMaximumIntegerDigits(2);
+		integerFormat.setMinimumIntegerDigits(1);
 		
 		ftxtIVSd = new JFormattedTextField(doubleFormat);
 		ftxtIVSd.setColumns(10);
@@ -192,14 +216,14 @@ public class PnlMMLV extends JPanel {
 		lblLVPWsUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblLVPWsUnit, "cell 2 5");
 		
-		JLabel lblEF = new JLabel("EF:");
+		JLabel lblEF = new JLabel("EF Teich/Simpson:");
 		lblEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblEF, "cell 0 6,alignx left");
 		
-		ftxtEF = new JFormattedTextField();
+		ftxtEF = new JFormattedTextField(integerFormat);
 		ftxtEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(ftxtEF, "cell 1 6,alignx left");
-		ftxtEF.setColumns(10);
+		pnlValues.add(ftxtEF, "flowx,cell 1 6,alignx left");
+		ftxtEF.setColumns(5);
 		
 		JLabel lblEFUnit = new JLabel("%");
 		lblEFUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -220,7 +244,7 @@ public class PnlMMLV extends JPanel {
 		
 		JLabel lblLVMass_BSA = new JLabel("LV Masse/BSA:");
 		lblLVMass_BSA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlValues.add(lblLVMass_BSA, "cell 0 8,alignx trailing");
+		pnlValues.add(lblLVMass_BSA, "cell 0 8,alignx left");
 		
 		ftxtLVMassBSA = new JFormattedTextField();
 		ftxtLVMassBSA.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -240,14 +264,14 @@ public class PnlMMLV extends JPanel {
 		ftxtRWT.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(ftxtRWT, "cell 1 9,alignx left");
 		
-		JLabel lblVold = new JLabel("Volume_d:");
+		JLabel lblVold = new JLabel("Volume_d Teich/Simpson:");
 		lblVold.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlValues.add(lblVold, "cell 0 10,alignx left");
 		
 		ftxtVolDia = new JFormattedTextField();
 		ftxtVolDia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		ftxtVolDia.setColumns(10);
-		pnlValues.add(ftxtVolDia, "cell 1 10,alignx left");
+		ftxtVolDia.setColumns(5);
+		pnlValues.add(ftxtVolDia, "flowx,cell 1 10,alignx left");
 		
 		JLabel lblVolDUnit = new JLabel("ml");
 		lblVolDUnit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -262,8 +286,36 @@ public class PnlMMLV extends JPanel {
 		ftxtVolSys.setColumns(10);
 		pnlValues.add(ftxtVolSys, "cell 1 11,alignx left");
 		
+		JLabel lblLVEFDiv = new JLabel("/");
+		lblLVEFDiv.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblLVEFDiv, "cell 1 6");
+		
+		ftxtLVEFSimpson = new JFormattedTextField(integerFormat);
+		ftxtLVEFSimpson.setColumns(5);
+		ftxtLVEFSimpson.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtLVEFSimpson, "cell 1 6");
+		
+		JLabel lblVolDiaDiv = new JLabel("/");
+		lblVolDiaDiv.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblVolDiaDiv, "cell 1 10");
+		
+		ftxtVolDiaSimpson = new JFormattedTextField();
+		ftxtVolDiaSimpson.setColumns(5);
+		ftxtVolDiaSimpson.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(ftxtVolDiaSimpson, "cell 1 10");
+		
+		JLabel lblStudies = new JLabel("Studien:");
+		lblStudies.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(lblStudies, "cell 0 12,alignx left");
+		
+		listStudies = new JList<Study>();
+		listStudies.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlValues.add(listStudies, "cell 1 12,grow");
+		
 		
 
 	}
+	
+	
 
 }

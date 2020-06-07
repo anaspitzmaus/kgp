@@ -9,13 +9,16 @@ public class CtrlMenuBar {
 	protected SettingsListener settingsListener;
 	protected CtrlDlgSettings ctrlDlgSettings;
 	
+	
 	//setters and getters
 	
 	public MenuBar getMenuBar() {
 		return menuBar;
 	}
 
-
+	protected void addCreateTextListener(ActionListener l) {
+		menuBar.addCreateTextListener(l);
+	}
 
 	public CtrlMenuBar() {
 		menuBar = new MenuBar();
@@ -37,4 +40,6 @@ public class CtrlMenuBar {
 		}
 		
 	}
+	
+	
 }

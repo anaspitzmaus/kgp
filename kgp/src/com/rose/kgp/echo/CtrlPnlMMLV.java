@@ -1,10 +1,22 @@
 package com.rose.kgp.echo;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import com.rose.heart.construct.Normal_Heart;
 import com.rose.heart.structures.DIAMKIND;
 import com.rose.heart.structures.Wall.Part;
+
 
 public class CtrlPnlMMLV {
 	
@@ -16,6 +28,8 @@ public class CtrlPnlMMLV {
 	LVIDdiaListener lvidDiaListener;
 	LVPWsysListener lvpwSysListener;
 	LVPWdiaListener lvpwDiaListener;
+	ArrayList<Study> studies;
+	DefaultListModel<Study> studyListModel;
 	
 	//getter
 	protected PnlMMLV getPanel(){
@@ -23,14 +37,30 @@ public class CtrlPnlMMLV {
 	}
 	
 	//constructor
-	public CtrlPnlMMLV(Normal_Heart heart) {
-		
-		
+	
+	public CtrlPnlMMLV(Normal_Heart heart) {		
 		
 		this.heart = heart;
-		
+		studies = new ArrayList<Study>();
 		pnlMMLV = new PnlMMLV();
 		setListener();
+		
+		studies.add(createStudy());
+		studyListModel = new DefaultListModel<Study>();
+		studyListModel.addElement(studies.get(0));
+		pnlMMLV.getStudyList().setModel(studyListModel);
+		StudyRenderer studyRenderer = new StudyRenderer();
+		pnlMMLV.getStudyList().setCellRenderer(studyRenderer);
+		pnlMMLV.getStudyList().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				Study study = (Study) pnlMMLV.getStudyList().getModel().getElementAt(pnlMMLV.getStudyList().getSelectedIndex());
+				pnlMMLV.getFtxtIVSd().setValue(study.getMeasurements().get(0).getValue());
+				pnlMMLV.getFtxtIVSs().setValue(study.getMeasurements().get(1).getValue());
+				
+			}
+		});
 	}
 	
 	private void setListener() {
@@ -47,6 +77,22 @@ public class CtrlPnlMMLV {
 		pnlMMLV.getFtxtLVIDd().addPropertyChangeListener(lvidDiaListener);
 		pnlMMLV.getFtxtLVPWs().addPropertyChangeListener(lvpwSysListener);
 		pnlMMLV.getFtxtLVPWd().addPropertyChangeListener(lvpwDiaListener);
+	}
+	
+	private Study createStudy() {
+		Study study = null;
+		LinkedList<EchoMeasurement> list;
+		list = new LinkedList<EchoMeasurement>();
+		EchoMeasurement ivsd = new EchoMeasurement(ProbeLocation.PLAX, Modus.M_MODE, DIAMKIND.WIDTH, heart.getDiastolicState().getLeftVentricle().getWall().getPart("septal").getSubPart("basal"));
+		ivsd.setValue(12.2);
+		list.add(ivsd);
+		
+		EchoMeasurement ivss = new EchoMeasurement(ProbeLocation.PLAX, Modus.M_MODE, DIAMKIND.WIDTH, heart.getSystolicState().getLeftVentricle().getWall().getPart("septal").getSubPart("basal"));
+		ivss.setValue(20.2);
+		list.add(ivss);
+		
+		study = new Study(StudyType.LV_Study, list);
+		return study;
 	}
 	
 	public void setIVSSys(Double ivsSys) {
@@ -157,15 +203,14 @@ public class CtrlPnlMMLV {
 						calculateLVMass();
 					}
 				} 
-			}	
-			
+			}			
 		}		
 	}
 	
 	class LVIDsysListener implements PropertyChangeListener{
-
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
+		
+		public void propertyChange(PropertyChangeEvent evt) {				
+	        
 			Long lVal;
 			Double dVal;
 			//cast input value to Double
@@ -177,10 +222,17 @@ public class CtrlPnlMMLV {
 			}
 			//set the value to the LVIDSys variable
 			if(dVal instanceof Double) {
-				EchoMeasurement measurement = new EchoMeasurement(ProbeLocation.PLAX, Modus.M_MODE, DIAMKIND.WIDTH);
+				Object source = evt.getSource();
+				ProbeLocation probeLoc = null;
+				if (source == pnlMMLV.getFtxtLVIDs()) {
+		        	probeLoc = ProbeLocation.PLAX;
+		        }//else if (source == pnlMMLV.getFtxtLVIDs()){
+		        	//probeLoc = ProbeLocation.PSAX;
+		        //}
+				EchoMeasurement measurement = new EchoMeasurement(probeLoc, Modus.M_MODE, DIAMKIND.WIDTH);
+				measurement.setValue(dVal);				 
 				heart.getSystolicState().getLeftVentricle().getMeasurements().add(measurement);			
-			}	
-			
+			}				
 		}		
 	}
 	
@@ -252,10 +304,94 @@ public class CtrlPnlMMLV {
 						calculateLVMass();
 					}
 				} 
-			}	
-			
+			}			
 		}			
 	}
+	
+	class LVEFListener implements PropertyChangeListener{
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Long lVal;
+			Integer iVal;
+			//cast input value to Integer
+			try {				
+				lVal = (Long) pnlMMLV.getFtxtLVPWd().getValue();
+				iVal = lVal.intValue();				
+			} catch (NullPointerException | ClassCastException e) {
+				iVal = (Integer) pnlMMLV.getFtxtLVPWd().getValue();				
+			}
+			//set the value to the  variable
+			if(iVal instanceof Integer) {
+				Object source = evt.getSource();
+				ProbeLocation probeLoc = null;
+				Modus modus = null;
+				if (source == pnlMMLV.getFtxtEFTeich()) {
+		        	probeLoc = ProbeLocation.PLAX;
+		        	modus = Modus.M_MODE;
+		        }else if(source == pnlMMLV.getFtxtLVEFSimpson()) {
+		        	probeLoc = ProbeLocation.APICAL_2C;
+		        	modus = Modus.B_MODE;
+		        }
+					
+			}			
+		}			
+		
+	}
+	
+	class LVVolDiaListener implements PropertyChangeListener{
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Long lVal;
+			Integer iVal;
+			//cast input value to Integer
+			try {				
+				lVal = (Long) pnlMMLV.getFtxtVolDia().getValue();
+				iVal = lVal.intValue();				
+			} catch (NullPointerException | ClassCastException e) {
+				iVal = (Integer) pnlMMLV.getFtxtVolDia().getValue();				
+			}
+			//set the value to the  variable
+			if(iVal instanceof Integer) {
+				Object source = evt.getSource();
+				ProbeLocation probeLoc = null;
+				Modus modus = null;
+				if (source == pnlMMLV.getFtxtEFTeich()) {
+		        	probeLoc = ProbeLocation.PLAX;
+		        	modus = Modus.M_MODE;
+		        }else if(source == pnlMMLV.getFtxtLVEFSimpson()) {
+		        	probeLoc = ProbeLocation.APICAL_2C;
+		        	modus = Modus.B_MODE;
+		        }
+					
+			}			
+		}		
+	}
+	
+	/**
+	 * renderer for the JList that shows the sudies
+	 * @author Ekki
+	 *
+	 */
+	
+	class StudyRenderer extends JLabel implements ListCellRenderer<Study>{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2379518573596777770L;
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends Study> list, Study study, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			setText(study.type.toString());
+			return this;
+		}
+		
+	}
+	
+
 	
 	
 	

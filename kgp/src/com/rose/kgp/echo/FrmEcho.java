@@ -37,7 +37,7 @@ public class FrmEcho extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FrmEcho(PnlMMAoLA pnlMMAoLA, PnlMMLV pnlMMLV, PnlRV pnlRV, MenuBar menuBar) {
+	public FrmEcho(PnlMMAoLA pnlMMAoLA, PnlMMLV pnlMMLV, PnlRV pnlRV, MenuBar menuBar, PnlResult pnlResult) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 626, 418);
 		
@@ -55,9 +55,6 @@ public class FrmEcho extends JFrame {
 		pnlValues.add(pnlMMAoLA);
 		pnlValues.add(pnlMMLV);
 		pnlValues.add(pnlRV);
-		
-		PnlResult pnlResult = new PnlResult();
-		
 		
 		contentPane.add(pnlValues, BorderLayout.NORTH);
 		contentPane.add(new JSeparator(), BorderLayout.CENTER);
