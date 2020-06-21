@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -375,7 +376,7 @@ public class CtrlPnlMMLV {
 	 *
 	 */
 	
-	class StudyRenderer extends JLabel implements ListCellRenderer<Study>{
+	class StudyRenderer extends JCheckBox implements ListCellRenderer<Study>{
 
 		/**
 		 * 
@@ -386,6 +387,8 @@ public class CtrlPnlMMLV {
 		public Component getListCellRendererComponent(JList<? extends Study> list, Study study, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setText(study.type.toString());
+			setOpaque(false);
+			setSelected(true);
 			return this;
 		}
 		

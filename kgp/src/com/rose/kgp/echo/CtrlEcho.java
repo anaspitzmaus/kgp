@@ -15,6 +15,7 @@ public class CtrlEcho {
 	CtrlPnlMMAoLA ctrlPnlMMAoLA;
 	CtrlPnlMMLV ctrlPnlMMLV;
 	CtrlPnlRV ctrlPnlRV;
+	CtrlPnlValves ctrlPnlValves;
 	CtrlMenuBar ctrlMenuBar;
 	CtrlPnlResult ctrlPnlResult;
 	Normal_Heart heart, heartSys, heartDia;
@@ -61,9 +62,10 @@ public class CtrlEcho {
 		ctrlPnlMMAoLA = new CtrlPnlMMAoLA(heart);
 		ctrlPnlMMLV = new CtrlPnlMMLV(heart);
 		ctrlPnlRV = new CtrlPnlRV(heart);
+		ctrlPnlValves = new CtrlPnlValves();
 		ctrlMenuBar = new CtrlMenuBar();
 		ctrlPnlResult = new CtrlPnlResult();
-		frmEcho = new FrmEcho(ctrlPnlMMAoLA.getPanel(), ctrlPnlMMLV.getPanel(), ctrlPnlRV.getPanel(), ctrlMenuBar.getMenuBar(), ctrlPnlResult.getPanel());
+		frmEcho = new FrmEcho(ctrlPnlMMAoLA.getPanel(), ctrlPnlMMLV.getPanel(), ctrlPnlRV.getPanel(), ctrlMenuBar.getMenuBar(), ctrlPnlResult.getPanel(), ctrlPnlValves.getPnlValves());
 		
 		frmEcho.setVisible(true);
 	}
