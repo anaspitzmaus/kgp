@@ -62,7 +62,7 @@ public class CtrlEcho {
 		ctrlPnlMMAoLA = new CtrlPnlMMAoLA(heart);
 		ctrlPnlMMLV = new CtrlPnlMMLV(heart);
 		ctrlPnlRV = new CtrlPnlRV(heart);
-		ctrlPnlValves = new CtrlPnlValves();
+		ctrlPnlValves = new CtrlPnlValves(heart.getAorticValve(), heart.getMitralValve());
 		ctrlMenuBar = new CtrlMenuBar();
 		ctrlPnlResult = new CtrlPnlResult();
 		frmEcho = new FrmEcho(ctrlPnlMMAoLA.getPanel(), ctrlPnlMMLV.getPanel(), ctrlPnlRV.getPanel(), ctrlMenuBar.getMenuBar(), ctrlPnlResult.getPanel(), ctrlPnlValves.getPnlValves());

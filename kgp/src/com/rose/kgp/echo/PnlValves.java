@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -21,12 +23,35 @@ public class PnlValves extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -4009900485424560105L;
-	JComboBox<String> cbxStenGrading;
+	
+	DecimalFormat doubleFormat, integerFormat;
+	JFormattedTextField ftxtMOA;
+	JFormattedTextField ftxtPGMean;
+	JFormattedTextField ftxtVenaCon;
+	JComboBox<String> cbxStenGradingMV;	
+	JComboBox<String> cbxRegGradingMV;
 	
 	
 
-	protected JComboBox<String> getCbxStenGrading() {
-		return cbxStenGrading;
+	protected JFormattedTextField getFtxtMOA() {
+		return ftxtMOA;
+	}
+
+
+
+	protected JFormattedTextField getFtxtPGMean() {
+		return ftxtPGMean;
+	}
+
+
+
+	protected JComboBox<String> getCbxStenGradingMV() {
+		return cbxStenGradingMV;
+	}
+	
+	
+	protected JComboBox<String> getCbxRegGradingMV() {
+		return cbxRegGradingMV;
 	}
 
 
@@ -35,6 +60,19 @@ public class PnlValves extends JPanel {
 	 * Create the panel.
 	 */
 	public PnlValves() {
+		
+		doubleFormat = new DecimalFormat();
+		doubleFormat.setMaximumFractionDigits(1);
+		doubleFormat.setMinimumFractionDigits(1);
+		doubleFormat.setMaximumIntegerDigits(2);
+		
+		integerFormat = new DecimalFormat();
+		integerFormat.setMaximumFractionDigits(0);
+		integerFormat.setMinimumFractionDigits(0);
+		integerFormat.setMaximumIntegerDigits(2);
+		integerFormat.setMinimumIntegerDigits(1);
+		
+		
 		setLayout(new BorderLayout(0, 0));
 		setPreferredSize(new Dimension(800, 480));
 		JSplitPane splitPaneLeftRight = new JSplitPane();
@@ -102,7 +140,7 @@ public class PnlValves extends JPanel {
 		
 		JPanel pnlMV = new JPanel();
 		pnlMVBase.add(pnlMV, BorderLayout.CENTER);
-		pnlMV.setLayout(new MigLayout("", "[][][][][][][]", "[][][][]"));
+		pnlMV.setLayout(new MigLayout("", "[][][grow][][][][]", "[][][][]"));
 		
 		JLabel lblStenosis = new JLabel("Stenose:");
 		lblStenosis.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -112,7 +150,7 @@ public class PnlValves extends JPanel {
 		lblPGMean.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(lblPGMean, "cell 1 0,alignx left");
 		
-		JFormattedTextField ftxtPGMean = new JFormattedTextField();
+		ftxtPGMean = new JFormattedTextField(doubleFormat);
 		ftxtPGMean.setColumns(5);
 		ftxtPGMean.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(ftxtPGMean, "cell 2 0,alignx left");
@@ -130,7 +168,7 @@ public class PnlValves extends JPanel {
 		lblMOA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(lblMOA, "cell 5 0,alignx trailing");
 		
-		JFormattedTextField ftxtMOA = new JFormattedTextField();
+		ftxtMOA = new JFormattedTextField(doubleFormat);
 		ftxtMOA.setColumns(5);
 		ftxtMOA.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(ftxtMOA, "cell 6 0,growx");
@@ -139,17 +177,26 @@ public class PnlValves extends JPanel {
 		lblGrading.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(lblGrading, "cell 1 1,alignx left");
 		
-		cbxStenGrading = new JComboBox<String>();
-		cbxStenGrading.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlMV.add(cbxStenGrading, "cell 2 1,alignx left");
+		cbxStenGradingMV = new JComboBox<String>();
+		cbxStenGradingMV.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlMV.add(cbxStenGradingMV, "cell 2 1,alignx left");
 		
 		JLabel lblReg = new JLabel("Regurgitation:");
 		lblReg.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		pnlMV.add(lblReg, "cell 0 2,alignx trailing");
 		
-		JComboBox cbxRegGrading = new JComboBox();
-		cbxRegGrading.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		pnlMV.add(cbxRegGrading, "cell 2 3,alignx left");
+		JLabel lblVenaCont = new JLabel("Vena contracta:");
+		lblVenaCont.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlMV.add(lblVenaCont, "cell 1 2,alignx trailing");
+		
+		ftxtVenaCon = new JFormattedTextField(doubleFormat);
+		ftxtVenaCon.setColumns(5);
+		ftxtVenaCon.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlMV.add(ftxtVenaCon, "cell 2 2,alignx left");
+		
+		cbxRegGradingMV = new JComboBox<String>();
+		cbxRegGradingMV.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pnlMV.add(cbxRegGradingMV, "cell 2 3,alignx left");
 		
 		JPanel pnlAVBase = new JPanel();
 		splitPaneLeftHeart.setRightComponent(pnlAVBase);
@@ -169,11 +216,27 @@ public class PnlValves extends JPanel {
 	}
 	
 	protected void setStenosisModel(ComboBoxModel<String> model) {
-		cbxStenGrading.setModel(model);
+		cbxStenGradingMV.setModel(model);
 	}
 	
-	protected void addStenosisListener(ItemListener listener) {
-		cbxStenGrading.addItemListener(listener);
+	protected void addStenosisListenerMV(ItemListener listener) {
+		cbxStenGradingMV.addItemListener(listener);
+	}
+	
+	protected void setRegurgitationModel(ComboBoxModel<String> model) {
+		cbxRegGradingMV.setModel(model);
+	}
+	
+	protected void addStenosisListenerAV(ItemListener listener) {
+		//listener for aortic valve
+	}
+	
+	protected void addMOAListener(PropertyChangeListener listener) {
+		ftxtMOA.addPropertyChangeListener(listener);
+	}
+	
+	protected void addPGMeanListener(PropertyChangeListener listener) {
+		ftxtPGMean.addPropertyChangeListener(listener);
 	}
 
 }
