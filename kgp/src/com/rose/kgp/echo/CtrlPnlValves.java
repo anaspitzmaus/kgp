@@ -12,7 +12,7 @@ import javax.swing.event.ListDataListener;
 
 import com.rose.heart.structures.AV_Valve;
 import com.rose.heart.structures.SL_Valve;
-import com.rose.heart.structures.Stenosis;
+import com.rose.heart.structures.StenosisValve;
 import com.rose.heart.structures.Valve;
 
 public class CtrlPnlValves {
@@ -38,9 +38,9 @@ public class CtrlPnlValves {
 		pnlValves = new PnlValves();
 		this.aorticValve = aorticValve;
 		this.mitralValve = mitralValve;
-		this.mitralValve.setStenosis(new Stenosis());
+		this.mitralValve.setStenosis(new StenosisValve(this.mitralValve));
 		this.mitralValve.getStenosis().setGrading(0);
-		this.aorticValve.setStenosis(new Stenosis());
+		this.aorticValve.setStenosis(new StenosisValve(this.aorticValve));
 		this.aorticValve.getStenosis().setGrading(0);
 		stenosisModel = new StenosisModel();
 		pnlValves.setStenosisModel(stenosisModel);

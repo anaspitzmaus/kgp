@@ -16,6 +16,7 @@ import com.rose.kgp.MD5;
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.examination.Examination;
+import com.rose.kgp.material.Manufacturer;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -312,7 +313,7 @@ public class SQL_INSERT {
 	 * @param file the file of the study
 	 */
 	public static void corruptSensisStudy(File file) {
-		
+		Integer id = null;
 		stmt = DB.getStatement();
 		try {
 			DB.getConnection().setAutoCommit(true);
@@ -322,6 +323,38 @@ public class SQL_INSERT {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * insert a manufacturer
+	 * @param manufacturer
+	 * @return
+	 * @throws SQLException
+	 */
+	public static Integer Manufacturer(Manufacturer manufacturer) {
+		Integer id = null;
+		stmt = DB.getStatement();
+		
+			try {
+				DB.getConnection().setAutoCommit(true);
+				stmt.executeUpdate("INSERT INTO manufacturer (notation, contact_person, mobil) "
+						+ "VALUES ('" + manufacturer.getNotation() + "', '" 
+						+ manufacturer.getContact_person() + "', '"
+						+ manufacturer.getMobil() + "')");
+				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+				if(rs.isBeforeFirst()){
+					rs.next();
+					id = rs.getInt("ID");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		
+		return id;
+		
 	}
 	
 	

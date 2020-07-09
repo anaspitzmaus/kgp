@@ -15,6 +15,7 @@ import com.rose.kgp.administration.BankData;
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Allocator;
 import com.rose.kgp.allocator.Clinical_Institution;
+import com.rose.kgp.material.Manufacturer;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -435,5 +436,27 @@ public class SQL_SELECT {
 		}
 		return bankData;
 		
+	}
+
+	public static ArrayList<Manufacturer> manufacturer() {
+		stmt = DB.getStatement();
+		ArrayList<Manufacturer> manufacturers;
+		manufacturers = new ArrayList<Manufacturer>();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT notation, contact_person, mobil "
+					+ "FROM manufacturer");
+			
+			if(rs.isBeforeFirst()){
+				rs.next();
+				Manufacturer manufacturer = new Manufacturer(rs.getString("notation"));
+				manufacturer.setContact_person(rs.getString("contact_person"));
+				manufacturer.setMobil(rs.getString("mobil"));
+				manufacturers.add(manufacturer);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return manufacturers;
 	}
 }
