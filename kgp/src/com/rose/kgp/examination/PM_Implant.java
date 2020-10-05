@@ -13,6 +13,11 @@ public class PM_Implant extends PM_Intervention {
 		super(studyValues);
 		electrodesImplant = new ArrayList<ElectrodeImplant>();
 	}
+	
+	public PM_Implant() {
+		super();
+		electrodesImplant = new ArrayList<ElectrodeImplant>();
+	}
 
 	@Override
 	public void setStaff() {

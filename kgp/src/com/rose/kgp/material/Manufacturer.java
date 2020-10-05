@@ -3,7 +3,8 @@ package com.rose.kgp.material;
 public class Manufacturer {
 	String notation;
 	String contact_person;
-	String mobil;
+	String mobile;
+	Integer id;
 	
 	
 	public String getNotation() {
@@ -24,12 +25,20 @@ public class Manufacturer {
 	}
 
 	
-	public String getMobil() {
-		return mobil;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setMobil(String mobil) {
-		this.mobil = mobil;
+	public void setMobile(String mobil) {
+		this.mobile = mobil;
+	}	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Manufacturer(String notation) {

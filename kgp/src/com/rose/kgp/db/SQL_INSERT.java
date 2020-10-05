@@ -17,6 +17,10 @@ import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Clinical_Institution;
 import com.rose.kgp.examination.Examination;
 import com.rose.kgp.material.Manufacturer;
+import com.rose.kgp.material.PM;
+import com.rose.kgp.material.AggregatModel;
+import com.rose.kgp.material.ElectrodeModel;
+import com.rose.kgp.material.ICD_Model;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -341,19 +345,186 @@ public class SQL_INSERT {
 				stmt.executeUpdate("INSERT INTO manufacturer (notation, contact_person, mobil) "
 						+ "VALUES ('" + manufacturer.getNotation() + "', '" 
 						+ manufacturer.getContact_person() + "', '"
-						+ manufacturer.getMobil() + "')");
+						+ manufacturer.getMobile() + "')");
 				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
 				if(rs.isBeforeFirst()){
 					rs.next();
 					id = rs.getInt("ID");
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(new JFrame(),
+					    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT Manufacturer(Manufacturer manufacturer)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
 			}
 			
 		
 		return id;
+		
+	}
+
+	/**
+	 * insert a type of pacemaker
+	 * @param pmModel
+	 * @return the id of the inserted type of pacemaker
+	 */
+	public static Integer pacemakerModel(AggregatModel pmModel) {
+		Integer id = null;
+		stmt = DB.getStatement();
+		Integer ra = 0; 
+		Integer rv= 0;
+		Integer lv = 0;
+		Integer mri = 0;
+		
+		if(pmModel.getRa()) {
+			ra = 1;
+		}
+		
+		if(pmModel.getRv()) {
+			rv = 1;		
+		}
+		
+		if(pmModel.getLv()) {
+			lv = 1;
+		}
+		
+		if(pmModel.getMri()) {
+			mri = 1;
+		}
+			try {
+				DB.getConnection().setAutoCommit(true);
+				stmt.executeUpdate("INSERT INTO pm_type (notation, id_manufacturer, ra, rv, lv, mri) "
+						+ "VALUES ('" + pmModel.getNotation() + "', '" 
+						+ pmModel.getManufacturer().getId() + "', '"
+						+ ra + "', '"
+						+ rv + "', '"
+						+ lv + "', '"
+						+ mri + "')");
+				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+				if(rs.isBeforeFirst()){
+					rs.next();
+					id = rs.getInt("ID");
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT PacemakerModel(PM_Model pmModel)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+			}			
+		
+		return id;
+		
+	}
+	
+	/**
+	 * insert a type of icd
+	 * @param icdModel
+	 * @return the id of the inserted type of icd
+	 */
+	public static Integer icd_Model(ICD_Model icdModel) {
+		Integer id = null;
+		stmt = DB.getStatement();
+		Integer ra = 0; 
+		Integer rv= 0;
+		Integer lv = 0;
+		Integer mri = 0;
+		Integer atp = 0;
+		
+		if(icdModel.getRa()) {
+			ra = 1;
+		}
+		
+		if(icdModel.getRv()) {
+			rv = 1;		
+		}
+		
+		if(icdModel.getLv()) {
+			lv = 1;
+		}
+		
+		if(icdModel.getMri()) {
+			mri = 1;
+		}
+			try {
+				DB.getConnection().setAutoCommit(true);
+				stmt.executeUpdate("INSERT INTO icd_type (notation, id_manufacturer, ra, rv, lv, mri) "
+						+ "VALUES ('" + icdModel.getNotation() + "', '" 
+						+ icdModel.getManufacturer().getId() + "', '"
+						+ ra + "', '"
+						+ rv + "', '"
+						+ lv + "', '"
+						+ mri + "')");
+				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+				if(rs.isBeforeFirst()){
+					rs.next();
+					id = rs.getInt("ID");
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT icd_Model(ICD_Model icdModel)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+			}			
+		
+		return id;
+		
+	}
+	
+	public static Integer pacemaker(PM pm) {
+		Integer id = null;
+		stmt = DB.getStatement();
+		
+		try {
+			DB.getConnection().setAutoCommit(true);
+			stmt.executeUpdate("INSERT INTO pm_implant (pm_type, expiry, serialNr, notice) "
+					+ "VALUES ('" + pm.getAggregatModel().getId() + "', '" 
+					+ Date.valueOf(pm.getExpireDate()) + "', '"
+					+ pm.getSerialNr() + "', '"
+					+ pm.getNotice() + "')");
+					
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			if(rs.isBeforeFirst()){
+				rs.next();
+				id = rs.getInt("ID");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+				    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT Pacemaker(PM pm)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}			
+	
+	return id;
+		
+	}
+
+	public static Integer electrodeModel(ElectrodeModel electrodeModel) {
+		Integer id = null;
+		Integer mri = 0;
+		
+		if(electrodeModel.getMri()) {
+			mri = 1;
+		}
+		stmt = DB.getStatement();
+		
+		try {
+			DB.getConnection().setAutoCommit(true);
+			stmt.executeUpdate("INSERT INTO electrode_type (notation, id_manufacturer, length, notice, mri, fixmode) "
+					+ "VALUES ('" + electrodeModel.getNotation() + "', '" 
+					+ electrodeModel.getManufacturer().getId() + "', '"
+					+ electrodeModel.getLength() + "', '"
+					+ electrodeModel.getNotice() + "', '"
+					+ mri + "', '"
+					+ electrodeModel.getFixMode() + "')");
+					
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			if(rs.isBeforeFirst()){
+				rs.next();
+				id = rs.getInt("ID");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+				    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT electrodeModel(ElectrodeModel electrodeModel)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}			
+	
+	return id;
 		
 	}
 	

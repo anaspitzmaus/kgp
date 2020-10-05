@@ -2,9 +2,20 @@ package com.rose.kgp.material;
 
 public abstract class Material {
 	String notation;
+	Manufacturer manufacturer;
 
 	
-	protected String getNotation() {
+	public Manufacturer getManufacturer() {
+		return manufacturer;
+	}
+
+
+	public void setManufacturer(Manufacturer manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+
+	public String getNotation() {
 		return notation;
 	}
 

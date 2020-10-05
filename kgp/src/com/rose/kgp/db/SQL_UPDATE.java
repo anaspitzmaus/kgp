@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.allocator.Clinical_Institution;
+import com.rose.kgp.material.Manufacturer;
+import com.rose.kgp.material.PM;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Physician;
 
@@ -110,6 +112,60 @@ public class SQL_UPDATE {
 					    "Message: failure while setting autoCommit to true /n Class: SQL_Update nurse", "SQL Exception warning",
 					    JOptionPane.WARNING_MESSAGE);
 			}
+		}
+		
+	}
+
+	/**
+	 * udate a manufacturer
+	 * @param manufacturer
+	 * @return true, if manufacturer could be updated, else false
+	 */
+	public static Boolean Manufacturer(Manufacturer manufacturer) {
+		stmt = DB.getStatement();
+		if(manufacturer.getId() != null) {
+			try {
+				stmt.executeUpdate("UPDATE manufacturer SET "
+						+ "notation = '" + manufacturer.getNotation() + "', "
+						+ "contact_person = '" + manufacturer.getContact_person() + "', "
+						+ "mobil = '" + manufacturer.getMobile() + "'"
+						+ "WHERE idmanufacturer = " + manufacturer.getId() + "");
+				return true;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+						"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nBoolean Manufacturer(Manufacturer manufacturer)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+	
+	/**
+	 * update a pacemaker
+	 * @param pmSel, the pacemaker, that has to be updated
+	 * @return true if update was successful, else return false
+	 */
+
+	public static Boolean Pacemaker(PM pmSel) {
+		stmt = DB.getStatement();
+		if(pmSel.getId() != null) {
+			try {
+				stmt.executeUpdate("UPDATE pm_implant SET "
+						+ "serialNr = '" + pmSel.getSerialNr() + "', "
+						+ "expiry = '" + Date.valueOf(pmSel.getExpireDate()) + "', "
+						+ "notice = '" + pmSel.getNotice() + "'"
+						+ "WHERE id_pm_implant = " + pmSel.getId() + "");
+				return true;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+						"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nBoolean Pacemaker(PM pmSel)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}else {
+			return false;
 		}
 		
 	}

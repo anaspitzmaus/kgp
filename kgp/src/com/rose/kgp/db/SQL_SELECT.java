@@ -15,7 +15,13 @@ import com.rose.kgp.administration.BankData;
 import com.rose.kgp.administration.TreatmentCase;
 import com.rose.kgp.allocator.Allocator;
 import com.rose.kgp.allocator.Clinical_Institution;
+import com.rose.kgp.examination.Examination;
+import com.rose.kgp.examination.PM_Implant;
+import com.rose.kgp.material.ICD_Model;
 import com.rose.kgp.material.Manufacturer;
+import com.rose.kgp.material.PM;
+import com.rose.kgp.material.AggregatModel;
+import com.rose.kgp.material.ElectrodeModel;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
 import com.rose.kgp.personnel.Physician;
@@ -438,25 +444,181 @@ public class SQL_SELECT {
 		
 	}
 
-	public static ArrayList<Manufacturer> manufacturer() {
+	public static ArrayList<Manufacturer> manufacturers() {
 		stmt = DB.getStatement();
 		ArrayList<Manufacturer> manufacturers;
 		manufacturers = new ArrayList<Manufacturer>();
 		try {
 			rs = stmt.executeQuery(
-					 "SELECT notation, contact_person, mobil "
+					 "SELECT idmanufacturer, notation, contact_person, mobil "
 					+ "FROM manufacturer");
 			
 			if(rs.isBeforeFirst()){
-				rs.next();
-				Manufacturer manufacturer = new Manufacturer(rs.getString("notation"));
-				manufacturer.setContact_person(rs.getString("contact_person"));
-				manufacturer.setMobil(rs.getString("mobil"));
-				manufacturers.add(manufacturer);
+				while(rs.next()) {
+					Manufacturer manufacturer = new Manufacturer(rs.getString("notation"));
+					manufacturer.setId(rs.getInt("idmanufacturer"));
+					manufacturer.setContact_person(rs.getString("contact_person"));
+					manufacturer.setMobile(rs.getString("mobil"));
+					manufacturers.add(manufacturer);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
 		return manufacturers;
 	}
+	
+	/**
+	 * select all types of pacemakers
+	 * @return an arraylist with the types of pacemakers
+	 */
+	public static ArrayList<AggregatModel>pacemakerKinds(){
+		stmt = DB.getStatement();
+		ArrayList<AggregatModel> pmKinds;
+		pmKinds = new ArrayList<AggregatModel>();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT idpm_type, pm_type.notation AS pmNotation, id_manufacturer, manufacturer.notation AS manufacturerNotation, ra, rv, lv, mri "
+					+ "FROM pm_type "
+					+ "INNER JOIN manufacturer "
+					+ "ON pm_type.id_manufacturer = manufacturer.idmanufacturer");
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					AggregatModel pm = new AggregatModel(rs.getString("pmNotation"));
+					pm.setId(rs.getInt("idpm_type"));					
+					pm.setRa(rs.getBoolean("ra"));
+					pm.setRv(rs.getBoolean("rv"));
+					pm.setLv(rs.getBoolean("lv"));
+					pm.setMri(rs.getBoolean("mri"));
+					
+					Manufacturer manufacturer = new Manufacturer(rs.getString("manufacturerNotation"));
+					manufacturer.setId(rs.getInt("id_manufacturer"));
+					pm.setManufacturer(manufacturer);
+					pmKinds.add(pm);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return pmKinds;
+	}
+	
+	/**
+	 * select all types of icds
+	 * @return an arraylist with the types of icds
+	 */
+	public static ArrayList<ICD_Model>ICD_Kinds(){
+		stmt = DB.getStatement();
+		ArrayList<ICD_Model> icdKinds;
+		icdKinds = new ArrayList<ICD_Model>();
+		try {
+			rs = stmt.executeQuery(
+					 "SELECT idicd_type, icd_type.notation AS icdNotation, id_manufacturer, manufacturer.notation AS manufacturerNotation, ra, rv, lv, mri "
+					+ "FROM icd_type "
+					+ "INNER JOIN manufacturer "
+					+ "ON icd_type.id_manufacturer = manufacturer.idmanufacturer");
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					ICD_Model icd = new ICD_Model(rs.getString("icdNotation"));
+					icd.setId(rs.getInt("idicd_type"));					
+					icd.setRa(rs.getBoolean("ra"));
+					icd.setRv(rs.getBoolean("rv"));
+					icd.setLv(rs.getBoolean("lv"));
+					icd.setMri(rs.getBoolean("mri"));
+					
+					Manufacturer manufacturer = new Manufacturer(rs.getString("manufacturerNotation"));
+					manufacturer.setId(rs.getInt("id_manufacturer"));
+					icd.setManufacturer(manufacturer);
+					icdKinds.add(icd);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return icdKinds;
+	}
+
+	/**
+	 * select all pacemakers of a specific pacemaker model
+	 * @param pmModel
+	 * @return the pacemakers of a specific pacemaker model
+	 */
+	public static ArrayList<PM> pacemakers(AggregatModel pmModel) {
+		stmt = DB.getStatement();
+		ArrayList<PM> pms;
+		pms = new ArrayList<PM>();
+		try {
+			if(pmModel instanceof AggregatModel) {//select pacemakers of a selected model
+				rs = stmt.executeQuery(
+					 "SELECT pm_implant.id_pm_implant, pm_implant.id_exam, pm_implant.pm_type, expiry, serialNr, notice "
+					+ "FROM pm_implant "
+					+ "INNER JOIN pm_type "
+					+ "ON pm_implant.pm_type = pm_type.idpm_type "
+					+ "WHERE pm_implant.pm_type = " + pmModel.getId() + "");
+			}else {//select all pacemakers
+				rs = stmt.executeQuery(
+						 "SELECT pm_implant.id_pm_implant, pm_implant.id_exam, pm_implant.pm_type, expiry, serialNr, notice "
+						+ "FROM pm_implant ");
+			}
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					PM pm = new PM(pmModel);
+					pm.setId(rs.getInt("id_pm_implant"));
+					pm.setSerialNr(rs.getString("serialNr"));					
+					pm.setExpireDate(rs.getDate("expiry").toLocalDate());
+					pm.setNotice(rs.getString("notice"));
+					
+					//create and add an examination
+					if(rs.getObject("id_exam") != null) {
+						PM_Implant exam = new PM_Implant();
+						System.out.println(rs.getObject("id_exam"));
+						exam.setRefNo(rs.getInt("id_exam"));//= 0 if no examination exists
+						pm.setExam(exam);
+					}					
+					pms.add(pm);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return pms;
+	}
+	
+	public static ArrayList<ElectrodeModel> electrodeModels(){
+		stmt = DB.getStatement();
+		ArrayList<ElectrodeModel> models = new ArrayList<ElectrodeModel>();
+		try {
+			rs = stmt.executeQuery(
+					"SELECT idelectrode_type, electrode_type.id_manufacturer, length, electrode_type.notation AS electrodeNotation, notice, mri, fixmode, manufacturer.notation AS manufacturerNotation "
+					+ "FROM electrode_type "
+					+ "INNER JOIN manufacturer "
+					+ "ON electrode_type.id_manufacturer = manufacturer.idmanufacturer");
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					ElectrodeModel model = new ElectrodeModel(rs.getString("electrodeNotation"));
+					model.setId(rs.getInt("idelectrode_type"));					
+					model.setLength(rs.getInt("length"));
+					model.setFixMode(rs.getString("fixmode"));
+					model.setNotice(rs.getString("notice"));
+					model.setMri(rs.getBoolean("mri"));
+					
+					Manufacturer manufacturer = new Manufacturer(rs.getString("manufacturerNotation"));
+					manufacturer.setId(rs.getInt("id_manufacturer"));
+					model.setManufacturer(manufacturer);
+					models.add(model);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return models;
+	}
+	
+	
 }
