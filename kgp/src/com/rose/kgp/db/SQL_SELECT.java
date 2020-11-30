@@ -21,6 +21,7 @@ import com.rose.kgp.material.ICD_Model;
 import com.rose.kgp.material.Manufacturer;
 import com.rose.kgp.material.PM;
 import com.rose.kgp.material.AggregatModel;
+import com.rose.kgp.material.Electrode;
 import com.rose.kgp.material.ElectrodeModel;
 import com.rose.kgp.personnel.Nurse;
 import com.rose.kgp.personnel.Patient;
@@ -618,6 +619,70 @@ public class SQL_SELECT {
 		}
 		
 		return models;
+	}
+
+	
+	public static ArrayList<Electrode> electrodes() {
+		stmt = DB.getStatement();
+		ArrayList<Electrode> electrodes = new ArrayList<Electrode>();
+		try {
+			rs = stmt.executeQuery(
+					"SELECT idelectrode_implant AS electrodeId, serialNr, electrode_implant.notice AS notice, expire, electrode_type.notation AS notation, electrode_type.idelectrode_type AS modelId "
+					+ "FROM electrode_implant "
+					+ "INNER JOIN electrode_type "
+					+ "ON electrode_type.idelectrode_type = electrode_implant.id_electrode_type");
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					ElectrodeModel model = new ElectrodeModel(rs.getString("notation"));
+					model.setId(rs.getInt("modelId"));
+					Electrode electrode = new Electrode(model);
+					electrode.setId(rs.getInt("electrodeId"));					
+					electrode.setNotice(rs.getString("notice"));
+					electrode.setSerialNr(rs.getString("serialNr"));
+					electrode.setExpireDate(rs.getDate("expire").toLocalDate());
+					
+					electrodes.add(electrode);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return electrodes;
+	}
+
+	public static ArrayList<Electrode> electrodes(ElectrodeModel type) {
+		stmt = DB.getStatement();
+		ArrayList<Electrode> electrodes = new ArrayList<Electrode>();
+		try {
+			rs = stmt.executeQuery(
+					"SELECT idelectrode_implant AS electrodeId, serialNr, electrode_implant.notice AS notice, expire, electrode_type.notation AS notation, electrode_type.idelectrode_type AS modelId "
+					+ "FROM electrode_implant "
+					+ "INNER JOIN electrode_type "
+					+ "ON electrode_type.idelectrode_type = electrode_implant.id_electrode_type "
+					+ "WHERE id_electrode_type = " + type.getId() + "");
+			
+			if(rs.isBeforeFirst()){
+				while(rs.next()) {
+					ElectrodeModel model = new ElectrodeModel(rs.getString("notation"));
+					model.setId(rs.getInt("modelId"));
+					Electrode electrode = new Electrode(model);
+					electrode.setId(rs.getInt("electrodeId"));					
+					electrode.setNotice(rs.getString("notice"));
+					electrode.setSerialNr(rs.getString("serialNr"));
+					electrode.setExpireDate(rs.getDate("expire").toLocalDate());
+					
+					electrodes.add(electrode);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return electrodes;
 	}
 	
 	

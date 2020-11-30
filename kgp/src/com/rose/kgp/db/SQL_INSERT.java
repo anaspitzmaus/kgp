@@ -19,6 +19,7 @@ import com.rose.kgp.examination.Examination;
 import com.rose.kgp.material.Manufacturer;
 import com.rose.kgp.material.PM;
 import com.rose.kgp.material.AggregatModel;
+import com.rose.kgp.material.Electrode;
 import com.rose.kgp.material.ElectrodeModel;
 import com.rose.kgp.material.ICD_Model;
 import com.rose.kgp.personnel.Nurse;
@@ -526,6 +527,32 @@ public class SQL_INSERT {
 	
 	return id;
 		
+	}
+
+	public static Integer electrode(Electrode electrode) {
+		Integer id = null;
+		stmt = DB.getStatement();
+		
+		try {
+			DB.getConnection().setAutoCommit(true);
+			stmt.executeUpdate("INSERT INTO electrode_implant (id_electrode_type, serialNr, notice, expire) "
+					+ "VALUES ('" + electrode.getElectrodeModel().getId() + "', '" 
+					+ electrode.getSerialNr() + "', '"
+					+ electrode.getNotice() + "', '"
+					+ Date.valueOf(electrode.getExpireDate()) + "')");
+					
+			ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID() AS ID");
+			if(rs.isBeforeFirst()){
+				rs.next();
+				id = rs.getInt("ID");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(new JFrame(),
+				    e.getErrorCode() + ": "+ e.getMessage()+ "/n/n Class: SQL_INSERT electrode(Electrode electrode)", "SQL Exception warning",
+				    JOptionPane.WARNING_MESSAGE);
+		}			
+	
+	return id;
 	}
 	
 	

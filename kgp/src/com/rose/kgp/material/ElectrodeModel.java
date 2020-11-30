@@ -34,7 +34,7 @@ public class ElectrodeModel extends Material{
 
 
 
-	protected Integer getId() {
+	public Integer getId() {
 		return id;
 	}
 

@@ -46,14 +46,14 @@ public class PnlAorticValve extends JPanel {
 		ftxtPGMax.setColumns(5);
 		add(ftxtPGMax, "cell 3 0,alignx left");
 		
-		JLabel lblAÖF = new JLabel("A\u00D6F");
-		lblAÖF.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		add(lblAÖF, "cell 4 0,alignx trailing");
+		JLabel lblAOEF = new JLabel("A\u00D6F");
+		lblAOEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		add(lblAOEF, "cell 4 0,alignx trailing");
 		
-		JFormattedTextField ftxtAÖF = new JFormattedTextField();
-		ftxtAÖF.setColumns(5);
-		ftxtAÖF.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		add(ftxtAÖF, "cell 5 0");
+		JFormattedTextField ftxtAOEF = new JFormattedTextField();
+		ftxtAOEF.setColumns(5);
+		ftxtAOEF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		add(ftxtAOEF, "cell 5 0");
 		
 		JLabel lblStenosis = new JLabel("Stenosegrad:");
 		lblStenosis.setFont(new Font("Tahoma", Font.PLAIN, 14));

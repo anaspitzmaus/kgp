@@ -24,9 +24,9 @@ public class Pnl_Billing extends JPanel {
 		lblBilling.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		add(lblBilling, "cell 0 0,alignx left");
 		
-		JRadioButton radioStationär = new JRadioButton("station\u00E4r");
-		radioStationär.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		add(radioStationär, "cell 1 0");
+		JRadioButton radioStationaer = new JRadioButton("station\u00E4r");
+		radioStationaer.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		add(radioStationaer, "cell 1 0");
 		
 		JRadioButton radioAmbulant = new JRadioButton("ambulant");
 		radioAmbulant.setFont(new Font("Tahoma", Font.PLAIN, 12));

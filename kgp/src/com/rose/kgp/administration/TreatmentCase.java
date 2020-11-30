@@ -97,7 +97,7 @@ public class TreatmentCase {
 		if(caseNr instanceof Integer && caseNr > 0){//if there is a caseNr (can be inPatient or CardioIntegral)			
 			if(this.getPatient().getNumber() > 100000){ //inPatient
 				//declare as inPatient
-				this.accountingType = AccountingType.stationär;
+				this.accountingType = AccountingType.stationaer;
 				this.inPatientID = this.getPatient().getNumber(); //set the inPatient id
 				this.getPatient().setInID(this.getPatient().getNumber());
 			}else if(this.getPatient().getNumber() < 100000){

@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.rose.kgp.allocator.Clinical_Institution;
+import com.rose.kgp.material.Electrode;
+import com.rose.kgp.material.ElectrodeModel;
 import com.rose.kgp.material.Manufacturer;
 import com.rose.kgp.material.PM;
 import com.rose.kgp.personnel.Nurse;
@@ -161,6 +163,108 @@ public class SQL_UPDATE {
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(new JFrame(),
 						"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nBoolean Pacemaker(PM pmSel)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}else {
+			return false;
+		}
+		
+	}
+
+	public static Boolean electrodeModel(ElectrodeModel electrodeModel) {
+		stmt = DB.getStatement();
+		Integer mri = 0;
+		if(electrodeModel.getMri()){
+			mri = 1;
+		}
+		
+		if(electrodeModel.getId() != null) {
+			try {
+				stmt.executeUpdate("UPDATE electrode_type SET "
+						+ "notation = '" + electrodeModel.getNotation() + "', "
+						+ "notice = '" + electrodeModel.getNotice() + "', "
+						+ "fixMode = '" + electrodeModel.getFixMode() + "', "
+						+ "mri = '" + mri + "', "
+						+ "id_manufacturer = " + electrodeModel.getManufacturer().getId() + " "
+						+ "WHERE idelectrode_type = " + electrodeModel.getId() + "");
+				return true;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+						"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nBoolean electrodeModel(ElectrodeModel electrodeModel)", "SQL Exception warning",
+					    JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}else {
+			return false;
+		}
+		
+	}
+
+	/**
+	 * removes a model of an electrode
+	 * @param electrodeModel
+	 * @return
+	 */
+	public static Boolean deleteElectrodeModel(ElectrodeModel electrodeModel) {
+		stmt = DB.getStatement();
+		if(electrodeModel instanceof ElectrodeModel) {
+			try {
+				stmt.executeUpdate("DELETE FROM electrode_type WHERE idelectrode_type = " + electrodeModel.getId() + " LIMIT 1");
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}else {
+			return false;
+		}
+		
+	}
+
+	/**
+	 * removes an electrode
+	 * @param electrode
+	 * @return
+	 */
+	public static Boolean deleteElectrode(Electrode electrode) {
+		stmt = DB.getStatement();
+		if(electrode instanceof Electrode) {
+			try {
+				stmt.executeUpdate("DELETE FROM electrode_implant WHERE idelectrode_implant = " + electrode.getId() + " LIMIT 1");
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * update of an electrode
+	 * the type of of electrode can't be updated
+	 * @param electrode
+	 * @return
+	 */
+	public static Boolean electrode(Electrode electrode) {
+		stmt = DB.getStatement();
+		
+		if(electrode.getId() != null) {
+			try {
+				stmt.executeUpdate("UPDATE electrode_implant SET "
+						+ "notice = '" + electrode.getNotice() + "', "
+						+ "serialNr = '" + electrode.getSerialNr() + "', "
+						+ "expire = '" + Date.valueOf(electrode.getExpireDate()) + "' "
+						+ "WHERE idelectrode_implant = " + electrode.getId() + "");
+				
+				return true;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+						"Message:\n" +  e.getMessage() + "\n\nClass:\n" + SQL_UPDATE.class.getSimpleName() + "\n\nBoolean electrode(Electrode electrode)", "SQL Exception warning",
 					    JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
